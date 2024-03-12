@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://dnvx2k5kwxus6" path="res://src/resources/assets/tileset_karte_flip.png" id="2_kk7qb"]
-[ext_resource type="Script" path="res://src/resources/screen_scenes/GridGroundCustomTilemap.cs" id="3_qw72q"]
+[ext_resource type="Script" path="res://src/custom_node/GridGroundCustomTilemap.cs" id="3_qw72q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fxo2x"]
 texture = ExtResource("2_kk7qb")

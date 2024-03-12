@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
-./my-keystore.keystore
+my-keystore.keystore
+karte_flip.apk
+karte_flip.apk.idsig
