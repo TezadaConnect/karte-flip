@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://citm8bcblt0nx"]
+
+[ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
+[ext_resource type="Texture2D" uid="uid://dnvx2k5kwxus6" path="res://src/resources/assets/tileset_karte_flip.png" id="2_kk7qb"]
+[ext_resource type="Script" path="res://src/resources/screen_scenes/GridGroundCustomTilemap.cs" id="3_qw72q"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fxo2x"]
+texture = ExtResource("2_kk7qb")
+texture_region_size = Vector2i(150, 150)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+0:1/0/custom_data_0 = true
+1:1/0 = 0
+1:1/0/custom_data_0 = true
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f8p5w"]
+tile_size = Vector2i(150, 150)
+custom_data_layer_0/name = "isPlaceable"
+custom_data_layer_0/type = 1
+sources/0 = SubResource("TileSetAtlasSource_fxo2x")
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_h78po")
+
+[node name="BackgroundColorRect" type="ColorRect" parent="."]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 1950.0
+offset_bottom = 1106.0
+color = Color(0.862745, 0.776471, 0.564706, 1)
+metadata/_edit_lock_ = true
+
+[node name="GridGround" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_f8p5w")
+rendering_quadrant_size = 5
+format = 2
+layer_0/name = "ground"
+layer_0/tile_data = PackedInt32Array(131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 65536, 805306369, 196616, 65536, 805306369, 196615, 0, 0, 196614, 0, 0, 196613, 0, 0, 196612, 65536, 1, 262148, 65536, 1, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 65536, 805306369, 327688, 0, 805306369, 327687, 65536, 1610612737, 327686, 65536, 1610612737, 327685, 65536, 1610612737, 327684, 0, 1610612737, 131076, 65536, 1, 65540, 0, 1, 65541, 65536, 1342177281, 65542, 65536, 1342177281, 65543, 65536, 1342177281, 65544, 0, 1342177281)
+layer_1/name = "token_placement"
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("3_qw72q")
+metadata/_edit_lock_ = true
