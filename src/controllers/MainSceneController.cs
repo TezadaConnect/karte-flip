@@ -1,12 +1,19 @@
 using Godot;
 
 public partial class MainSceneController : Node {
-	private readonly string MAIN_SCENE_ROUTE = PathHelper.GetSceneFilePath("main_scene.tscn");
+	private RouteManager mRouteManager;
+	private GameTurnManager mGameTurnManager;
+	private TokenFlipManager mTokenFlipManager;
 
 	private GridGroundCustomTilemap mTileMap;
+
 	
 	public override void _Ready(){
+		mRouteManager = RouteManager.GetIntance();
+		mGameTurnManager = GameTurnManager.GetInstance();
+		mTokenFlipManager = TokenFlipManager.GetInsntance();
 		mTileMap = GetNode<GridGroundCustomTilemap>("GridGround");
+		// FlipTokens();
 	}
 
 	// Input Event Listener
@@ -27,7 +34,7 @@ public partial class MainSceneController : Node {
 		Vector2 mousePosition = mouseEvent.Position;
 		Vector2I tilePostion = mTileMap.LocalToMap(mousePosition);
 		TileData groundTileData = mTileMap.GetCellTileData(mTileMap.GROUND_LAYER, tilePostion);
-		Vector2I tileToAdd = new Vector2I(1,0); // Location of the white token in the tile asset
+		Vector2I tileToAdd = mGameTurnManager.GetTileForDisplay(); // Location of the white token in the tile asset
 	
 		if(groundTileData == null){
 			return;
@@ -44,15 +51,36 @@ public partial class MainSceneController : Node {
 			tilePostion
 		);
 
+		// GD.Print(groundTileData.GetPropertyList());
+
 		if(tokenPlacementTilemap != null){
 			return;
 		}
-					
+
 		mTileMap.SetCell(
 			mTileMap.TOKEN_PLACEMENT_LAYER, 
 			tilePostion, 
 			0, 			
 			tileToAdd
-		);		
+		);
+
+		mTokenFlipManager.FlipTokens(
+			tilePostion, 
+			mTileMap, 
+			mGameTurnManager.GetRandomCard().GetCardListFlipDirections()
+		);
+	
+		SetNextTurnPLayer();
 	}
+
+	private void SetNextTurnPLayer(){
+		if(mGameTurnManager.GetTurnType() == GameTurnEnum.LIGHT_TURN){
+			mGameTurnManager.SetTurnType(GameTurnEnum.DARK_TURN);
+		} else {
+			mGameTurnManager.SetTurnType(GameTurnEnum.LIGHT_TURN);
+		}	
+	}
+
+	
+
 }

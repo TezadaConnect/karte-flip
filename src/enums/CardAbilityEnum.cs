@@ -1,0 +1,4 @@
+enum CardAbilityEnum{
+    FLIP,
+    FREEZE
+}
