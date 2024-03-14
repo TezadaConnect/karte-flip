@@ -55,22 +55,20 @@ public partial class MainSceneController : Node {
 			tilePostion
 		);
 
-		// GD.Print(groundTileData.GetPropertyList());
-
 		if(tokenPlacementTilemap != null){
 			return;
 		}
 
 		CardModel cardDisplay = mGameTurnManager.GetCurrentCard();
 
-		mTileMap.SetCell(
+		mTileMap.SetCell( // Add tile
 			mTileMap.TOKEN_PLACEMENT_LAYER, 
 			tilePostion, 
 			mTileMap.ADD_TILE_ACTION, 			
 			tileImageCoordinate
 		);
 
-		mTokenFlipManager.FlipTokens(
+		mTokenFlipManager.FlipTokens( // Flip nearby tokens
 			tilePostion, 
 			mTileMap, 
 			cardDisplay.GetCardListFlipDirections()

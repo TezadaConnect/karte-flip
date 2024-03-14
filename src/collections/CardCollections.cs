@@ -1,5 +1,3 @@
-using System;
-using System.Numerics;
 using Godot;
 
 class CardCollection{
@@ -15,7 +13,7 @@ class CardCollection{
         "Flip bottom tokens",
         "Flip top tokens",
         "Flip left tokens",
-        "Flip righ tokens",
+        "Flip right tokens",
         "Flip cross tokens"
     };
 
@@ -39,7 +37,7 @@ class CardCollection{
             DirectionEnum.RIGHT
         },
     };
-
+    
     private Vector2I[] mCardListOfTileImagesCoordinate = {
         new Vector2I(4, 0),
         new Vector2I(3, 1),
@@ -48,15 +46,9 @@ class CardCollection{
         new Vector2I(4, 1),
     };
 
-
-    public CardCollection(){
-        
-    }
-
     public string[] GetCardListOfNames(){
         return mCardListOfNames;
     }
-
 
     public CardModel GetCardModelByIndex(int index){
         return new CardModel(
