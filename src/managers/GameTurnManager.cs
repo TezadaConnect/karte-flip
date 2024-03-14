@@ -6,6 +6,7 @@ using Godot;
 class GameTurnManager{
     private GameTurnEnum mTurnType;
     private CardModel[] mCardList;
+    private CardModel mCurrentCard;
 
     private static GameTurnManager mGameTurnManagerInstance;
 
@@ -17,6 +18,7 @@ class GameTurnManager{
             cards.Add(cardCollection.GetCardModelByIndex(i));
         }
         mCardList = cards.ToArray();
+        mCurrentCard = GetCurrentCard();
     }
 
     public static GameTurnManager GetInstance(){
@@ -41,8 +43,16 @@ class GameTurnManager{
         return new Vector2I(2,0);
     }
 
-    public CardModel GetRandomCard(){
+    private CardModel GetRandomCard(){
         Random random = new Random();
-        return mCardList[random.Next(0, 4)];
+        return mCardList[random.Next(0, 5)];
+    }
+
+    public CardModel GetCurrentCard(){
+        return mCurrentCard;
+    }
+
+    public void SetCurrentCardWithRandomCard(){
+        mCurrentCard = GetRandomCard();
     }
 }

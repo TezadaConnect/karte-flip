@@ -1,4 +1,6 @@
 using System;
+using System.Numerics;
+using Godot;
 
 class CardCollection{
     private string[] mCardListOfNames = {
@@ -10,11 +12,11 @@ class CardCollection{
     };
 
     private string[] mCardListOfDescriptions = {
-        "Flip one chosen side of the card",
-        "Flip vertical domain",
-        "Freezes one chosen side of the card for 1 turn, preventing the card from Flipping",
-        "Flip all the tokens surrounding it",
-        "Flip horizontal domain"
+        "Flip bottom tokens",
+        "Flip top tokens",
+        "Flip left tokens",
+        "Flip righ tokens",
+        "Flip cross tokens"
     };
 
     private CardAbilityEnum[] mCardListOfAbilityEnum = new CardAbilityEnum[] {
@@ -38,6 +40,14 @@ class CardCollection{
         },
     };
 
+    private Vector2I[] mCardListOfTileImagesCoordinate = {
+        new Vector2I(4, 0),
+        new Vector2I(3, 1),
+        new Vector2I(3, 0),
+        new Vector2I(2, 1),
+        new Vector2I(4, 1),
+    };
+
 
     public CardCollection(){
         
@@ -53,7 +63,8 @@ class CardCollection{
             mCardListOfNames[index], 
             mCardListOfDescriptions[index], 
             mCardListOfAbilityEnum[index], 
-            mCardListOfFlipDirection[index]
+            mCardListOfFlipDirection[index],
+            mCardListOfTileImagesCoordinate[index]
         );
     }
     

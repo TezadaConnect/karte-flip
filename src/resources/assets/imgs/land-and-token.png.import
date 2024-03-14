@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnvx2k5kwxus6"
-path="res://.godot/imported/tileset_karte_flip.png-d82b819c9405a0ce77dce44885ece3c6.ctex"
+uid="uid://cffcri8fr3alj"
+path="res://.godot/imported/land-and-token.png-401582a78b66b96b6f4f50bad5fa63db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/resources/assets/tileset_karte_flip.png"
-dest_files=["res://.godot/imported/tileset_karte_flip.png-d82b819c9405a0ce77dce44885ece3c6.ctex"]
+source_file="res://src/resources/assets/imgs/land-and-token.png"
+dest_files=["res://.godot/imported/land-and-token.png-401582a78b66b96b6f4f50bad5fa63db.ctex"]
 
 [params]
 

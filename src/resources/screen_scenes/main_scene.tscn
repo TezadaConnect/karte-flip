@@ -1,29 +1,31 @@
 [gd_scene load_steps=6 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
-[ext_resource type="Texture2D" uid="uid://dnvx2k5kwxus6" path="res://src/resources/assets/tileset_karte_flip.png" id="2_kk7qb"]
+[ext_resource type="Texture2D" uid="uid://cffcri8fr3alj" path="res://src/resources/assets/imgs/land-and-token.png" id="2_xarop"]
 [ext_resource type="Script" path="res://src/custom_node/GridGroundCustomTilemap.cs" id="3_qw72q"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fxo2x"]
-texture = ExtResource("2_kk7qb")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqjuu"]
+texture = ExtResource("2_xarop")
 texture_region_size = Vector2i(150, 150)
 0:0/0 = 0
 0:0/0/custom_data_0 = true
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
+4:0/0 = 0
 0:1/0 = 0
 0:1/0/custom_data_0 = true
 1:1/0 = 0
 1:1/0/custom_data_0 = true
 2:1/0 = 0
 3:1/0 = 0
+4:1/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_f8p5w"]
+[sub_resource type="TileSet" id="TileSet_nchrn"]
 tile_size = Vector2i(150, 150)
 custom_data_layer_0/name = "isPlaceable"
 custom_data_layer_0/type = 1
-sources/0 = SubResource("TileSetAtlasSource_fxo2x")
+sources/0 = SubResource("TileSetAtlasSource_cqjuu")
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_h78po")
@@ -36,14 +38,35 @@ offset_bottom = 1945.0
 color = Color(0.666667, 0.843137, 0.74902, 1)
 metadata/_edit_lock_ = true
 
-[node name="GridGround" type="TileMap" parent="."]
+[node name="GridGroundTilemap" type="TileMap" parent="."]
 position = Vector2(13, 0)
-tile_set = SubResource("TileSet_f8p5w")
+tile_set = SubResource("TileSet_nchrn")
 rendering_quadrant_size = 5
 format = 2
 layer_0/name = "ground"
 layer_0/tile_data = PackedInt32Array(65540, 65536, 1342177281, 131076, 0, 0, 196612, 0, 0, 262148, 0, 0, 327684, 65536, 1610612737, 65541, 0, 1342177281, 131077, 65536, 805306369, 196613, 65536, 805306369, 262149, 65536, 805306369, 327685, 0, 805306369, 65537, 0, 1, 131073, 65536, 1, 196609, 65536, 1, 262145, 65536, 1, 327681, 0, 1610612737, 65538, 65536, 1342177281, 131074, 0, 0, 196610, 0, 0, 262146, 0, 0, 327682, 65536, 1610612737, 65539, 65536, 1342177281, 131075, 0, 0, 196611, 0, 0, 262147, 0, 0, 327683, 65536, 1610612737)
 layer_1/name = "token_placement"
 layer_1/tile_data = PackedInt32Array()
+layer_2/name = "card_display"
+layer_2/tile_data = PackedInt32Array(458753, 131072, 1)
 script = ExtResource("3_qw72q")
-metadata/_edit_lock_ = true
+
+[node name="CardNameLabel" type="Label" parent="."]
+offset_left = 331.0
+offset_top = 1058.0
+offset_right = 686.0
+offset_bottom = 1127.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Card Name"
+vertical_alignment = 1
+
+[node name="CardDescriptionLabel" type="Label" parent="."]
+offset_left = 332.0
+offset_top = 1135.0
+offset_right = 1010.0
+offset_bottom = 1340.0
+theme_override_colors/font_color = Color(0.345098, 0.345098, 0.345098, 1)
+theme_override_font_sizes/font_size = 30
+text = "Card Descriptions"
+clip_text = true

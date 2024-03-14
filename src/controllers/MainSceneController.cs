@@ -5,15 +5,19 @@ public partial class MainSceneController : Node {
 	private GameTurnManager mGameTurnManager;
 	private TokenFlipManager mTokenFlipManager;
 
+	// UI NODE
 	private GridGroundCustomTilemap mTileMap;
+	private Label mCardNameLabel;
+	private Label mCardDescriptionLabel;
 
-	
 	public override void _Ready(){
 		mRouteManager = RouteManager.GetIntance();
 		mGameTurnManager = GameTurnManager.GetInstance();
 		mTokenFlipManager = TokenFlipManager.GetInsntance();
-		mTileMap = GetNode<GridGroundCustomTilemap>("GridGround");
-		// FlipTokens();
+		mTileMap = GetNode<GridGroundCustomTilemap>("GridGroundTilemap");
+		mCardNameLabel = GetNode<Label>("CardNameLabel");
+		mCardDescriptionLabel = GetNode<Label>("CardDescriptionLabel");
+		DisplayCardColorForTheTurn();
 	}
 
 	// Input Event Listener
@@ -34,7 +38,7 @@ public partial class MainSceneController : Node {
 		Vector2 mousePosition = mouseEvent.Position;
 		Vector2I tilePostion = mTileMap.LocalToMap(mousePosition);
 		TileData groundTileData = mTileMap.GetCellTileData(mTileMap.GROUND_LAYER, tilePostion);
-		Vector2I tileToAdd = mGameTurnManager.GetTileForDisplay(); // Location of the white token in the tile asset
+		Vector2I tileImageCoordinate = mGameTurnManager.GetTileForDisplay(); // Location of the white token in the tile asset
 	
 		if(groundTileData == null){
 			return;
@@ -57,20 +61,23 @@ public partial class MainSceneController : Node {
 			return;
 		}
 
+		CardModel cardDisplay = mGameTurnManager.GetCurrentCard();
+
 		mTileMap.SetCell(
 			mTileMap.TOKEN_PLACEMENT_LAYER, 
 			tilePostion, 
-			0, 			
-			tileToAdd
+			mTileMap.ADD_TILE_ACTION, 			
+			tileImageCoordinate
 		);
 
 		mTokenFlipManager.FlipTokens(
 			tilePostion, 
 			mTileMap, 
-			mGameTurnManager.GetRandomCard().GetCardListFlipDirections()
+			cardDisplay.GetCardListFlipDirections()
 		);
 	
 		SetNextTurnPLayer();
+		DisplayCardColorForTheTurn();
 	}
 
 	private void SetNextTurnPLayer(){
@@ -78,9 +85,29 @@ public partial class MainSceneController : Node {
 			mGameTurnManager.SetTurnType(GameTurnEnum.DARK_TURN);
 		} else {
 			mGameTurnManager.SetTurnType(GameTurnEnum.LIGHT_TURN);
-		}	
+		}
+		DisplayCardColorForTheTurn();
 	}
 
-	
+	private void DisplayCardColorForTheTurn(){
+		mGameTurnManager.SetCurrentCardWithRandomCard();
+		Godot.Collections.Array<Vector2I> cells =  mTileMap.GetUsedCells(mTileMap.CARD_DISPLAY_LAYER);
+		Vector2I vectorHolder = cells[0];
+		
+		mTileMap.SetCell(
+			mTileMap.CARD_DISPLAY_LAYER, 
+			vectorHolder,
+			mTileMap.REMOVE_TILE_ACTION
+		);
+		
+		mTileMap.SetCell(
+			mTileMap.CARD_DISPLAY_LAYER, 
+			vectorHolder,
+			mTileMap.ADD_TILE_ACTION,
+			mGameTurnManager.GetCurrentCard().GetCardTileImageCoordinate()
+		);
 
+		mCardNameLabel.Text = mGameTurnManager.GetCurrentCard().GetCardName();
+		mCardDescriptionLabel.Text = mGameTurnManager.GetCurrentCard().GetCardDiscription();
+	}
 }

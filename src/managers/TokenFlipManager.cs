@@ -20,8 +20,12 @@ class TokenFlipManager {
     private void FlipTokens(Vector2I inputPosition, GridGroundCustomTilemap tileMap, DirectionEnum directionEnum){
 		Vector2I tilePosition = GetPositionByDirection(inputPosition, directionEnum);
 		TileData tileSpotData = tileMap.GetCellTileData(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
+        Vector2I atlastTileImage = tileMap.GetCellAtlasCoords(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
 
-		if (tileSpotData == null){
+        bool isTileDataEmpty = tileSpotData == null;
+        bool isTileImageSameAsTileDisplay = atlastTileImage == GameTurnManager.GetInstance().GetTileForDisplay();
+
+		if (isTileDataEmpty || isTileImageSameAsTileDisplay){
 			return;
 		}
 
@@ -40,17 +44,17 @@ class TokenFlipManager {
         }
 
         if(directionEnum == DirectionEnum.TOP){
-            return new Vector2I(inputPosition.X, inputPosition.Y + 1);
+            return new Vector2I(inputPosition.X, inputPosition.Y - 1);
         }
 
-        return new Vector2I(inputPosition.X, inputPosition.Y - 1);
+        return new Vector2I(inputPosition.X, inputPosition.Y + 1);
     }
 
     private void SetTileBaseOnPlayersTurn(Vector2I inputPosition, GridGroundCustomTilemap tilemap){
 		tilemap.SetCell(
 			tilemap.TOKEN_PLACEMENT_LAYER, 
 			inputPosition, 
-			0,	
+			tilemap.ADD_TILE_ACTION,	
 			GameTurnManager.GetInstance().GetTileForDisplay()
 		);
 	}
