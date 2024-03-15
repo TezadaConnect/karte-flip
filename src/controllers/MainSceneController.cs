@@ -7,16 +7,29 @@ public partial class MainSceneController : Node {
 
 	// UI NODE
 	private GridGroundCustomTilemap mTileMap;
-	private Label mCardNameLabel;
-	private Label mCardDescriptionLabel;
+	private Button mQuitButton;
+	private TextureRect mHUDTextureRect;
+	private Label mRandomCardName;
+	private Label mRandomCardDescription;
+	private TextureRect mTurnTextureRect;
 
 	public override void _Ready(){
+		// Init managers
 		mRouteManager = RouteManager.GetIntance();
 		mGameTurnManager = GameTurnManager.GetInstance();
 		mTokenFlipManager = TokenFlipManager.GetInsntance();
+
+		// UI BINDINGS
 		mTileMap = GetNode<GridGroundCustomTilemap>("GridGroundTilemap");
-		mCardNameLabel = GetNode<Label>("CardNameLabel");
-		mCardDescriptionLabel = GetNode<Label>("CardDescriptionLabel");
+		mHUDTextureRect = GetNode<TextureRect>("HUDTextureRect");
+		mRandomCardDescription = mHUDTextureRect.GetNode<Label>("RandomCardDescription");
+		mRandomCardName = mHUDTextureRect.GetNode<Label>("RandomCardName");
+		mTurnTextureRect = mHUDTextureRect.GetNode<TextureRect>("TurnTextureRect");
+		mQuitButton = GetNode<Button>("QuitButton");
+
+		// Set onpressed listener
+		mQuitButton.Connect("pressed", new Callable(this, "OnPressedQuiteButton"));
+
 		DisplayCardColorForTheTurn();
 	}
 
@@ -42,12 +55,6 @@ public partial class MainSceneController : Node {
 		if(groundTileData == null){
 			return;
 		} 
-
-		bool isPlaceable = (bool)groundTileData.GetCustomData(mTileMap.IS_PLACEABLE_CUSTOM_DATA);
-
-		if(!isPlaceable){
-			return;
-		}
 			
 		TileData tokenPlacementTilemap = mTileMap.GetCellTileData(
 			mTileMap.TOKEN_PLACEMENT_LAYER, 
@@ -80,31 +87,39 @@ public partial class MainSceneController : Node {
 	private void SetNextTurnPLayer(){
 		if(mGameTurnManager.GetTurnType() == GameTurnEnum.LIGHT_TURN){
 			mGameTurnManager.SetTurnType(GameTurnEnum.DARK_TURN);
+			mTurnTextureRect.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.BLACK_TOKEN));
 		} else {
 			mGameTurnManager.SetTurnType(GameTurnEnum.LIGHT_TURN);
+			mTurnTextureRect.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.WHITE_TOKEN));
 		}
 		DisplayCardColorForTheTurn();
 	}
 
 	private void DisplayCardColorForTheTurn(){
 		mGameTurnManager.SetCurrentCardWithRandomCard();
-		Godot.Collections.Array<Vector2I> cells =  mTileMap.GetUsedCells(mTileMap.CARD_DISPLAY_LAYER);
-		Vector2I vectorHolder = cells[0];
+		TextureRect randomCardTexture = GetNode<TextureRect>("HUDTextureRect").GetNode<TextureRect>("RandomCardTextureRect");
 		
-		mTileMap.SetCell(
-			mTileMap.CARD_DISPLAY_LAYER, 
-			vectorHolder,
-			mTileMap.REMOVE_TILE_ACTION
-		);
+		if(mGameTurnManager.GetCurrentCard().GetCardFileNameEnum() == LocalAssetFileNameEnum.GREEN_CARD){
+			randomCardTexture.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.GREEN_CARD));
+		}
+		if(mGameTurnManager.GetCurrentCard().GetCardFileNameEnum() == LocalAssetFileNameEnum.BLUE_CARD){
+			randomCardTexture.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.BLUE_CARD));
+		}
+		if(mGameTurnManager.GetCurrentCard().GetCardFileNameEnum() == LocalAssetFileNameEnum.RED_CARD){
+			randomCardTexture.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.RED_CARD));
+		}
+		if(mGameTurnManager.GetCurrentCard().GetCardFileNameEnum() == LocalAssetFileNameEnum.ORANGE_CARD){
+			randomCardTexture.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.ORANGE_CARD));
+		}
+		if(mGameTurnManager.GetCurrentCard().GetCardFileNameEnum() == LocalAssetFileNameEnum.YELLOW_CARD){
+			randomCardTexture.Texture = GD.Load<Texture2D>(mRouteManager.GetLocalAssetFilePath(LocalAssetFileNameEnum.YELLOW_CARD));
+		}
 		
-		mTileMap.SetCell(
-			mTileMap.CARD_DISPLAY_LAYER, 
-			vectorHolder,
-			mTileMap.ADD_TILE_ACTION,
-			mGameTurnManager.GetCurrentCard().GetCardTileImageCoordinate()
-		);
+		mRandomCardName.Text = mGameTurnManager.GetCurrentCard().GetCardName();
+		mRandomCardDescription.Text = mGameTurnManager.GetCurrentCard().GetCardDiscription();
+	}
 
-		mCardNameLabel.Text = mGameTurnManager.GetCurrentCard().GetCardName();
-		mCardDescriptionLabel.Text = mGameTurnManager.GetCurrentCard().GetCardDiscription();
+	private void OnPressedQuiteButton(){
+		GetTree().ChangeSceneToFile(mRouteManager.GetSceneFilePath(SceneFileNameEnum.LOBBY_SCENE));
 	}
 }

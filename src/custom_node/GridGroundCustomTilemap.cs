@@ -10,8 +10,7 @@ public partial class GridGroundCustomTilemap : TileMap{
 	public readonly int REMOVE_TILE_ACTION = -1;
 	public readonly int ADD_TILE_ACTION = 0;
 	// CUSTOM DATA
-	public readonly string IS_PLACEABLE_CUSTOM_DATA = "isPlaceable";
-
+	
 	public override void _Ready(){}
 
 	public override void _Process(double delta){}

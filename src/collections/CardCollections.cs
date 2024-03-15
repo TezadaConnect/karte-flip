@@ -46,6 +46,14 @@ class CardCollection{
         new Vector2I(4, 1),
     };
 
+    private LocalAssetFileNameEnum[] mListOfLocalAssetFileNameEnum = new LocalAssetFileNameEnum[] {
+        LocalAssetFileNameEnum.YELLOW_CARD,
+        LocalAssetFileNameEnum.RED_CARD,
+        LocalAssetFileNameEnum.BLUE_CARD,
+        LocalAssetFileNameEnum.ORANGE_CARD,
+        LocalAssetFileNameEnum.GREEN_CARD
+    };
+
     public string[] GetCardListOfNames(){
         return mCardListOfNames;
     }
@@ -56,7 +64,8 @@ class CardCollection{
             mCardListOfDescriptions[index], 
             mCardListOfAbilityEnum[index], 
             mCardListOfFlipDirection[index],
-            mCardListOfTileImagesCoordinate[index]
+            mCardListOfTileImagesCoordinate[index],
+            mListOfLocalAssetFileNameEnum[index]
         );
     }
     

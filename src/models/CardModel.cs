@@ -7,19 +7,22 @@ class CardModel {
     private CardAbilityEnum mCardAbility;
     private DirectionEnum[] mCardListFlipDirections;
     private Vector2I mCardTileImageCoordinates;
+    LocalAssetFileNameEnum mCardFileNameEnum;
 
     public CardModel(
         string cardName, 
         string cardDescription, 
         CardAbilityEnum cardAbility, 
         DirectionEnum[] cardListFlipDirections,
-        Vector2I cardTileImageCoordinates
+        Vector2I cardTileImageCoordinates,
+        LocalAssetFileNameEnum cardFileNameEnum
     ){
         mCardName = cardName;
         mCardDescription = cardDescription;
         mCardListFlipDirections = cardListFlipDirections;
         mCardAbility = cardAbility;
         mCardTileImageCoordinates = cardTileImageCoordinates;
+        mCardFileNameEnum = cardFileNameEnum;
     }
 
     public string GetCardName(){
@@ -40,5 +43,9 @@ class CardModel {
 
     public Vector2I GetCardTileImageCoordinate(){
         return mCardTileImageCoordinates;
+    }
+
+    public LocalAssetFileNameEnum GetCardFileNameEnum(){
+        return mCardFileNameEnum;
     }
 }

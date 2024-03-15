@@ -1,9 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://b130bctvgo74q"]
+[gd_scene load_steps=18 format=3 uid="uid://b130bctvgo74q"]
 
 [ext_resource type="Script" path="res://src/controllers/LobbySceneController.cs" id="1_id37g"]
+[ext_resource type="Texture2D" uid="uid://b6u7ohhir7y8u" path="res://src/resources/assets/imgs/backgrounds/lobby_brackground.png" id="2_bvo1g"]
 [ext_resource type="FontFile" uid="uid://bcd4rbhhbo8y6" path="res://src/resources/assets/fonts/royal_acidbath/Royalacid.ttf" id="2_kf45k"]
+[ext_resource type="Texture2D" uid="uid://ch7grx0j1cc8" path="res://src/resources/assets/imgs/buttons/play_button_idle.png" id="4_1ojco"]
+[ext_resource type="Texture2D" uid="uid://cijqo81nn1l8u" path="res://src/resources/assets/imgs/buttons/play_button_pressed.png" id="5_oip52"]
+[ext_resource type="Texture2D" uid="uid://dbvte43xwydx" path="res://src/resources/assets/imgs/buttons/credit_button_idle.png" id="6_mto1x"]
+[ext_resource type="Texture2D" uid="uid://cjq3efndn0x2a" path="res://src/resources/assets/imgs/buttons/credit_button_pressed.png" id="7_l6hii"]
+[ext_resource type="FontFile" uid="uid://bsgtigrsshxwb" path="res://src/resources/assets/fonts/Inter/static/Inter-ExtraBold.ttf" id="8_kwips"]
 
 [sub_resource type="Theme" id="Theme_iodhb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsbcq"]
+texture = ExtResource("4_1ojco")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cc88g"]
+texture = ExtResource("5_oip52")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wkylh"]
+texture = ExtResource("5_oip52")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uynee"]
+texture = ExtResource("5_oip52")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_is18f"]
+texture = ExtResource("6_mto1x")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n6fog"]
+texture = ExtResource("7_l6hii")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hgpnd"]
+texture = ExtResource("7_l6hii")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pioqh"]
+texture = ExtResource("7_l6hii")
 
 [node name="LobbyScene" type="Node2D"]
 script = ExtResource("1_id37g")
@@ -13,42 +43,54 @@ offset_left = -34.0
 offset_top = -26.0
 offset_right = 1106.0
 offset_bottom = 1945.0
-color = Color(0.666667, 0.843137, 0.74902, 1)
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -32.0
+offset_top = -88.0
+offset_right = 1136.0
+offset_bottom = 1964.0
+texture = ExtResource("2_bvo1g")
+
+[node name="PlayGameButton" type="Button" parent="."]
+offset_left = 272.0
+offset_top = 712.0
+offset_right = 832.0
+offset_bottom = 872.0
+theme = SubResource("Theme_iodhb")
+theme_type_variation = &"FlatButton"
+theme_override_colors/font_color = Color(0, 0.537255, 0.337255, 1)
+theme_override_fonts/font = ExtResource("2_kf45k")
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("StyleBoxTexture_xsbcq")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cc88g")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wkylh")
+theme_override_styles/focus = SubResource("StyleBoxTexture_uynee")
 metadata/_edit_lock_ = true
 
 [node name="CreditsButton" type="Button" parent="."]
-offset_left = 356.0
-offset_top = 837.0
-offset_right = 761.0
-offset_bottom = 996.0
+offset_left = 272.0
+offset_top = 1000.0
+offset_right = 832.0
+offset_bottom = 1160.0
 theme = SubResource("Theme_iodhb")
 theme_type_variation = &"FlatButton"
-theme_override_colors/font_color = Color(0, 0.537255, 0.337255, 1)
 theme_override_fonts/font = ExtResource("2_kf45k")
 theme_override_font_sizes/font_size = 80
-text = "Credits"
-metadata/_edit_lock_ = true
-
-[node name="PlayGameButton" type="Button" parent="."]
-offset_left = 330.0
-offset_top = 608.0
-offset_right = 786.0
-offset_bottom = 755.0
-theme = SubResource("Theme_iodhb")
-theme_type_variation = &"FlatButton"
-theme_override_colors/font_color = Color(0, 0.537255, 0.337255, 1)
-theme_override_fonts/font = ExtResource("2_kf45k")
-theme_override_font_sizes/font_size = 80
-text = "Play Game"
+theme_override_styles/normal = SubResource("StyleBoxTexture_is18f")
+theme_override_styles/hover = SubResource("StyleBoxTexture_n6fog")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hgpnd")
+theme_override_styles/focus = SubResource("StyleBoxTexture_pioqh")
 metadata/_edit_lock_ = true
 
 [node name="TitleRichText" type="RichTextLabel" parent="."]
-offset_left = 237.0
-offset_top = 174.0
-offset_right = 890.0
-offset_bottom = 368.0
-theme_override_colors/default_color = Color(0.109804, 0.32549, 0.286275, 1)
-theme_override_fonts/normal_font = ExtResource("2_kf45k")
+offset_left = 209.0
+offset_top = 207.0
+offset_right = 924.0
+offset_bottom = 401.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("8_kwips")
 theme_override_font_sizes/normal_font_size = 150
 text = "Karte Flip"
 fit_content = true

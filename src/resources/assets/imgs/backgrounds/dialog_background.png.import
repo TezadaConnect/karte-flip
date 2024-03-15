@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cffcri8fr3alj"
-path="res://.godot/imported/land-and-token.png-401582a78b66b96b6f4f50bad5fa63db.ctex"
+uid="uid://r6fa7h06ja53"
+path="res://.godot/imported/dialog_background.png-a608541d8e1ca5b1128c54860daf2e30.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/resources/assets/imgs/land-and-token.png"
-dest_files=["res://.godot/imported/land-and-token.png-401582a78b66b96b6f4f50bad5fa63db.ctex"]
+source_file="res://src/resources/assets/imgs/backgrounds/dialog_background.png"
+dest_files=["res://.godot/imported/dialog_background.png-a608541d8e1ca5b1128c54860daf2e30.ctex"]
 
 [params]
 
