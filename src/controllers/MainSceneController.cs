@@ -25,7 +25,6 @@ public partial class MainSceneController : Node {
 		if(@event is InputEventMouseButton){
 			OnTappedGroundTile(@event);
 		}
-		
     }
 
 	private void OnTappedGroundTile(InputEvent @event){
