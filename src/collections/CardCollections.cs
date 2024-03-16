@@ -37,14 +37,6 @@ class CardCollection{
             DirectionEnum.RIGHT
         },
     };
-    
-    private Vector2I[] mCardListOfTileImagesCoordinate = {
-        new Vector2I(4, 0),
-        new Vector2I(3, 1),
-        new Vector2I(3, 0),
-        new Vector2I(2, 1),
-        new Vector2I(4, 1),
-    };
 
     private LocalAssetFileNameEnum[] mListOfLocalAssetFileNameEnum = new LocalAssetFileNameEnum[] {
         LocalAssetFileNameEnum.YELLOW_CARD,
@@ -64,7 +56,6 @@ class CardCollection{
             mCardListOfDescriptions[index], 
             mCardListOfAbilityEnum[index], 
             mCardListOfFlipDirection[index],
-            mCardListOfTileImagesCoordinate[index],
             mListOfLocalAssetFileNameEnum[index]
         );
     }

@@ -78,7 +78,7 @@ texture = ExtResource("2_di5wl")
 metadata/_edit_lock_ = true
 
 [node name="GridGroundTilemap" type="TileMap" parent="."]
-position = Vector2(38, -41)
+position = Vector2(38, -42)
 tile_set = SubResource("TileSet_byslj")
 rendering_quadrant_size = 6
 format = 2
@@ -240,6 +240,7 @@ offset_top = -76.0
 offset_right = 1148.0
 offset_bottom = 2036.0
 texture = ExtResource("12_mfwqg")
+metadata/_edit_lock_ = true
 
 [node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0

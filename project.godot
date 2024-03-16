@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1120
 window/size/viewport_height=1960
 window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [dotnet]
 
