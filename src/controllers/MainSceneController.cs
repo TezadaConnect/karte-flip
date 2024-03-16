@@ -12,6 +12,9 @@ public partial class MainSceneController : Node {
 	private Label mRandomCardName;
 	private Label mRandomCardDescription;
 	private TextureRect mTurnTextureRect;
+	private TextureRect mDialogTextureRect;
+	private Button mNewGameButton;
+	private Button mRestartButton;
 
 	public override void _Ready(){
 		// Init managers
@@ -26,9 +29,15 @@ public partial class MainSceneController : Node {
 		mRandomCardName = mHUDTextureRect.GetNode<Label>("RandomCardName");
 		mTurnTextureRect = mHUDTextureRect.GetNode<TextureRect>("TurnTextureRect");
 		mQuitButton = GetNode<Button>("QuitButton");
+		mDialogTextureRect = GetNode<TextureRect>("DialogueBackgroundTextureRect");
+		mNewGameButton = mDialogTextureRect.GetNode<Button>("NewGameButton");
+		mRestartButton = GetNode<Button>("RestartButton");
+		
 
 		// Set onpressed listener
 		mQuitButton.Connect("pressed", new Callable(this, "OnPressedQuiteButton"));
+		mNewGameButton.Connect("pressed", new Callable(this, "OnPressedNewGameButton"));
+		mRestartButton.Connect("pressed", new Callable(this, "OnPressedRestartButton"));
 
 		DisplayCardColorForTheTurn();
 	}
@@ -121,5 +130,13 @@ public partial class MainSceneController : Node {
 
 	private void OnPressedQuiteButton(){
 		GetTree().ChangeSceneToFile(mRouteManager.GetSceneFilePath(SceneFileNameEnum.LOBBY_SCENE));
+	}
+
+	private void OnPressedNewGameButton(){
+		GetTree().ChangeSceneToFile(mRouteManager.GetSceneFilePath(SceneFileNameEnum.MAIN_SCENE));
+	}
+
+	private void OnPressedRestartButton(){
+		mDialogTextureRect.Show();
 	}
 }

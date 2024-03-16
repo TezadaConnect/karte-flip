@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://citm8bcblt0nx"]
+[gd_scene load_steps=26 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://s3jixk5f4pv7" path="res://src/resources/assets/imgs/cards_and_tokens/white_token.png" id="9_2srwh"]
 [ext_resource type="Texture2D" uid="uid://b1k8p55b00s1c" path="res://src/resources/assets/imgs/cards_and_tokens/black_token.png" id="10_5oyvp"]
 [ext_resource type="FontFile" uid="uid://bx80achq45o1p" path="res://src/resources/assets/fonts/Inter/static/Inter-Medium.ttf" id="10_hfl8f"]
+[ext_resource type="Texture2D" uid="uid://r6fa7h06ja53" path="res://src/resources/assets/imgs/backgrounds/dialog_background.png" id="12_mfwqg"]
+[ext_resource type="Texture2D" uid="uid://bvbyxhsxwsx8r" path="res://src/resources/assets/imgs/boxes/dialog_box.png" id="13_4cgb4"]
+[ext_resource type="Texture2D" uid="uid://cii6tkmovf4ty" path="res://src/resources/assets/imgs/buttons/new_game_button_idle.png" id="14_2lb4p"]
+[ext_resource type="Texture2D" uid="uid://b2c2kacf07vhf" path="res://src/resources/assets/imgs/buttons/new_game_button_pressed.png" id="15_ym7g7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_15p5m"]
 texture = ExtResource("2_wiwdk")
@@ -41,6 +45,18 @@ texture = ExtResource("6_wdkx2")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eksjg"]
 texture = ExtResource("6_wdkx2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qt3j"]
+texture = ExtResource("14_2lb4p")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_usn1y"]
+texture = ExtResource("15_ym7g7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1att7"]
+texture = ExtResource("15_ym7g7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_shjuf"]
+texture = ExtResource("15_ym7g7")
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_h78po")
@@ -216,3 +232,42 @@ offset_right = 171.22
 offset_bottom = 257.121
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("10_5oyvp")
+
+[node name="DialogueBackgroundTextureRect" type="TextureRect" parent="."]
+visible = false
+offset_left = -55.0
+offset_top = -76.0
+offset_right = 1148.0
+offset_bottom = 2036.0
+texture = ExtResource("12_mfwqg")
+
+[node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 680.0
+offset_right = 1214.0
+offset_bottom = 1345.0
+texture = ExtResource("13_4cgb4")
+
+[node name="MatchOverLabel" type="Label" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 701.0
+offset_right = 1204.0
+offset_bottom = 1334.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 100
+text = "Match Is Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 442.0
+offset_top = 1254.0
+offset_right = 842.0
+offset_bottom = 1384.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_6qt3j")
+theme_override_styles/hover = SubResource("StyleBoxTexture_usn1y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1att7")
+theme_override_styles/focus = SubResource("StyleBoxTexture_shjuf")
