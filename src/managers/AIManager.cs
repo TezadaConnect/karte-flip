@@ -12,7 +12,7 @@ class AIManager {
         return mAIManagerInstance;
     }
 
-    public void GetAITileMove(GridGroundTilemap tilemap, CardModel card){
+    public void GetAITileMove(GridGroundTilemap tilemap, CardModel card){        
         Godot.Collections.Array<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER);
         List<TileFlipableRecordModel> record = new List<TileFlipableRecordModel>();
         TileFlipableRecordModel newRecord = new TileFlipableRecordModel();
@@ -40,8 +40,7 @@ class AIManager {
         TileFlipableRecordModel chosenTile = new TileFlipableRecordModel();
         
         if(record.Count <= 0){
-            GD.Print(listOfVacantTilePosition.Count);
-            Vector2I randomTilePosition = (Vector2I) listOfVacantTilePosition[new Random().Next(listOfVacantTilePosition.Count)];
+            Vector2I randomTilePosition = listOfVacantTilePosition[new Random().Next(listOfVacantTilePosition.Count)];
             tokenFlipManagerInstance.SetTileBaseOnPlayersTurn(randomTilePosition, tilemap);
             return;
         }
@@ -55,7 +54,6 @@ class AIManager {
         tokenFlipManagerInstance.SetTileBaseOnPlayersTurn(chosenTile.GetTilePosition(), tilemap);
         tokenFlipManagerInstance.FlipTokens(chosenTile.GetTilePosition(), tilemap, card.GetCardListFlipDirections());
     }
-
 
     private void AddVectorFlipable(
         Vector2I position, 

@@ -104,6 +104,12 @@ public partial class MainSceneController : Node {
 		DisplayScore();
 		DisplayCardColorForTheTurn();
 
+		Godot.Collections.Array<Vector2I> vectorHolderForTokenLayer = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER);
+
+        if(vectorHolderForTokenLayer.Count == GridGroundTilemap.BOARD_TILE_COUNT){
+            return;
+        }
+
 		// Start of AI
 		mGameTurnManager.SetIsPlayerTurn(false);
 		await Task.Delay(3000);

@@ -10,7 +10,7 @@ class GameTurnManager{
     private bool mIsPlayerTurn;
     private readonly Vector2I ATLAS_COORD_WHITE = new Vector2I(1, 0);
     private readonly Vector2I ATLAS_COORD_BLACK = new Vector2I(2, 0);
-    private const int BOARD_TILE_COUNT = 49;
+    public const int BOARD_TILE_COUNT = 49;
 
     private static GameTurnManager mGameTurnManagerInstance;
 
