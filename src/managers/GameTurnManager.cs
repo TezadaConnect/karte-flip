@@ -7,6 +7,9 @@ class GameTurnManager{
     private GameTurnEnum mTurnType;
     private CardModel[] mCardList;
     private CardModel mCurrentCard;
+    private readonly Vector2I ATLAS_COORD_WHITE = new Vector2I(1, 0);
+    private readonly Vector2I ATLAS_COORD_BLACK = new Vector2I(2, 0);
+    private const int BOARD_TILE_COUNT = 49;
 
     private static GameTurnManager mGameTurnManagerInstance;
 
@@ -38,9 +41,9 @@ class GameTurnManager{
 
     public Vector2I GetTileForDisplay(){
         if(mTurnType == GameTurnEnum.LIGHT_TURN){
-            return new Vector2I(1,0);
+            return ATLAS_COORD_WHITE;
         }
-        return new Vector2I(2,0);
+        return ATLAS_COORD_BLACK;
     }
 
     private CardModel GetRandomCard(){
@@ -54,5 +57,13 @@ class GameTurnManager{
 
     public void SetCurrentCardWithRandomCard(){
         mCurrentCard = GetRandomCard();
+    }
+
+    public Vector2I GetWhiteAtlas(){
+        return ATLAS_COORD_WHITE;
+    }
+
+    public Vector2I GetBlackAtlas(){
+        return ATLAS_COORD_BLACK;
     }
 }
