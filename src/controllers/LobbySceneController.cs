@@ -12,7 +12,7 @@ public partial class LobbySceneController : Node2D{
 	}
 
 	private void OnPressedPlayButton(){
-		GetTree().ChangeSceneToFile(mRoute.GetSceneFilePath(SceneFileNameEnum.MAIN_SCENE));
+		mRoute.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
 	}
 
 }

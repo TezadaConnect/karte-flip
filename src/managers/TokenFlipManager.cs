@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using Godot;
 
 class TokenFlipManager {
@@ -11,13 +10,13 @@ class TokenFlipManager {
         return mTokenFlipManagerIntance;
     }
 
-    public void FlipTokens(Vector2I inputPosition, GridGroundCustomTilemap tileMap, DirectionEnum[] multipleDirection){
+    public void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, DirectionEnum[] multipleDirection){
         foreach (DirectionEnum element in multipleDirection){
             FlipTokens(inputPosition, tileMap, element);
         }
     }
 
-    private void FlipTokens(Vector2I inputPosition, GridGroundCustomTilemap tileMap, DirectionEnum directionEnum){
+    private void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, DirectionEnum directionEnum){
 		Vector2I tilePosition = GetPositionByDirection(inputPosition, directionEnum);
 		TileData tileSpotData = tileMap.GetCellTileData(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
         Vector2I atlastTileImage = tileMap.GetCellAtlasCoords(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
@@ -50,7 +49,7 @@ class TokenFlipManager {
         return new Vector2I(inputPosition.X, inputPosition.Y + 1);
     }
 
-    private void SetTileBaseOnPlayersTurn(Vector2I inputPosition, GridGroundCustomTilemap tilemap){
+    private void SetTileBaseOnPlayersTurn(Vector2I inputPosition, GridGroundTilemap tilemap){
 		tilemap.SetCell(
 			tilemap.TOKEN_PLACEMENT_LAYER, 
 			inputPosition, 

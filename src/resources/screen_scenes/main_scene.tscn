@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
 [ext_resource type="Texture2D" uid="uid://d0etgrovxg6o1" path="res://src/resources/assets/imgs/tiles/land_and_tokens_tiles.png" id="2_wiwdk"]
-[ext_resource type="Script" path="res://src/custom_node/GridGroundCustomTilemap.cs" id="3_qw72q"]
+[ext_resource type="Script" path="res://src/custom_node/GridGroundTilemap.cs" id="3_qw72q"]
 [ext_resource type="Texture2D" uid="uid://cdjsprxqfjq5" path="res://src/resources/assets/imgs/buttons/restart_button_idle.png" id="5_ldvxi"]
 [ext_resource type="Texture2D" uid="uid://dyvyilr3cbk4l" path="res://src/resources/assets/imgs/buttons/restart-button_pressed.png" id="6_wdkx2"]
 [ext_resource type="FontFile" uid="uid://cwxmhchph2w6o" path="res://src/resources/assets/fonts/Inter/static/Inter-Bold.ttf" id="7_u0eu0"]
@@ -78,7 +78,7 @@ texture = ExtResource("2_di5wl")
 metadata/_edit_lock_ = true
 
 [node name="GridGroundTilemap" type="TileMap" parent="."]
-position = Vector2(38, -42)
+position = Vector2(32, -64)
 tile_set = SubResource("TileSet_byslj")
 rendering_quadrant_size = 6
 format = 2
@@ -89,6 +89,7 @@ layer_1/tile_data = PackedInt32Array()
 layer_2/name = "card_display"
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("3_qw72q")
+metadata/_edit_lock_ = true
 
 [node name="RestartButton" type="Button" parent="."]
 offset_left = 39.0
@@ -110,7 +111,6 @@ theme_override_fonts/font = ExtResource("7_u0eu0")
 theme_override_font_sizes/font_size = 60
 text = "Quit"
 flat = true
-metadata/_edit_lock_ = true
 
 [node name="HUDTextureRect" type="TextureRect" parent="."]
 offset_left = -22.0
@@ -186,6 +186,7 @@ theme_override_fonts/font = ExtResource("7_u0eu0")
 theme_override_font_sizes/font_size = 60
 text = "SCORE"
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="WhiteScoreLabel" type="Label" parent="HUDTextureRect"]
 layout_mode = 0
@@ -197,6 +198,7 @@ theme_override_fonts/font = ExtResource("7_u0eu0")
 theme_override_font_sizes/font_size = 60
 text = "0x"
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="WhiteScoreTextureRect" type="TextureRect" parent="HUDTextureRect"]
 layout_mode = 1
@@ -209,6 +211,7 @@ offset_right = 488.22
 offset_bottom = 254.121
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("9_2srwh")
+metadata/_edit_lock_ = true
 
 [node name="BlackScoreLabel" type="Label" parent="HUDTextureRect"]
 layout_mode = 0
@@ -220,6 +223,7 @@ theme_override_fonts/font = ExtResource("7_u0eu0")
 theme_override_font_sizes/font_size = 60
 text = "0x"
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="BlackScoreTextureRect" type="TextureRect" parent="HUDTextureRect"]
 layout_mode = 1
@@ -232,6 +236,7 @@ offset_right = 171.22
 offset_bottom = 257.121
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("10_5oyvp")
+metadata/_edit_lock_ = true
 
 [node name="DialogueBackgroundTextureRect" type="TextureRect" parent="."]
 visible = false
@@ -249,6 +254,7 @@ offset_top = 680.0
 offset_right = 1214.0
 offset_bottom = 1345.0
 texture = ExtResource("13_4cgb4")
+metadata/_edit_lock_ = true
 
 [node name="MatchOverLabel" type="Label" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
@@ -261,6 +267,7 @@ theme_override_font_sizes/font_size = 100
 text = "Match Is Over!"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="NewGameButton" type="Button" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
@@ -272,3 +279,4 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_6qt3j")
 theme_override_styles/hover = SubResource("StyleBoxTexture_usn1y")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_1att7")
 theme_override_styles/focus = SubResource("StyleBoxTexture_shjuf")
+metadata/_edit_lock_ = true

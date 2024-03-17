@@ -1,7 +1,7 @@
-using Godot;
+	using Godot;
 using System;
 
-public partial class GridGroundCustomTilemap : TileMap{
+public partial class GridGroundTilemap : TileMap{
 	// LAYERS
 	public readonly int GROUND_LAYER = 0;
 	public readonly int TOKEN_PLACEMENT_LAYER = 1;
