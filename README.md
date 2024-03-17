@@ -5,7 +5,7 @@ Read about Karte Flip here: [Karte Flip Game](https://docs.google.com/document/d
 ### Software Needed
 
 - Dotnet 8.0
-- Godot 4.2
+- Godot 4.2 Mono
 - Visual Studio
 - Android Studio / Android SDK (Optional)
 
