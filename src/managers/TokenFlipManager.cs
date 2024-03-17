@@ -3,7 +3,7 @@ using Godot;
 class TokenFlipManager {
     private static TokenFlipManager mTokenFlipManagerIntance;
 
-    public static TokenFlipManager GetInsntance(){
+    public static TokenFlipManager GetInstance(){
         if(mTokenFlipManagerIntance == null){
             mTokenFlipManagerIntance = new TokenFlipManager();
         }
@@ -32,7 +32,7 @@ class TokenFlipManager {
 		FlipTokens(tilePosition, tileMap, directionEnum);
 	}
 
-    private Vector2I GetPositionByDirection(Vector2I inputPosition, DirectionEnum directionEnum){
+    public Vector2I GetPositionByDirection(Vector2I inputPosition, DirectionEnum directionEnum){
         
         if(directionEnum == DirectionEnum.RIGHT){
             return new Vector2I(inputPosition.X + 1, inputPosition.Y);
@@ -49,7 +49,7 @@ class TokenFlipManager {
         return new Vector2I(inputPosition.X, inputPosition.Y + 1);
     }
 
-    private void SetTileBaseOnPlayersTurn(Vector2I inputPosition, GridGroundTilemap tilemap){
+    public void SetTileBaseOnPlayersTurn(Vector2I inputPosition, GridGroundTilemap tilemap){
 		tilemap.SetCell(
 			tilemap.TOKEN_PLACEMENT_LAYER, 
 			inputPosition, 

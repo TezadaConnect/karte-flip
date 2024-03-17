@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class MainSceneController : Node {
@@ -6,6 +8,7 @@ public partial class MainSceneController : Node {
 	private GameTurnManager mGameTurnManager;
 	private TokenFlipManager mTokenFlipManager;
 	private ScoringManager mScoringManager;
+	private AIManager mIAManager;
 
 	// UI NODE
 	private GridGroundTilemap mTileMap;
@@ -22,6 +25,10 @@ public partial class MainSceneController : Node {
 	}
 
     public override void _Input(InputEvent @event){
+		if(!mGameTurnManager.GetIsPlayerTurn()){
+			return;
+		}
+
 		if(@event is InputEventMouseButton){
 			OnTappedGroundTile(@event);
 		}
@@ -30,8 +37,9 @@ public partial class MainSceneController : Node {
 	private void InitSceneManagers(){
 		mRouteManager = RouteManager.GetIntance();
 		mGameTurnManager = GameTurnManager.GetInstance();
-		mTokenFlipManager = TokenFlipManager.GetInsntance();
+		mTokenFlipManager = TokenFlipManager.GetInstance();
 		mScoringManager = ScoringManager.GetInstance();
+		mIAManager = AIManager.GetInstance();
 	}
 
 	private void InitUiBindings(){
@@ -49,8 +57,7 @@ public partial class MainSceneController : Node {
 		mDialogTextureRect.GetNode<Button>("NewGameButton").Connect("pressed", new Callable(this, "OnPressedNewGameButton"));
 	}
 
-
-	private void OnTappedGroundTile(InputEvent @event){
+	private async void OnTappedGroundTile(InputEvent @event){
 		InputEventMouseButton mouseEvent = (InputEventMouseButton)@event;
 
 		if(!(mouseEvent.ButtonIndex == MouseButton.Left && @event.IsPressed())){
@@ -92,10 +99,21 @@ public partial class MainSceneController : Node {
 			mTileMap, 
 			cardDisplay.GetCardListFlipDirections()
 		);
-	
-		DisplayScore();
+
 		SetNextTurnPLayer();
+		DisplayScore();
 		DisplayCardColorForTheTurn();
+
+		// Start of AI
+		mGameTurnManager.SetIsPlayerTurn(false);
+		await Task.Delay(3000);
+
+		mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
+
+		SetNextTurnPLayer();
+		DisplayScore();
+		DisplayCardColorForTheTurn();
+		mGameTurnManager.SetIsPlayerTurn(true);
 	}
 
 	private void SetNextTurnPLayer(){

@@ -7,6 +7,7 @@ class GameTurnManager{
     private GameTurnEnum mTurnType;
     private CardModel[] mCardList;
     private CardModel mCurrentCard;
+    private bool mIsPlayerTurn;
     private readonly Vector2I ATLAS_COORD_WHITE = new Vector2I(1, 0);
     private readonly Vector2I ATLAS_COORD_BLACK = new Vector2I(2, 0);
     private const int BOARD_TILE_COUNT = 49;
@@ -22,6 +23,7 @@ class GameTurnManager{
         }
         mCardList = cards.ToArray();
         mCurrentCard = GetCurrentCard();
+        mIsPlayerTurn = true;
     }
 
     public static GameTurnManager GetInstance(){
@@ -65,5 +67,13 @@ class GameTurnManager{
 
     public Vector2I GetBlackAtlas(){
         return ATLAS_COORD_BLACK;
+    }
+
+    public bool GetIsPlayerTurn(){
+        return mIsPlayerTurn;
+    }
+
+    public void SetIsPlayerTurn(bool value){
+        mIsPlayerTurn = value;
     }
 }
