@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://citm8bcblt0nx"]
+[gd_scene load_steps=34 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://r6fa7h06ja53" path="res://src/resources/assets/imgs/backgrounds/dialog_background.png" id="12_mfwqg"]
 [ext_resource type="Texture2D" uid="uid://bvbyxhsxwsx8r" path="res://src/resources/assets/imgs/boxes/dialog_box.png" id="13_4cgb4"]
 [ext_resource type="Texture2D" uid="uid://cii6tkmovf4ty" path="res://src/resources/assets/imgs/buttons/new_game_button_idle.png" id="14_2lb4p"]
+[ext_resource type="Texture2D" uid="uid://btcckw4v1rc7w" path="res://src/resources/assets/imgs/buttons/close-button_idle.png" id="14_h88i1"]
+[ext_resource type="Texture2D" uid="uid://de0ub6g0s67tu" path="res://src/resources/assets/imgs/buttons/close_button_pressed.png" id="15_cksbb"]
 [ext_resource type="Texture2D" uid="uid://b2c2kacf07vhf" path="res://src/resources/assets/imgs/buttons/new_game_button_pressed.png" id="15_ym7g7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_15p5m"]
@@ -45,6 +47,38 @@ texture = ExtResource("6_wdkx2")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eksjg"]
 texture = ExtResource("6_wdkx2")
+
+[sub_resource type="Animation" id="Animation_pufj2"]
+resource_name = "Intro"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1.51572, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rq0wj"]
+_data = {
+"Intro": SubResource("Animation_pufj2")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2imsk"]
+texture = ExtResource("14_h88i1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_im4w6"]
+texture = ExtResource("15_cksbb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c3wvh"]
+texture = ExtResource("15_cksbb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_abn35"]
+texture = ExtResource("15_cksbb")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qt3j"]
 texture = ExtResource("14_2lb4p")
@@ -118,7 +152,6 @@ offset_top = 1358.0
 offset_right = 1148.0
 offset_bottom = 1991.0
 texture = ExtResource("8_uba4h")
-metadata/_edit_lock_ = true
 
 [node name="RandomCardTextureRect" type="TextureRect" parent="HUDTextureRect"]
 layout_mode = 0
@@ -239,13 +272,19 @@ texture = ExtResource("10_5oyvp")
 metadata/_edit_lock_ = true
 
 [node name="DialogueBackgroundTextureRect" type="TextureRect" parent="."]
-visible = false
 offset_left = -55.0
 offset_top = -76.0
 offset_right = 1148.0
 offset_bottom = 2036.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(600, 1056)
 texture = ExtResource("12_mfwqg")
 metadata/_edit_lock_ = true
+
+[node name="PopupAnimation" type="AnimationPlayer" parent="DialogueBackgroundTextureRect"]
+libraries = {
+"": SubResource("AnimationLibrary_rq0wj")
+}
 
 [node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
@@ -256,27 +295,37 @@ offset_bottom = 1345.0
 texture = ExtResource("13_4cgb4")
 metadata/_edit_lock_ = true
 
-[node name="MatchOverLabel" type="Label" parent="DialogueBackgroundTextureRect"]
+[node name="MessageLabel" type="Label" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
-offset_left = 40.0
+offset_left = 123.0
 offset_top = 701.0
-offset_right = 1204.0
-offset_bottom = 1334.0
+offset_right = 1111.0
+offset_bottom = 1342.0
 theme_override_fonts/font = ExtResource("7_u0eu0")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 70
 text = "Match Is Over!"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
+autowrap_mode = 3
+
+[node name="CloseDialogButton" type="Button" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 719.0
+offset_top = 1256.0
+offset_right = 969.0
+offset_bottom = 1386.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_2imsk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_im4w6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_c3wvh")
+theme_override_styles/focus = SubResource("StyleBoxTexture_abn35")
 
 [node name="NewGameButton" type="Button" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
-offset_left = 442.0
-offset_top = 1254.0
-offset_right = 842.0
-offset_bottom = 1384.0
+offset_left = 266.0
+offset_top = 1257.0
+offset_right = 666.0
+offset_bottom = 1387.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_6qt3j")
 theme_override_styles/hover = SubResource("StyleBoxTexture_usn1y")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_1att7")
 theme_override_styles/focus = SubResource("StyleBoxTexture_shjuf")
-metadata/_edit_lock_ = true
