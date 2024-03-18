@@ -76,4 +76,10 @@ class GameTurnManager{
     public void SetIsPlayerTurn(bool value){
         mIsPlayerTurn = value;
     }
+
+    public void ResetTurn(){
+        mIsPlayerTurn = true;
+        mCurrentCard = GetCurrentCard();
+        mTurnType = GameTurnEnum.LIGHT_TURN;
+    }
 }

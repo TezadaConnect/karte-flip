@@ -155,14 +155,19 @@ public partial class MainSceneController : Node {
 	}
 
 	private void OnPressedQuitButton(){
-		mScoringManager.ResetScore();
+		ResetScoringAndTurnManagers();
 		mRouteManager.MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
 	}
 
 	private void OnPressedNewGameButton(){
-		mScoringManager.ResetScore();
+		ResetScoringAndTurnManagers();
 		DisplayScore();
 		mRouteManager.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
+	}
+
+	private void ResetScoringAndTurnManagers(){
+		mScoringManager.ResetScore();
+		mGameTurnManager.ResetTurn();
 	}
 
 	private void OnPressedRestartButton(){
