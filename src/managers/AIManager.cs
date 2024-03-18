@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 class AIManager {
@@ -11,11 +12,10 @@ class AIManager {
     }
 
     public void GetAITileMove(GridGroundTilemap tilemap, CardModel card){        
-        Godot.Collections.Array<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER);
-        List<TileFlipableRecordModel> record = new List<TileFlipableRecordModel>();
-        TileFlipableRecordModel newRecord = new TileFlipableRecordModel();
-
-        List<Vector2I> listOfVacantTilePosition = new List<Vector2I>();
+        List<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER).ToList();
+        List<TileFlipableRecordModel> record = new();
+        TileFlipableRecordModel newRecord = new();
+        List<Vector2I> listOfVacantTilePosition = new();
     
         foreach (Vector2I elementVector in vectorHolder){
             newRecord.SetTilePosition(elementVector);
@@ -57,7 +57,7 @@ class AIManager {
         Vector2I position, 
         GridGroundTilemap tilemap,
         TileFlipableRecordModel tileFlipableRecordModel, 
-        DirectionEnum[] multipleDirection
+        List<DirectionEnum> multipleDirection
     ){
         foreach (DirectionEnum element in multipleDirection){
             AddVectorFlipable(position, tilemap, tileFlipableRecordModel, element);

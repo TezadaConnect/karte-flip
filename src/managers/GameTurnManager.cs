@@ -18,9 +18,9 @@ class GameTurnManager{
 
     public GameTurnManager(){
         // mTurnType = TokenColorEnum.LIGHT_TOKEN;
-        CardCollection cardCollection = new CardCollection();
-        List<CardModel> cards = new List<CardModel>();
-        for (int i = 0; i < cardCollection.GetCardListOfNames().Count(); i++){
+        CardCollection cardCollection = new();
+        List<CardModel> cards = new();
+        for (int i = 0; i < cardCollection.GetCardListOfNames().Length; i++){
             cards.Add(cardCollection.GetCardModelByIndex(i));
         }
         mCardList = cards.ToArray();

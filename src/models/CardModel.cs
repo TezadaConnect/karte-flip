@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using Godot;
 
@@ -5,14 +6,14 @@ class CardModel {
     private string mCardName;
     private string mCardDescription;
     private CardAbilityEnum mCardAbility;
-    private DirectionEnum[] mCardListFlipDirections;
+    private List<DirectionEnum> mCardListFlipDirections;
     LocalAssetFileNameEnum mCardFileNameEnum;
-
+    
     public CardModel(
         string cardName, 
         string cardDescription, 
         CardAbilityEnum cardAbility, 
-        DirectionEnum[] cardListFlipDirections,
+        List<DirectionEnum> cardListFlipDirections,
         LocalAssetFileNameEnum cardFileNameEnum
     ){
         mCardName = cardName;
@@ -34,7 +35,7 @@ class CardModel {
         return mCardAbility;
     }
 
-    public DirectionEnum[] GetCardListFlipDirections(){
+    public List<DirectionEnum> GetCardListFlipDirections(){
         return mCardListFlipDirections;
     }
 

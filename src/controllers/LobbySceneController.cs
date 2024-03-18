@@ -12,8 +12,7 @@ public partial class LobbySceneController : Node2D{
 	}
 
 	private void OnPressedPlayAIButton(){
-		GameTurnManager SEAN =  GameTurnManager.GetInstance();
-		SEAN.SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
+		GameTurnManager.GetInstance().SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
 		mRoute.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
 	}
 

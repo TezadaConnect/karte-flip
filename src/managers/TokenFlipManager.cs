@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 class TokenFlipManager {
@@ -8,7 +9,7 @@ class TokenFlipManager {
         return mTokenFlipManagerIntance;
     }
 
-    public void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, DirectionEnum[] multipleDirection){
+    public void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, List<DirectionEnum> multipleDirection){
         foreach (DirectionEnum element in multipleDirection){
             FlipTokens(inputPosition, tileMap, element);
         }

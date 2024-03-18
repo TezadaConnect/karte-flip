@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 class CardCollection{
@@ -25,12 +26,12 @@ class CardCollection{
         CardAbilityEnum.FLIP,
     };
 
-    private DirectionEnum[][] mCardListOfFlipDirection = {
-        new DirectionEnum[] { DirectionEnum.BOTTOM },
-        new DirectionEnum[] { DirectionEnum.TOP },
-        new DirectionEnum[] { DirectionEnum.LEFT },
-        new DirectionEnum[] { DirectionEnum.RIGHT },
-        new DirectionEnum[] { 
+    private List<List<DirectionEnum>> mCardListOfFlipDirection = new(){
+        new List<DirectionEnum> { DirectionEnum.BOTTOM },
+        new List<DirectionEnum> { DirectionEnum.TOP },
+        new List<DirectionEnum>{ DirectionEnum.LEFT },
+        new List<DirectionEnum> { DirectionEnum.RIGHT },
+        new List<DirectionEnum> { 
             DirectionEnum.BOTTOM, 
             DirectionEnum.LEFT, 
             DirectionEnum.TOP, 
