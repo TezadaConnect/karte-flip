@@ -6,9 +6,7 @@ class AIManager {
     private static AIManager mAIManagerInstance;
 
     public static AIManager GetInstance(){
-        if(mAIManagerInstance == null){
-            mAIManagerInstance = new AIManager();
-        }
+        mAIManagerInstance ??= new AIManager();
         return mAIManagerInstance;
     }
 

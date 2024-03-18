@@ -14,9 +14,7 @@ class ScoringManager {
     }
 
     public static ScoringManager GetInstance(){
-        if(mScoringManager == null){
-            mScoringManager = new ScoringManager();
-        }
+        mScoringManager ??= new ScoringManager();
         return mScoringManager;
     }
 

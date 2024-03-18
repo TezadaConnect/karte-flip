@@ -4,18 +4,20 @@ using System.Linq;
 using Godot;
 
 class GameTurnManager{
-    private GameTurnEnum mTurnType;
+    // private TokenColorEnum mTurnType;
+    private GamePlayTypeEnum mGamePlayTypeEnum;
+    private PlayerModel mPlayerTurn;
     private CardModel[] mCardList;
     private CardModel mCurrentCard;
-    private bool mIsPlayerTurn;
-    private readonly Vector2I ATLAS_COORD_WHITE = new Vector2I(1, 0);
-    private readonly Vector2I ATLAS_COORD_BLACK = new Vector2I(2, 0);
+
+    private readonly Vector2I ATLAS_COORD_WHITE = new(1, 0);
+    private readonly Vector2I ATLAS_COORD_BLACK = new(2, 0);
     public const int BOARD_TILE_COUNT = 49;
 
     private static GameTurnManager mGameTurnManagerInstance;
 
     public GameTurnManager(){
-        mTurnType = GameTurnEnum.LIGHT_TURN;
+        // mTurnType = TokenColorEnum.LIGHT_TOKEN;
         CardCollection cardCollection = new CardCollection();
         List<CardModel> cards = new List<CardModel>();
         for (int i = 0; i < cardCollection.GetCardListOfNames().Count(); i++){
@@ -23,34 +25,22 @@ class GameTurnManager{
         }
         mCardList = cards.ToArray();
         mCurrentCard = GetCurrentCard();
-        mIsPlayerTurn = true;
     }
 
     public static GameTurnManager GetInstance(){
-        if(mGameTurnManagerInstance == null){
-            mGameTurnManagerInstance = new GameTurnManager();
-        }
+        mGameTurnManagerInstance ??= new GameTurnManager();
         return mGameTurnManagerInstance;
     }
 
-    public void SetTurnType(GameTurnEnum turnType){
-        mTurnType = turnType;
-    }
-
-    public GameTurnEnum GetTurnType(){
-        return mTurnType;
-    }
-
     public Vector2I GetTileForDisplay(){
-        if(mTurnType == GameTurnEnum.LIGHT_TURN){
+        if(mPlayerTurn.IsLightToken()){
             return ATLAS_COORD_WHITE;
         }
         return ATLAS_COORD_BLACK;
     }
 
     private CardModel GetRandomCard(){
-        Random random = new Random();
-        return mCardList[random.Next(0, 5)];
+        return mCardList[new Random().Next(0, 5)];
     }
 
     public CardModel GetCurrentCard(){
@@ -69,17 +59,23 @@ class GameTurnManager{
         return ATLAS_COORD_BLACK;
     }
 
-    public bool GetIsPlayerTurn(){
-        return mIsPlayerTurn;
+    public PlayerModel GetPlayerTurn(){
+        return mPlayerTurn;
     }
 
-    public void SetIsPlayerTurn(bool value){
-        mIsPlayerTurn = value;
+    public void SetPlayerTurn(PlayerModel value){
+        mPlayerTurn = value;
     }
 
     public void ResetTurn(){
-        mIsPlayerTurn = true;
         mCurrentCard = GetCurrentCard();
-        mTurnType = GameTurnEnum.LIGHT_TURN;
+    }
+
+    public GamePlayTypeEnum GetGamePlayType(){
+        return mGamePlayTypeEnum;
+    }
+
+    public void SetGamePlayType(GamePlayTypeEnum value){
+        mGamePlayTypeEnum = value;
     }
 }

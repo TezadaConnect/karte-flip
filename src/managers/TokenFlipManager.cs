@@ -4,9 +4,7 @@ class TokenFlipManager {
     private static TokenFlipManager mTokenFlipManagerIntance;
 
     public static TokenFlipManager GetInstance(){
-        if(mTokenFlipManagerIntance == null){
-            mTokenFlipManagerIntance = new TokenFlipManager();
-        }
+        mTokenFlipManagerIntance ??= new TokenFlipManager();
         return mTokenFlipManagerIntance;
     }
 

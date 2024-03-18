@@ -5,9 +5,7 @@ class RouteManager{
     private static RouteManager mRouteManagerInstance;
 
     public static RouteManager GetIntance(){
-        if(mRouteManagerInstance == null){
-            mRouteManagerInstance = new RouteManager();
-        }
+        mRouteManagerInstance ??= new RouteManager();
         return mRouteManagerInstance;
     }
 

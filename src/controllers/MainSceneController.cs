@@ -1,4 +1,5 @@
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
@@ -9,6 +10,7 @@ public partial class MainSceneController : Node {
 	private TokenFlipManager mTokenFlipManager;
 	private ScoringManager mScoringManager;
 	private AIManager mIAManager;
+	private PlayerManager mPlayerManager;
 
 	// UI NODE
 	private GridGroundTilemap mTileMap;
@@ -22,15 +24,18 @@ public partial class MainSceneController : Node {
 		InitUiBindings();
 		InitializeListeners();
 		DisplayCardColorForTheTurn();
+		ComputerTapGroundTile(); // Only execute when computer is first turn 
 	}
 
     public override void _Input(InputEvent @event){
-		if(!mGameTurnManager.GetIsPlayerTurn()){
+		if(mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER){
 			return;
 		}
 
 		if(@event is InputEventMouseButton){
-			OnTappedGroundTile(@event);
+			OnTapGroundTile(@event);
+
+			ComputerTapGroundTile();
 		}
     }
 
@@ -40,6 +45,7 @@ public partial class MainSceneController : Node {
 		mTokenFlipManager = TokenFlipManager.GetInstance();
 		mScoringManager = ScoringManager.GetInstance();
 		mIAManager = AIManager.GetInstance();
+		mPlayerManager = PlayerManager.GetInstance();
 	}
 
 	private void InitUiBindings(){
@@ -57,7 +63,8 @@ public partial class MainSceneController : Node {
 		mDialogTextureRect.GetNode<Button>("NewGameButton").Connect("pressed", new Callable(this, "OnPressedNewGameButton"));
 	}
 
-	private async void OnTappedGroundTile(InputEvent @event){
+	private void OnTapGroundTile(InputEvent @event){
+
 		InputEventMouseButton mouseEvent = (InputEventMouseButton)@event;
 
 		if(!(mouseEvent.ButtonIndex == MouseButton.Left && @event.IsPressed())){
@@ -101,36 +108,39 @@ public partial class MainSceneController : Node {
 		);
 
 		SetNextTurnPLayer();
-		DisplayScore();
-		DisplayCardColorForTheTurn();
+		DisplayScore();	
+		
+		mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerTwo());
+	}
 
-		Godot.Collections.Array<Vector2I> vectorHolderForTokenLayer = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER);
+	private async void ComputerTapGroundTile(){
+		if(mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER){
+			
+			List<Vector2I> vectorHolderForTokenLayer = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER).ToList();
 
-        if(vectorHolderForTokenLayer.Count == GridGroundTilemap.BOARD_TILE_COUNT){
-            return;
-        }
+			if(vectorHolderForTokenLayer.Count == GridGroundTilemap.BOARD_TILE_COUNT){
+				return;
+			}
+			
+			await Task.Delay(3000);
 
-		// Start of AI
-		mGameTurnManager.SetIsPlayerTurn(false);
-		await Task.Delay(3000);
+			mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
 
-		mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
-
-		SetNextTurnPLayer();
-		DisplayScore();
-		DisplayCardColorForTheTurn();
-		mGameTurnManager.SetIsPlayerTurn(true);
+			SetNextTurnPLayer();
+			DisplayScore();
+			mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
+		}
 	}
 
 	private void SetNextTurnPLayer(){
 		TextureRect turnTextureRect = mHUDTextureRect.GetNode<TextureRect>("TurnTextureRect");
-		if(mGameTurnManager.GetTurnType() == GameTurnEnum.LIGHT_TURN){
-			mGameTurnManager.SetTurnType(GameTurnEnum.DARK_TURN);
+		
+		if(mGameTurnManager.GetPlayerTurn().IsLightToken()){
 			turnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
 		} else {
-			mGameTurnManager.SetTurnType(GameTurnEnum.LIGHT_TURN);
 			turnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
 		}
+
 		DisplayCardColorForTheTurn();
 	}
 
@@ -155,19 +165,20 @@ public partial class MainSceneController : Node {
 	}
 
 	private void OnPressedQuitButton(){
-		ResetScoringAndTurnManagers();
+		ResetScoringAndTurnAndPlayerManagers();
 		mRouteManager.MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
 	}
 
 	private void OnPressedNewGameButton(){
-		ResetScoringAndTurnManagers();
+		ResetScoringAndTurnAndPlayerManagers();
 		DisplayScore();
 		mRouteManager.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
 	}
 
-	private void ResetScoringAndTurnManagers(){
+	private void ResetScoringAndTurnAndPlayerManagers(){
 		mScoringManager.ResetScore();
 		mGameTurnManager.ResetTurn();
+		mPlayerManager.ResetPlayers();
 	}
 
 	private void OnPressedRestartButton(){

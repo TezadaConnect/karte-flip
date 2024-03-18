@@ -1,0 +1,4 @@
+enum PlayerTypeEnum {
+    PERSON,
+    COMPUTER
+}
