@@ -1,9 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://citm8bcblt0nx"]
+[gd_scene load_steps=37 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
 [ext_resource type="Texture2D" uid="uid://d0etgrovxg6o1" path="res://src/resources/assets/imgs/tiles/land_and_tokens_tiles.png" id="2_wiwdk"]
 [ext_resource type="Script" path="res://src/custom_node/GridGroundTilemap.cs" id="3_qw72q"]
+[ext_resource type="AudioStream" uid="uid://cjrnrltfs03dj" path="res://src/resources/assets/audios/token_drop_audio.mp3" id="5_httaf"]
 [ext_resource type="Texture2D" uid="uid://cdjsprxqfjq5" path="res://src/resources/assets/imgs/buttons/restart_button_idle.png" id="5_ldvxi"]
 [ext_resource type="Texture2D" uid="uid://dyvyilr3cbk4l" path="res://src/resources/assets/imgs/buttons/restart-button_pressed.png" id="6_wdkx2"]
 [ext_resource type="FontFile" uid="uid://cwxmhchph2w6o" path="res://src/resources/assets/fonts/Inter/static/Inter-Bold.ttf" id="7_u0eu0"]
@@ -15,7 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://bvbyxhsxwsx8r" path="res://src/resources/assets/imgs/boxes/dialog_box.png" id="13_4cgb4"]
 [ext_resource type="Texture2D" uid="uid://cii6tkmovf4ty" path="res://src/resources/assets/imgs/buttons/new_game_button_idle.png" id="14_2lb4p"]
 [ext_resource type="Texture2D" uid="uid://btcckw4v1rc7w" path="res://src/resources/assets/imgs/buttons/close-button_idle.png" id="14_h88i1"]
+[ext_resource type="AudioStream" uid="uid://b1lpqhgf2d3h8" path="res://src/resources/assets/audios/win_audio.mp3" id="14_l15pk"]
 [ext_resource type="Texture2D" uid="uid://de0ub6g0s67tu" path="res://src/resources/assets/imgs/buttons/close_button_pressed.png" id="15_cksbb"]
+[ext_resource type="AudioStream" uid="uid://drg7ko3okqxx1" path="res://src/resources/assets/audios/lose_audio.mp3" id="15_ijgtg"]
 [ext_resource type="Texture2D" uid="uid://b2c2kacf07vhf" path="res://src/resources/assets/imgs/buttons/new_game_button_pressed.png" id="15_ym7g7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_15p5m"]
@@ -124,6 +127,9 @@ layer_2/name = "card_display"
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("3_qw72q")
 metadata/_edit_lock_ = true
+
+[node name="TileDropAudioStreamPlayer" type="AudioStreamPlayer" parent="GridGroundTilemap"]
+stream = ExtResource("5_httaf")
 
 [node name="RestartButton" type="Button" parent="."]
 offset_left = 39.0
@@ -285,6 +291,14 @@ metadata/_edit_lock_ = true
 libraries = {
 "": SubResource("AnimationLibrary_rq0wj")
 }
+
+[node name="WinAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
+stream = ExtResource("14_l15pk")
+volume_db = -5.0
+
+[node name="LoseAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
+stream = ExtResource("15_ijgtg")
+volume_db = -5.0
 
 [node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0

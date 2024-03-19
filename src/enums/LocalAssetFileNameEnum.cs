@@ -8,6 +8,6 @@ enum LocalAssetFileNameEnum {
     BLACK_TOKEN,
     WHITE_TOKEN,
 
-    //
-
+    // Audio
+    BUTTON_TAP_AUDIO,
 }

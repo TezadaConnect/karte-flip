@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Godot;
 
 class RouteManager{
@@ -18,5 +19,11 @@ class RouteManager{
         string assetName = Enum.GetName(route);
         Texture2D texture2D = GD.Load<Texture2D>("res://src/resources/assets/imgs/cards_and_tokens/"+ assetName.ToLower() +".png");
         return texture2D;
+    }
+
+    public AudioStream GetLocalAssetInAudioStream(LocalAssetFileNameEnum route){
+        string assetName = Enum.GetName(route);
+        AudioStream stream = GD.Load<AudioStream>("res://src/resources/assets/audios/"+ assetName.ToLower() +".mp3");
+        return stream;
     }
 }

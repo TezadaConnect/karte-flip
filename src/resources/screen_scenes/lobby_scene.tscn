@@ -1,12 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://b130bctvgo74q"]
+[gd_scene load_steps=20 format=3 uid="uid://b130bctvgo74q"]
 
 [ext_resource type="Script" path="res://src/controllers/LobbySceneController.cs" id="1_id37g"]
 [ext_resource type="Texture2D" uid="uid://b6u7ohhir7y8u" path="res://src/resources/assets/imgs/backgrounds/lobby_brackground.png" id="2_bvo1g"]
 [ext_resource type="FontFile" uid="uid://bcd4rbhhbo8y6" path="res://src/resources/assets/fonts/royal_acidbath/Royalacid.ttf" id="2_kf45k"]
+[ext_resource type="AudioStream" uid="uid://dcp8ctgv5o6dq" path="res://src/resources/assets/audios/background_audio.mp3" id="2_t04h4"]
 [ext_resource type="Texture2D" uid="uid://ch7grx0j1cc8" path="res://src/resources/assets/imgs/buttons/play_button_idle.png" id="4_1ojco"]
 [ext_resource type="Texture2D" uid="uid://cijqo81nn1l8u" path="res://src/resources/assets/imgs/buttons/play_button_pressed.png" id="5_oip52"]
 [ext_resource type="Texture2D" uid="uid://dbvte43xwydx" path="res://src/resources/assets/imgs/buttons/credit_button_idle.png" id="6_mto1x"]
 [ext_resource type="Texture2D" uid="uid://cjq3efndn0x2a" path="res://src/resources/assets/imgs/buttons/credit_button_pressed.png" id="7_l6hii"]
+[ext_resource type="Script" path="res://src/custom_node/AudioableButton.cs" id="7_yjlti"]
 [ext_resource type="FontFile" uid="uid://bsgtigrsshxwb" path="res://src/resources/assets/fonts/Inter/static/Inter-ExtraBold.ttf" id="8_kwips"]
 
 [sub_resource type="Theme" id="Theme_iodhb"]
@@ -38,6 +40,11 @@ texture = ExtResource("7_l6hii")
 [node name="LobbyScene" type="Node2D"]
 script = ExtResource("1_id37g")
 
+[node name="BackgroundAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_t04h4")
+volume_db = -10.0
+pitch_scale = 0.5
+
 [node name="BackgroundColorRect" type="ColorRect" parent="."]
 offset_left = -34.0
 offset_top = -26.0
@@ -67,6 +74,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_xsbcq")
 theme_override_styles/hover = SubResource("StyleBoxTexture_cc88g")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wkylh")
 theme_override_styles/focus = SubResource("StyleBoxTexture_uynee")
+script = ExtResource("7_yjlti")
 metadata/_edit_lock_ = true
 
 [node name="CreditsButton" type="Button" parent="."]
@@ -82,6 +90,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_is18f")
 theme_override_styles/hover = SubResource("StyleBoxTexture_n6fog")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_hgpnd")
 theme_override_styles/focus = SubResource("StyleBoxTexture_pioqh")
+script = ExtResource("7_yjlti")
 metadata/_edit_lock_ = true
 
 [node name="TitleRichText" type="RichTextLabel" parent="."]

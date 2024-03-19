@@ -40,10 +40,9 @@ class PlayerManager{
 
 		if(randomToken == TokenColorEnum.LIGHT_TOKEN){
 			turnManagerHolder.SetPlayerTurn(mPlayerOne);
-			return;
+		} else {
+			turnManagerHolder.SetPlayerTurn(mPlayerTwo);
 		}
-
-		turnManagerHolder.SetPlayerTurn(mPlayerTwo);		
 	}
 
     private TokenColorEnum GetReverseTokenColor(TokenColorEnum value){

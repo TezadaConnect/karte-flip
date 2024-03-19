@@ -1,4 +1,4 @@
-	using Godot;
+using Godot;
 using System;
 
 public partial class GridGroundTilemap : TileMap{
@@ -16,4 +16,8 @@ public partial class GridGroundTilemap : TileMap{
 	public override void _Ready(){}
 
 	public override void _Process(double delta){}
+
+	public void PlayTileDropAudio(){
+		GetNode<AudioStreamPlayer>("TileDropAudioStreamPlayer").Play();
+	}
 }

@@ -14,6 +14,7 @@ public partial class MainSceneController : Node {
 	// UI NODE
 	private GridGroundTilemap mTileMap;
 	private TextureRect mHUDTextureRect;
+	private TextureRect mTurnTextureRect;
 	// Dialogues
 	private TextureRect mDialogTextureRect;
 
@@ -53,6 +54,7 @@ public partial class MainSceneController : Node {
 		// Nodes
 		mTileMap = GetNode<GridGroundTilemap>("GridGroundTilemap");
 		mHUDTextureRect = GetNode<TextureRect>("HUDTextureRect");
+		mTurnTextureRect = mHUDTextureRect.GetNode<TextureRect>("TurnTextureRect");
 		// Dialogues
 		mDialogTextureRect = GetNode<TextureRect>("DialogueBackgroundTextureRect");
 	}
@@ -109,6 +111,8 @@ public partial class MainSceneController : Node {
 			cardDisplay.GetCardListFlipDirections()
 		);
 
+		mTileMap.PlayTileDropAudio();
+
 		if(IsMaxTiles()){
 			EndGameResult();
 			return;
@@ -129,9 +133,11 @@ public partial class MainSceneController : Node {
 			return;
 		}
 		
-		await Task.Delay(3000);
+		await Task.Delay(500);
 
 		mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
+
+		mTileMap.PlayTileDropAudio();
 
 		if(IsMaxTiles()){
 			EndGameResult();
@@ -143,13 +149,11 @@ public partial class MainSceneController : Node {
 		mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
 	}
 
-	private void SetNextTurnPLayer(){
-		TextureRect turnTextureRect = mHUDTextureRect.GetNode<TextureRect>("TurnTextureRect");
-		
+	private void SetNextTurnPLayer(){	
 		if(mGameTurnManager.GetPlayerTurn().IsLightToken()){
-			turnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
+			mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
 		} else {
-			turnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
+			mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
 		}
 
 		DisplayCardColorForTheTurn();
@@ -198,6 +202,8 @@ public partial class MainSceneController : Node {
 		mScoringManager.ResetScore();
 		mGameTurnManager.ResetTurn();
 		mPlayerManager.ResetPlayers();
+		mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
+
 	}
 
 	private void OnPressedRestartButton(){
@@ -210,8 +216,9 @@ public partial class MainSceneController : Node {
 	}
 
 	private void EndGameResult(){
-		
 		TokenColorEnum winnerColorToken = TokenColorEnum.NO_TOKEN;
+		AudioStreamPlayer loseAudio = mDialogTextureRect.GetNode<AudioStreamPlayer>("LoseAudioStreamPlayer");
+		string message = "";
 
 		if(mScoringManager.GetBlackScore() > mScoringManager.GetWhiteScore()){
 			winnerColorToken = TokenColorEnum.DARK_TOKEN;
@@ -221,13 +228,18 @@ public partial class MainSceneController : Node {
 			winnerColorToken = TokenColorEnum.LIGHT_TOKEN;
 		}
 
-		string message = "You Lose";
-
 		if(mPlayerManager.GetPlayerOne().GetTokenColorType() == winnerColorToken){
+			mDialogTextureRect.GetNode<AudioStreamPlayer>("WinAudioStreamPlayer").Play();
 			message = "You win!";
 		}
 
+		if(mPlayerManager.GetPlayerOne().GetTokenColorType() != winnerColorToken){
+			loseAudio.Play();
+			message = "You lose!";
+		}
+
 		if(winnerColorToken != TokenColorEnum.DARK_TOKEN && winnerColorToken != TokenColorEnum.LIGHT_TOKEN){
+			loseAudio.Play();
 			message = "Draw";
 		}
 
