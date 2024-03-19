@@ -26,14 +26,17 @@ public partial class MainSceneController : Node {
 	}
 
     public override void _Input(InputEvent @event){
-		if(mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER){
+		if(IsPlayerAComputer()){
+			return;
+		}
+
+		if(IsMaxTiles()){
 			return;
 		}
 
 		if(@event is InputEventMouseButton){
 			OnTapGroundTile(@event);
 			ComputerTapGroundTile();
-			EndGameResult();
 		}
     }
 
@@ -70,7 +73,7 @@ public partial class MainSceneController : Node {
 			return;
 		}
 
-		if(mDialogTextureRect.Scale.X == 1 && mDialogTextureRect.Scale.Y == 1){ // Cancel click event
+		if(IsOpenDialogue()){ // Halt click event
 			return;
 		}
 
@@ -106,6 +109,11 @@ public partial class MainSceneController : Node {
 			cardDisplay.GetCardListFlipDirections()
 		);
 
+		if(IsMaxTiles()){
+			EndGameResult();
+			return;
+		}
+
 		SetNextTurnPLayer();
 		DisplayScore();	
 		
@@ -113,19 +121,22 @@ public partial class MainSceneController : Node {
 	}
 
 	private async void ComputerTapGroundTile(){
-		if(mGameTurnManager.GetPlayerTurn().GetPlayerType() != PlayerTypeEnum.COMPUTER){
+		if(!IsPlayerAComputer()){
 			return;
 		}
 
-		List<Vector2I> vectorHolderForTokenLayer = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER).ToList();
-
-		if(vectorHolderForTokenLayer.Count >= GridGroundTilemap.BOARD_TILE_COUNT){
+		if(IsMaxTiles()){
 			return;
 		}
 		
 		await Task.Delay(3000);
 
 		mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
+
+		if(IsMaxTiles()){
+			EndGameResult();
+			return;
+		}
 
 		SetNextTurnPLayer();
 		DisplayScore();
@@ -199,12 +210,7 @@ public partial class MainSceneController : Node {
 	}
 
 	private void EndGameResult(){
-		List<Vector2I> allTileMapVector = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER).ToList();
-
-		if(allTileMapVector.Count < GridGroundTilemap.BOARD_TILE_COUNT){
-			return;
-		}
-
+		
 		TokenColorEnum winnerColorToken = TokenColorEnum.NO_TOKEN;
 
 		if(mScoringManager.GetBlackScore() > mScoringManager.GetWhiteScore()){
@@ -226,5 +232,18 @@ public partial class MainSceneController : Node {
 		}
 
 		ShowDialog(message);
+	}
+
+	public bool IsMaxTiles(){
+		List<Vector2I> allTileMapVector = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER).ToList();
+		return allTileMapVector.Count >= GridGroundTilemap.BOARD_TILE_COUNT;
+	}
+
+	public bool IsOpenDialogue(){
+		return mDialogTextureRect.Scale.X == 1 && mDialogTextureRect.Scale.Y == 1;
+	}
+
+	public bool IsPlayerAComputer(){
+		return mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER;
 	}
 }
