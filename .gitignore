@@ -1,4 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 exports
-.DS_STORE
+.DS_Store
+./src/.DS_Store 
+./src/resources/.DS_Store 
+./src/resources/assets/.DS_Store
+*.DS_Store
