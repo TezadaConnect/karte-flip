@@ -2,7 +2,10 @@
 .godot/
 exports
 .DS_Store
-./src/.DS_Store 
-./src/resources/.DS_Store 
-./src/resources/assets/.DS_Store
-*.DS_Store
+src/.DS_Store 
+src/resources/.DS_Store 
+src/resources/assets/.DS_Store
+src/resources/assets/fonts/.DS_Store
+src/resources/assets/fonts/Inter/.DS_Store
+src/resources/assets/imgs/.DS_Store
+src/resources/assets/imgs/backgrounds/.DS_Store
