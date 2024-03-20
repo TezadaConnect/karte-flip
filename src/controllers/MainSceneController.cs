@@ -204,7 +204,6 @@ public partial class MainSceneController : Node {
 		mGameTurnManager.ResetTurn();
 		mPlayerManager.ResetPlayers();
 		mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
-
 	}
 
 	private void OnPressedRestartButton(){

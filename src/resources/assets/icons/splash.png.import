@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdrb41svkqgce"
-path="res://.godot/imported/preview.jpg-c9464a541d686de138d65d1c17037d99.ctex"
+uid="uid://btqx22nydrhbj"
+path="res://.godot/imported/splash.png-7e58ada1adb175aef4dda9aa53086b3d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/resources/assets/fonts/royal_acidbath/preview.jpg"
-dest_files=["res://.godot/imported/preview.jpg-c9464a541d686de138d65d1c17037d99.ctex"]
+source_file="res://src/resources/assets/icons/splash.png"
+dest_files=["res://.godot/imported/splash.png-7e58ada1adb175aef4dda9aa53086b3d.ctex"]
 
 [params]
 

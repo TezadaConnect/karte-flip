@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="Karte Flip"
-run/main_scene="res://src/resources/screen_scenes/lobby_scene.tscn"
+run/main_scene="res://src/resources/screen_scenes/splash_scene.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+config/icon="res://src/resources/assets/icons/icon.svg"
+boot_splash/minimum_display_time=2500
 
 [display]
 

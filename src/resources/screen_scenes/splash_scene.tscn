@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://dy0cvrkphec4g"]
+
+[ext_resource type="Script" path="res://src/controllers/SplashSceneController.cs" id="1_pgbcs"]
+[ext_resource type="Texture2D" uid="uid://btqx22nydrhbj" path="res://src/resources/assets/icons/splash.png" id="2_o4kkt"]
+
+[sub_resource type="Animation" id="Animation_avwbv"]
+resource_name = "sm_popup"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SeedlessMelonIconTextureRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.2, 0.2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ytjy1"]
+_data = {
+"sm_popup": SubResource("Animation_avwbv")
+}
+
+[node name="SplashScreen" type="Node2D"]
+script = ExtResource("1_pgbcs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ytjy1")
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -69.0
+offset_top = -60.0
+offset_right = 1170.0
+offset_bottom = 2024.0
+color = Color(0, 0, 0, 1)
+
+[node name="SeedlessMelonIconTextureRect" type="TextureRect" parent="."]
+offset_left = -386.0
+offset_top = -105.0
+offset_right = 1593.0
+offset_bottom = 1926.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(970, 1016)
+texture = ExtResource("2_o4kkt")

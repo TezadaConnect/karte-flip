@@ -131,6 +131,8 @@ metadata/_edit_lock_ = true
 
 [node name="TileDropAudioStreamPlayer" type="AudioStreamPlayer" parent="GridGroundTilemap"]
 stream = ExtResource("5_httaf")
+volume_db = 5.0
+pitch_scale = 0.7
 
 [node name="RestartButton" type="Button" parent="."]
 offset_left = 39.0
@@ -297,11 +299,9 @@ libraries = {
 
 [node name="WinAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
 stream = ExtResource("14_l15pk")
-volume_db = -5.0
 
 [node name="LoseAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
 stream = ExtResource("15_ijgtg")
-volume_db = -5.0
 
 [node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
