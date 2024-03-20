@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://citm8bcblt0nx"]
+[gd_scene load_steps=38 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cdjsprxqfjq5" path="res://src/resources/assets/imgs/buttons/restart_button_idle.png" id="5_ldvxi"]
 [ext_resource type="Texture2D" uid="uid://dyvyilr3cbk4l" path="res://src/resources/assets/imgs/buttons/restart-button_pressed.png" id="6_wdkx2"]
 [ext_resource type="FontFile" uid="uid://cwxmhchph2w6o" path="res://src/resources/assets/fonts/Inter/static/Inter-Bold.ttf" id="7_u0eu0"]
+[ext_resource type="Script" path="res://src/custom_node/AudioableButton.cs" id="8_addye"]
 [ext_resource type="Texture2D" uid="uid://2mxq71hdm6rg" path="res://src/resources/assets/imgs/boxes/hud_box.png" id="8_uba4h"]
 [ext_resource type="Texture2D" uid="uid://s3jixk5f4pv7" path="res://src/resources/assets/imgs/cards_and_tokens/white_token.png" id="9_2srwh"]
 [ext_resource type="Texture2D" uid="uid://b1k8p55b00s1c" path="res://src/resources/assets/imgs/cards_and_tokens/black_token.png" id="10_5oyvp"]
@@ -140,6 +141,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_aage1")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ea44q")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_hbryn")
 theme_override_styles/focus = SubResource("StyleBoxTexture_eksjg")
+script = ExtResource("8_addye")
 metadata/_edit_lock_ = true
 
 [node name="QuitButton" type="Button" parent="."]
@@ -151,6 +153,7 @@ theme_override_fonts/font = ExtResource("7_u0eu0")
 theme_override_font_sizes/font_size = 60
 text = "Quit"
 flat = true
+script = ExtResource("8_addye")
 
 [node name="HUDTextureRect" type="TextureRect" parent="."]
 offset_left = -22.0
@@ -332,6 +335,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_2imsk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_im4w6")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_c3wvh")
 theme_override_styles/focus = SubResource("StyleBoxTexture_abn35")
+script = ExtResource("8_addye")
 
 [node name="NewGameButton" type="Button" parent="DialogueBackgroundTextureRect"]
 layout_mode = 0
@@ -343,3 +347,9 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_6qt3j")
 theme_override_styles/hover = SubResource("StyleBoxTexture_usn1y")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_1att7")
 theme_override_styles/focus = SubResource("StyleBoxTexture_shjuf")
+script = ExtResource("8_addye")
+
+[connection signal="pressed" from="RestartButton" to="RestartButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="QuitButton" to="QuitButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="DialogueBackgroundTextureRect/CloseDialogButton" to="DialogueBackgroundTextureRect/CloseDialogButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="DialogueBackgroundTextureRect/NewGameButton" to="DialogueBackgroundTextureRect/NewGameButton" method="PlayButtonTapAudio"]

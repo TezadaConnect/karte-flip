@@ -179,8 +179,9 @@ public partial class MainSceneController : Node {
 		whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
 	}
 
-	private void OnPressedQuitButton(){
+	private async void OnPressedQuitButton(){
 		ResetScoringAndTurnAndPlayerManagers();
+		await Task.Delay(500);
 		mRouteManager.MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
 	}
 

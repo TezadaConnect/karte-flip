@@ -105,3 +105,6 @@ text = "Karte Flip"
 fit_content = true
 autowrap_mode = 2
 metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="PlayGameButton" to="PlayGameButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="CreditsButton" to="CreditsButton" method="PlayButtonTapAudio"]

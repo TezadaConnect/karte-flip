@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class LobbySceneController : Node2D{
 	private RouteManager mRoute;
@@ -7,7 +8,7 @@ public partial class LobbySceneController : Node2D{
 
 	public override void _Ready(){
 		mRoute = RouteManager.GetIntance();
-		GetNode<Button>("PlayGameButton").Connect(
+		GetNode<AudioableButton>("PlayGameButton").Connect(
 			"pressed",
 			new Callable(this, "OnPressedPlayAIButton")
 		);
@@ -21,7 +22,8 @@ public partial class LobbySceneController : Node2D{
 		}
     }
 
-    private void OnPressedPlayAIButton(){
+    private async void OnPressedPlayAIButton(){
+		await Task.Delay(500);
 		GameTurnManager.GetInstance().SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
 		mRoute.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
 	}

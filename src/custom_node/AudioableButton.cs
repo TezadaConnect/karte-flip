@@ -6,15 +6,11 @@ public partial class AudioableButton : Button{
         mButtonAudioPlayer = new AudioStreamPlayer{
             Stream = RouteManager.GetIntance().GetLocalAssetInAudioStream(LocalAssetFileNameEnum.BUTTON_TAP_AUDIO)
         };
-
         AddChild(mButtonAudioPlayer);
 	}
 
-	public void PlayButtonTapAudio(){
+	public void PlayButtonTapAudio(){ // Add this as onpressed signal in editor
 		mButtonAudioPlayer.Play();
-	}
-
-	public void Destroy(){
-		mButtonAudioPlayer.QueueFree();
+		// mButtonAudioPlayer.QueueFree();
 	}
 }
