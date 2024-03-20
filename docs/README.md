@@ -3,10 +3,12 @@
 - We are currently in alpha testing to test out the game's functionality.
 - You can learn about karte flip at [Karte Flip docs](https://docs.google.com/document/d/19xBuhgiB2Xj3Xp1n04rsnzLR1ZT1cqyc/edit?usp=sharing&ouid=116922107180435442791&rtpof=true&sd=true).
 
-### What to test
+### Find Bugs From the Program
 
-- AI functionality in match screen.
-- Credit button still not working so never mind it.
+- AMatch screen
+- Lobby screen
+- Dialogue screen
+- Credit Screen
 - This release is for android only, apk file and the bug report form is provided.
 
 ### Helpful Links

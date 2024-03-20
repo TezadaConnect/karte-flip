@@ -12,6 +12,10 @@ public partial class LobbySceneController : Node2D{
 			"pressed",
 			new Callable(this, "OnPressedPlayAIButton")
 		);
+		GetNode<AudioableButton>("CreditsButton").Connect(
+			"pressed",
+			new Callable(this, "OnPressedCreditsButton")
+		);
 		mBackgroundMusic = GetNode<AudioStreamPlayer>("BackgroundAudioStreamPlayer");
 		mBackgroundMusic.Play();
 	}
@@ -26,6 +30,11 @@ public partial class LobbySceneController : Node2D{
 		await Task.Delay(500);
 		GameTurnManager.GetInstance().SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
 		mRoute.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
+	}
+
+	private async void OnPressedCreditsButton(){
+		await Task.Delay(500);
+		mRoute.MoveToScene(SceneFileNameEnum.CREDIT_SCENE, GetTree());
 	}
 
 }

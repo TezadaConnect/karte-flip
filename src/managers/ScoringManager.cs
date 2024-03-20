@@ -24,19 +24,22 @@ class ScoringManager {
         );
 
         int whiteCount = 0;
+        int blackCount = 0;
         
         foreach (Vector2I element in arrayOfTilePositionAtTokenLayer){
             Vector2I tileAtlas = tilemap.GetCellAtlasCoords(
                 tilemap.TOKEN_PLACEMENT_LAYER, element
             );
 
-            if(GameTurnManager.GetInstance().GetWhiteAtlas() == tileAtlas){
+            if(GameTurnManager.GetInstance().GetBlackAtlas() == tileAtlas){
+                blackCount++;
+            } else {
                 whiteCount++;
             }
         }
 
         mWhiteScore = whiteCount;
-        mBlackScore = Math.Abs(arrayOfTilePositionAtTokenLayer.Count - whiteCount);
+        mBlackScore = blackCount;
     }
 
     public int GetWhiteScore(){

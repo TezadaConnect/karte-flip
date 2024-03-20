@@ -216,6 +216,7 @@ public partial class MainSceneController : Node {
 	}
 
 	private void EndGameResult(){
+		DisplayScore();
 		TokenColorEnum winnerColorToken = TokenColorEnum.NO_TOKEN;
 		AudioStreamPlayer loseAudio = mDialogTextureRect.GetNode<AudioStreamPlayer>("LoseAudioStreamPlayer");
 		string message = "";
