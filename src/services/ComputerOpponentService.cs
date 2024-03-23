@@ -3,15 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-class AIManager {
-    private static AIManager mAIManagerInstance;
-
-    public static AIManager GetInstance(){
-        mAIManagerInstance ??= new AIManager();
-        return mAIManagerInstance;
-    }
-
-    public void GetAITileMove(GridGroundTilemap tilemap, CardModel card){        
+static class ComputerOpponentService{
+    public static void GetComputerTileMove(GridGroundTilemap tilemap, CardModel card){        
         List<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER).ToList();
         List<TileFlipableRecordModel> record = new();
         TileFlipableRecordModel newRecord = new();
@@ -34,12 +27,11 @@ class AIManager {
             newRecord = new TileFlipableRecordModel();
         }
 
-        TokenFlipManager tokenFlipManagerInstance = TokenFlipManager.GetInstance();
-        TileFlipableRecordModel chosenTile = new TileFlipableRecordModel();
+        TileFlipableRecordModel chosenTile = new();
         
         if(record.Count <= 0){
             Vector2I randomTilePosition = listOfVacantTilePosition[new Random().Next(listOfVacantTilePosition.Count)];
-            tokenFlipManagerInstance.SetTileBaseOnPlayersTurn(randomTilePosition, tilemap);
+            TileHelper.AddAtlasFromGameTurnManagerToTilemap(randomTilePosition, tilemap);
             return;
         }
 
@@ -49,11 +41,11 @@ class AIManager {
             }
         }
 
-        tokenFlipManagerInstance.SetTileBaseOnPlayersTurn(chosenTile.GetTilePosition(), tilemap);
-        tokenFlipManagerInstance.FlipTokens(chosenTile.GetTilePosition(), tilemap, card.GetCardListFlipDirections());
+        TileHelper.AddAtlasFromGameTurnManagerToTilemap(chosenTile.GetTilePosition(), tilemap);
+        TokenFlipService.FlipTokens(chosenTile.GetTilePosition(), tilemap, card.GetCardListFlipDirections());
     }
 
-    private void AddVectorFlipable(
+    private static void AddVectorFlipable(
         Vector2I position, 
         GridGroundTilemap tilemap,
         TileFlipableRecordModel tileFlipableRecordModel, 
@@ -64,18 +56,18 @@ class AIManager {
         }
     }
 
-    private void AddVectorFlipable(
+    private static void AddVectorFlipable(
         Vector2I position, 
         GridGroundTilemap tilemap,
         TileFlipableRecordModel tileFlipableRecordModel, 
         DirectionEnum directionEnum
     ){
-        Vector2I tilePosition = TokenFlipManager.GetInstance().GetPositionByDirection(position, directionEnum);
+        Vector2I tilePosition = TileHelper.GetNextTilePositionByDirectection(position, directionEnum);
 		TileData tileSpotData = tilemap.GetCellTileData(tilemap.TOKEN_PLACEMENT_LAYER, tilePosition);
         Vector2I atlastTileImage = tilemap.GetCellAtlasCoords(tilemap.TOKEN_PLACEMENT_LAYER, tilePosition);
 
         bool isTileDataEmpty = tileSpotData == null;
-        bool isTileImageSameAsTileDisplay = atlastTileImage == GameTurnManager.GetInstance().GetTileForDisplay();
+        bool isTileImageSameAsTileDisplay = atlastTileImage == TileHelper.GetAtlasPositionFromGameTurnManager();
 
         if (isTileDataEmpty || isTileImageSameAsTileDisplay){
 			return;
@@ -84,5 +76,4 @@ class AIManager {
         tileFlipableRecordModel.AddFlipableTile(tilePosition);
         AddVectorFlipable(tilePosition, tilemap, tileFlipableRecordModel, directionEnum);
     }
-
 }

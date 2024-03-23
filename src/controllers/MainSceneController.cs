@@ -7,9 +7,7 @@ public partial class MainSceneController : Node {
 	// Managers
 	private RouteManager mRouteManager;
 	private GameTurnManager mGameTurnManager;
-	private TokenFlipManager mTokenFlipManager;
 	private ScoringManager mScoringManager;
-	private AIManager mIAManager;
 	private PlayerManager mPlayerManager;
 	// UI NODE
 	private GridGroundTilemap mTileMap;
@@ -44,9 +42,7 @@ public partial class MainSceneController : Node {
 	private void InitSceneManagers(){
 		mRouteManager = RouteManager.GetIntance();
 		mGameTurnManager = GameTurnManager.GetInstance();
-		mTokenFlipManager = TokenFlipManager.GetInstance();
 		mScoringManager = ScoringManager.GetInstance();
-		mIAManager = AIManager.GetInstance();
 		mPlayerManager = PlayerManager.GetInstance();
 	}
 
@@ -81,8 +77,7 @@ public partial class MainSceneController : Node {
 
 		Vector2I tilePostion = mTileMap.LocalToMap(mTileMap.GetLocalMousePosition());
 		TileData groundTileData = mTileMap.GetCellTileData(mTileMap.GROUND_LAYER, tilePostion);
-		Vector2I tileImageCoordinate = mGameTurnManager.GetTileForDisplay(); // Location of the white token in the tile asset
-	
+		
 		if(groundTileData == null){
 			return;
 		} 
@@ -96,16 +91,11 @@ public partial class MainSceneController : Node {
 			return;
 		}
 
-		mTileMap.SetCell( // Add tile
-			mTileMap.TOKEN_PLACEMENT_LAYER, 
-			tilePostion, 
-			mTileMap.ADD_TILE_ACTION, 			
-			tileImageCoordinate
-		);
+		TileHelper.AddAtlasFromGameTurnManagerToTilemap(tilePostion, mTileMap);
 
 		CardModel cardDisplay = mGameTurnManager.GetCurrentCard();
 
-		mTokenFlipManager.FlipTokens( // Flip nearby tokens
+		TokenFlipService.FlipTokens( // Flip nearby tokens
 			tilePostion, 
 			mTileMap, 
 			cardDisplay.GetCardListFlipDirections()
@@ -135,7 +125,7 @@ public partial class MainSceneController : Node {
 		
 		await Task.Delay(500);
 
-		mIAManager.GetAITileMove(mTileMap, mGameTurnManager.GetCurrentCard());
+		ComputerOpponentService.GetComputerTileMove(mTileMap, mGameTurnManager.GetCurrentCard());
 
 		mTileMap.PlayTileDropAudio();
 

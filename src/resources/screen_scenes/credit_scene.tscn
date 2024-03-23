@@ -42,6 +42,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NamesLabel" type="Label" parent="ProgrammersLabel"]
+layout_mode = 0
 offset_top = 166.0
 offset_right = 1097.0
 offset_bottom = 263.0
@@ -63,6 +64,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NamesLabel" type="Label" parent="ArtistsLabel"]
+layout_mode = 0
 offset_top = 166.0
 offset_right = 1097.0
 offset_bottom = 263.0
@@ -84,6 +86,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NamesLabel" type="Label" parent="SoundAndMusicsLabel"]
+layout_mode = 0
 offset_top = 166.0
 offset_right = 1097.0
 offset_bottom = 263.0
@@ -105,6 +108,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NamesLabel" type="Label" parent="Fonts"]
+layout_mode = 0
 offset_top = 166.0
 offset_right = 1097.0
 offset_bottom = 263.0

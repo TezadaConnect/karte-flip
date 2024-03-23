@@ -17,7 +17,6 @@ class GameTurnManager{
     private static GameTurnManager mGameTurnManagerInstance;
 
     public GameTurnManager(){
-        // mTurnType = TokenColorEnum.LIGHT_TOKEN;
         CardCollection cardCollection = new();
         List<CardModel> cards = new();
         for (int i = 0; i < cardCollection.GetCardListOfNames().Length; i++){
@@ -32,7 +31,7 @@ class GameTurnManager{
         return mGameTurnManagerInstance;
     }
 
-    public Vector2I GetTileForDisplay(){
+    public Vector2I GetAtlasPositionBaseOnPlayerColor(){
         if(mPlayerTurn.IsLightToken()){
             return ATLAS_COORD_WHITE;
         }
