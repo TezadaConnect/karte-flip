@@ -20,7 +20,7 @@ public partial class TurnRpcService : Node{
 	*/
 	public TokenColorEnum CurrentTokenTurn {
 		get { return _currentTokenTurn; }
-		set { _currentTokenTurn = CurrentTokenTurn; }
+		set { _currentTokenTurn = value; }
 	}
 	
 	/*
@@ -56,10 +56,18 @@ public partial class TurnRpcService : Node{
 		TokenColorEnum randomToken = allTokens[new Random().Next(allTokens.Count)];
 
 		if(Multiplayer.IsServer()){
-			_listOfPlayers.Add(new PlayerModel(Multiplayer.GetUniqueId(), PlayerTypeEnum.PERSON, randomToken));
+			_listOfPlayers.Add(new PlayerModel(){
+				PlayerID = Multiplayer.GetUniqueId(), 
+				PlayerType = PlayerTypeEnum.PERSON, 
+				TokenColor = randomToken
+			});
 		} else {
 			TokenColorEnum tokenHolder = randomToken == TokenColorEnum.DARK_TOKEN ? TokenColorEnum.LIGHT_TOKEN : TokenColorEnum.DARK_TOKEN;
-			_listOfPlayers.Add(new PlayerModel(Multiplayer.GetUniqueId(), PlayerTypeEnum.PERSON, tokenHolder));
+			_listOfPlayers.Add(new PlayerModel(){
+				PlayerID = Multiplayer.GetUniqueId(), 
+				PlayerType = PlayerTypeEnum.PERSON, 
+				TokenColor = tokenHolder
+			});
 		}
 
 		RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
@@ -72,10 +80,11 @@ public partial class TurnRpcService : Node{
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void AddTokenToTilemap(Vector2I position, Dictionary card){
+		GD.Print(card);
 		CardModel cardModel = CardModel.Deserialize(card);
 		GridGroundTilemap holder = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
 		TileHelper.AddAtlasFromGameTurnManagerToTilemap(position, holder, _currentTokenTurn);
-		TokenFlipService.FlipTokens(position, holder, cardModel.GetCardListFlipDirections() , _currentTokenTurn);
+		TokenFlipService.FlipTokens(position, holder, cardModel.CardListFlipDirections , _currentTokenTurn);
 		_currentTokenTurn = _currentTokenTurn == TokenColorEnum.LIGHT_TOKEN ? TokenColorEnum.DARK_TOKEN : TokenColorEnum.LIGHT_TOKEN;
 	}
 }

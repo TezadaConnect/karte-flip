@@ -1,7 +1,8 @@
+using Godot;
 using Godot.Collections;
 
 class CardCollection{
-    private string[] mCardListOfNames = {
+    private readonly string[] _cardListOfNames = {
         "Yellow Card",
         "Red Card",
         "Blue Card",
@@ -9,7 +10,7 @@ class CardCollection{
         "Green Card",
     };
 
-    private string[] mCardListOfDescriptions = {
+    private readonly string[] _cardListOfDescriptions = {
         "Flip bottom tokens",
         "Flip top tokens",
         "Flip left tokens",
@@ -17,7 +18,7 @@ class CardCollection{
         "Flip cross tokens"
     };
 
-    private CardAbilityEnum[] mCardListOfAbilityEnum = new CardAbilityEnum[] {
+    private readonly CardAbilityEnum[] _cardListOfAbilityEnum = new CardAbilityEnum[] {
         CardAbilityEnum.FLIP,
         CardAbilityEnum.FLIP,
         CardAbilityEnum.FLIP,
@@ -25,7 +26,7 @@ class CardCollection{
         CardAbilityEnum.FLIP,
     };
 
-    private Array<Array<DirectionEnum>> mCardListOfFlipDirection = new(){
+    private readonly Array<Array<DirectionEnum>> _cardListOfFlipDirection = new(){
         new Array<DirectionEnum> { DirectionEnum.BOTTOM },
         new Array<DirectionEnum> { DirectionEnum.TOP },
         new Array<DirectionEnum> { DirectionEnum.LEFT },
@@ -38,7 +39,7 @@ class CardCollection{
         },
     };
 
-    private LocalAssetFileNameEnum[] mListOfLocalAssetFileNameEnum = new LocalAssetFileNameEnum[] {
+    private readonly LocalAssetFileNameEnum[] _listOfLocalAssetFileNameEnum = new LocalAssetFileNameEnum[] {
         LocalAssetFileNameEnum.YELLOW_CARD,
         LocalAssetFileNameEnum.RED_CARD,
         LocalAssetFileNameEnum.BLUE_CARD,
@@ -47,17 +48,19 @@ class CardCollection{
     };
 
     public string[] GetCardListOfNames(){
-        return mCardListOfNames;
+        return _cardListOfNames;
     }
 
     public CardModel GetCardModelByIndex(int index){
-        return new CardModel(
-            mCardListOfNames[index], 
-            mCardListOfDescriptions[index], 
-            mCardListOfAbilityEnum[index], 
-            mCardListOfFlipDirection[index],
-            mListOfLocalAssetFileNameEnum[index]
-        );
+
+        CardModel item = new(){
+            CardName = _cardListOfNames[index], 
+            CardDescription = _cardListOfDescriptions[index], 
+            CardAbility = _cardListOfAbilityEnum[index], 
+            CardListFlipDirections = _cardListOfFlipDirection[index],
+            CardFilename = _listOfLocalAssetFileNameEnum[index]
+        };
+        GD.Print(item.Serialize());
+        return item;
     }
-    
 }

@@ -2,44 +2,40 @@ using Godot;
 using Godot.Collections;
 
 public class TileFlipableRecordModel{
-    private Vector2I mTilePosition;
-    private Array<Vector2I> mAllFlipableTiles;
+    private Vector2I _tilePosition;
+    private Array<Vector2I> _allFlipableTiles;
 
     public TileFlipableRecordModel(){
-        mAllFlipableTiles = new Array<Vector2I>();
+        _allFlipableTiles = new Array<Vector2I>();
     }
 
+    //Getters
+    public Array<Vector2I> AllFlipableTiles {
+        get { return _allFlipableTiles; }
+        set { _allFlipableTiles = value; }
+    }
+    public Vector2I TilePosition {
+        get { return _tilePosition; }
+        set { _tilePosition = value; }
+    }
+
+    // Helper Methods
     public Dictionary Serialize(){
         Dictionary serializeValue = new();
-        serializeValue["tile_position"] = mTilePosition;
-        serializeValue["card_description"] = mAllFlipableTiles;
+        serializeValue["tile_position"] = _tilePosition;
+        serializeValue["card_description"] = _allFlipableTiles;
         return serializeValue;
     }
 
     public static TileFlipableRecordModel Deserialize(Dictionary serializeValue){
-        TileFlipableRecordModel item = new();
-        item.SetTilePosition((Vector2I)serializeValue["tile_position"]);
-        item.SetFlipableTile((Array<Vector2I>)serializeValue["card_description"]);
+        TileFlipableRecordModel item = new(){
+            TilePosition = (Vector2I)serializeValue["tile_position"],
+            AllFlipableTiles = (Array<Vector2I>)serializeValue["card_description"]
+        };
         return item;
     }
 
-    public Vector2I GetTilePosition(){
-        return mTilePosition;
-    }
-
-    public void SetTilePosition(Vector2I value){
-        mTilePosition = value;
-    }
-
-    public Array<Vector2I> GetAllFlipableTiles(){
-        return mAllFlipableTiles;
-    }
-
     public void AddFlipableTile(Vector2I value){
-        mAllFlipableTiles.Add(value);
-    }
-
-    public void SetFlipableTile(Array<Vector2I> list){
-        mAllFlipableTiles = list;
+        _allFlipableTiles.Add(value);
     }
 }

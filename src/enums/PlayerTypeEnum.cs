@@ -1,4 +1,4 @@
-enum PlayerTypeEnum {
+public enum PlayerTypeEnum {
     PERSON,
     COMPUTER
 }

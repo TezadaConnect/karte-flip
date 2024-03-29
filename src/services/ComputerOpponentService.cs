@@ -10,15 +10,15 @@ static class ComputerOpponentService{
         Array<Vector2I> listOfVacantTilePosition = new();
     
         foreach (Vector2I elementVector in vectorHolder){
-            newRecord.SetTilePosition(elementVector);
+            newRecord.TilePosition = elementVector;
             TileData getTileData = tilemap.GetCellTileData(tilemap.TOKEN_PLACEMENT_LAYER, elementVector);
             if(getTileData != null){
                 continue;
             }
             listOfVacantTilePosition.Add(elementVector);
-            AddVectorFlipable(elementVector, tilemap, newRecord, card.GetCardListFlipDirections());
+            AddVectorFlipable(elementVector, tilemap, newRecord, card.CardListFlipDirections);
 
-            if(newRecord.GetAllFlipableTiles().Count <= 0){
+            if(newRecord.AllFlipableTiles.Count <= 0){
                 continue;
             }
 
@@ -36,7 +36,7 @@ static class ComputerOpponentService{
 
         foreach (Dictionary element in record){
             TileFlipableRecordModel itemRecordModel = TileFlipableRecordModel.Deserialize(element);
-            if(itemRecordModel.GetAllFlipableTiles().Count > chosenTile.GetAllFlipableTiles().Count){
+            if(itemRecordModel.AllFlipableTiles.Count > chosenTile.AllFlipableTiles.Count){
                 chosenTile = itemRecordModel;
             }
         }

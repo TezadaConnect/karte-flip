@@ -1,45 +1,41 @@
-using System;
+using Godot.Collections;
 
-class PlayerModel { // IEquatable<PlayerModel> 
+public class PlayerModel { // IEquatable<PlayerModel> 
     private long _playerID;
     private PlayerTypeEnum _playerType;
     private TokenColorEnum _tokenColorType;
 
-    public PlayerModel(long playerID, PlayerTypeEnum playerTypeEnum, TokenColorEnum tokenColorEnum){
-        _playerID = playerID;
-        _playerType = playerTypeEnum;
-        _tokenColorType = tokenColorEnum;
-    }
-
+    // Getters and Setters
     public long PlayerID{
         get { return _playerID; }
-        set { _playerID = PlayerID; }
+        set { _playerID = value; }
     }
 
     public TokenColorEnum TokenColor{
         get { return _tokenColorType; }
-        set { _tokenColorType = TokenColor; }
+        set { _tokenColorType = value; }
     }
 
     public PlayerTypeEnum PlayerType {
         get { return _playerType; }
-        set { _playerType = PlayerType; }
+        set { _playerType = value; }
     }
 
-    // public bool Equals(PlayerModel other){
-    //     if(
-    //         mPlayerType == other.GetPlayerType() &&
-    //         mTokenColorType == other.GetTokenColorType()
-    //     ){
-    //         return true;
-    //     }
-    //     return false;
-    // }
+    public Dictionary Serialize(){
+        Dictionary serializeValue = new(){
+            ["player_id"] = _playerID,
+            ["player_type"] = (int)_playerType,
+            ["token_color"] = (int)_tokenColorType
+        };
+        return serializeValue;
+    }
 
-    // public bool IsLightToken(){
-    //     if(TokenColorEnum.LIGHT_TOKEN == mTokenColorType){
-    //         return true;
-    //     }
-    //     return false;
-    // }
+    public static PlayerModel Deserialize(Dictionary serializeValue){
+        PlayerModel item = new(){
+            PlayerID = (long)serializeValue["player_id"],
+            PlayerType = (PlayerTypeEnum)(int)serializeValue["player_type"],
+            TokenColor =(TokenColorEnum)(int)serializeValue["token_color"]
+        };
+        return item;
+    }
 }
