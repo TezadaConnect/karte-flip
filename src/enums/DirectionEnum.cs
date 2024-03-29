@@ -1,4 +1,4 @@
-enum DirectionEnum{
+public enum DirectionEnum{
     RIGHT,
     LEFT,
     TOP,

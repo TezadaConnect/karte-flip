@@ -1,4 +1,4 @@
-enum CardAbilityEnum{
-    FLIP,
-    FREEZE
+public enum CardAbilityEnum{
+    FLIP = 0,
+    FREEZE = 1
 }

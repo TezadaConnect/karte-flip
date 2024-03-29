@@ -1,15 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
+using Godot.Collections;
 
-class TileFlipableRecordModel{
+public class TileFlipableRecordModel{
     private Vector2I mTilePosition;
-    private List<Vector2I> mAllFlipableTiles;
-
+    private Array<Vector2I> mAllFlipableTiles;
 
     public TileFlipableRecordModel(){
-        mAllFlipableTiles = new List<Vector2I>();
+        mAllFlipableTiles = new Array<Vector2I>();
+    }
+
+    public Dictionary Serialize(){
+        Dictionary serializeValue = new();
+        serializeValue["tile_position"] = mTilePosition;
+        serializeValue["card_description"] = mAllFlipableTiles;
+        return serializeValue;
+    }
+
+    public static TileFlipableRecordModel Deserialize(Dictionary serializeValue){
+        TileFlipableRecordModel item = new();
+        item.SetTilePosition((Vector2I)serializeValue["tile_position"]);
+        item.SetFlipableTile((Array<Vector2I>)serializeValue["card_description"]);
+        return item;
     }
 
     public Vector2I GetTilePosition(){
@@ -20,11 +31,15 @@ class TileFlipableRecordModel{
         mTilePosition = value;
     }
 
-    public List<Vector2I> GetAllFlipableTiles(){
+    public Array<Vector2I> GetAllFlipableTiles(){
         return mAllFlipableTiles;
     }
 
     public void AddFlipableTile(Vector2I value){
         mAllFlipableTiles.Add(value);
+    }
+
+    public void SetFlipableTile(Array<Vector2I> list){
+        mAllFlipableTiles = list;
     }
 }

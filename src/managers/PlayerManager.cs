@@ -25,13 +25,13 @@ class PlayerManager{
 
 		TokenColorEnum randomToken = allTokens[new Random().Next(allTokens.Count)]; 
 
-		if(turnManagerHolder.GetGamePlayType() == GamePlayTypeEnum.VS_COMPUTER){
-			mPlayerOne = new PlayerModel(PlayerTypeEnum.PERSON, randomToken);
-			mPlayerTwo = new PlayerModel(
-				PlayerTypeEnum.COMPUTER, 
-				GetReverseTokenColor(randomToken)
-			);
-		}
+		// if(turnManagerHolder.GetGamePlayType() == GamePlayTypeEnum.VS_COMPUTER){
+		// 	mPlayerOne = new PlayerModel(PlayerTypeEnum.PERSON, randomToken);
+		// 	mPlayerTwo = new PlayerModel(
+		// 		PlayerTypeEnum.COMPUTER, 
+		// 		GetReverseTokenColor(randomToken)
+		// 	);
+		// }
 
 		if(turnManagerHolder.GetGamePlayType() == GamePlayTypeEnum.VS_PERSON){
 			//Put code here for player server 1v1 code

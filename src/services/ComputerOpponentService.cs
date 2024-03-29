@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
+using Godot.Collections;
 
 static class ComputerOpponentService{
     public static void GetComputerTileMove(GridGroundTilemap tilemap, CardModel card){        
-        List<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER).ToList();
-        List<TileFlipableRecordModel> record = new();
+        Array<Vector2I> vectorHolder = tilemap.GetUsedCells(tilemap.GROUND_LAYER);
+        Array<Dictionary> record = new();
         TileFlipableRecordModel newRecord = new();
-        List<Vector2I> listOfVacantTilePosition = new();
+        Array<Vector2I> listOfVacantTilePosition = new();
     
         foreach (Vector2I elementVector in vectorHolder){
             newRecord.SetTilePosition(elementVector);
@@ -23,7 +22,7 @@ static class ComputerOpponentService{
                 continue;
             }
 
-            record.Add(newRecord);
+            record.Add(newRecord.Serialize());
             newRecord = new TileFlipableRecordModel();
         }
 
@@ -31,25 +30,26 @@ static class ComputerOpponentService{
         
         if(record.Count <= 0){
             Vector2I randomTilePosition = listOfVacantTilePosition[new Random().Next(listOfVacantTilePosition.Count)];
-            TileHelper.AddAtlasFromGameTurnManagerToTilemap(randomTilePosition, tilemap);
+            // TileHelper.AddAtlasFromGameTurnManagerToTilemap(randomTilePosition, tilemap);
             return;
         }
 
-        foreach (TileFlipableRecordModel element in record){
-            if(element.GetAllFlipableTiles().Count > chosenTile.GetAllFlipableTiles().Count){
-                chosenTile = element;
+        foreach (Dictionary element in record){
+            TileFlipableRecordModel itemRecordModel = TileFlipableRecordModel.Deserialize(element);
+            if(itemRecordModel.GetAllFlipableTiles().Count > chosenTile.GetAllFlipableTiles().Count){
+                chosenTile = itemRecordModel;
             }
         }
 
-        TileHelper.AddAtlasFromGameTurnManagerToTilemap(chosenTile.GetTilePosition(), tilemap);
-        TokenFlipService.FlipTokens(chosenTile.GetTilePosition(), tilemap, card.GetCardListFlipDirections());
+        // TileHelper.AddAtlasFromGameTurnManagerToTilemap(chosenTile.GetTilePosition(), tilemap);
+        // TokenFlipService.FlipTokens(chosenTile.GetTilePosition(), tilemap, card.GetCardListFlipDirections());
     }
 
     private static void AddVectorFlipable(
         Vector2I position, 
         GridGroundTilemap tilemap,
         TileFlipableRecordModel tileFlipableRecordModel, 
-        List<DirectionEnum> multipleDirection
+        Array<DirectionEnum> multipleDirection
     ){
         foreach (DirectionEnum element in multipleDirection){
             AddVectorFlipable(position, tilemap, tileFlipableRecordModel, element);

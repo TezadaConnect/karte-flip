@@ -1,26 +1,37 @@
-using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 
 static class TokenFlipService {
-    public static void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, List<DirectionEnum> multipleDirection){
+    public static void FlipTokens(
+        Vector2I inputPosition, 
+        GridGroundTilemap tileMap, 
+        Array<DirectionEnum> multipleDirection, 
+        TokenColorEnum tokenColorEnum
+    ){
         foreach (DirectionEnum element in multipleDirection){
-            FlipTokens(inputPosition, tileMap, element);
+            FlipTokens(inputPosition, tileMap, element, tokenColorEnum);
         }
     }
 
-    private static void FlipTokens(Vector2I inputPosition, GridGroundTilemap tileMap, DirectionEnum directionEnum){
+    private static void FlipTokens(
+        Vector2I inputPosition, 
+        GridGroundTilemap tileMap, 
+        DirectionEnum directionEnum, 
+        TokenColorEnum tokenColorEnum
+    ){
 		Vector2I tilePosition = TileHelper.GetNextTilePositionByDirectection(inputPosition, directionEnum);
 		TileData tileSpotData = tileMap.GetCellTileData(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
         Vector2I atlastTileImage = tileMap.GetCellAtlasCoords(tileMap.TOKEN_PLACEMENT_LAYER, tilePosition);
 
         bool isTileDataEmpty = tileSpotData == null;
-        bool isTileImageSameAsTileDisplay = atlastTileImage == TileHelper.GetAtlasPositionFromGameTurnManager();
+        bool isTileImageSameAsTileDisplay = atlastTileImage == TileHelper.AtlasLocation(tokenColorEnum);
 
 		if (isTileDataEmpty || isTileImageSameAsTileDisplay){
 			return;
 		}
 
-		TileHelper.AddAtlasFromGameTurnManagerToTilemap(tilePosition, tileMap);
-		FlipTokens(tilePosition, tileMap, directionEnum);
+		TileHelper.AddAtlasFromGameTurnManagerToTilemap(tilePosition, tileMap, tokenColorEnum);
+
+		FlipTokens(tilePosition, tileMap, directionEnum, tokenColorEnum);
 	}
 }

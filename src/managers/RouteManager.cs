@@ -25,4 +25,9 @@ class RouteManager{
         AudioStream stream = GD.Load<AudioStream>("res://src/resources/assets/audios/"+ assetName.ToLower() +".mp3");
         return stream;
     }
+
+    public string GetSingletonAutoLoad(SingletonAutoLoadEnum singletonAutoLoadEnum){
+        string singletonName = Enum.GetName(singletonAutoLoadEnum);
+        return "/root/" + singletonName;
+    }
 }

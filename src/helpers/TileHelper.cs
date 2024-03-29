@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 
 static class TileHelper {
+    private static readonly Vector2I ATLAS_COORD_WHITE = new(1, 0);
+    private static readonly Vector2I ATLAS_COORD_BLACK = new(2, 0);
     public static Vector2I GetNextTilePositionByDirectection(Vector2I currentPosition, DirectionEnum directionEnum){
          if(directionEnum == DirectionEnum.RIGHT){
             return new Vector2I(currentPosition.X + 1, currentPosition.Y);
@@ -21,11 +25,32 @@ static class TileHelper {
         return GameTurnManager.GetInstance().GetAtlasPositionBaseOnPlayerColor();
     }
 
-    public static void AddAtlasFromGameTurnManagerToTilemap(Vector2I position, GridGroundTilemap tilemap){
+    public static void AddAtlasFromGameTurnManagerToTilemap(
+        Vector2I position, 
+        GridGroundTilemap tilemap, 
+        TokenColorEnum tokenColorEnum
+    ){
         tilemap.SetCell(
             tilemap.TOKEN_PLACEMENT_LAYER, 
             position, 
             tilemap.ADD_TILE_ACTION, 
-            GetAtlasPositionFromGameTurnManager());
+            AtlasLocation(tokenColorEnum)
+        );
+    }
+
+    public static Vector2I AtlasLocation(TokenColorEnum tokenColorEnum){
+        if(tokenColorEnum == TokenColorEnum.LIGHT_TOKEN){
+            return ATLAS_COORD_WHITE;
+        }
+        return ATLAS_COORD_BLACK;
+    }
+
+    public static CardModel GetRandomCard(){
+        CardCollection cardCollection = new();
+        List<CardModel> cards = new();
+        for (int i = 0; i < cardCollection.GetCardListOfNames().Length; i++){
+            cards.Add(cardCollection.GetCardModelByIndex(i));
+        }
+        return cards[new Random().Next(0, 5)];
     }
 }

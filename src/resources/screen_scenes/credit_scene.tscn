@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://nkda00ji8vdt"]
+[gd_scene load_steps=8 format=3 uid="uid://10nhvuqdr48v"]
 
 [ext_resource type="Script" path="res://src/controllers/CreditSceneController.cs" id="1_gxij5"]
 [ext_resource type="Texture2D" uid="uid://dgjmvb1mutyie" path="res://src/resources/assets/imgs/backgrounds/credit-background.png" id="1_naf7u"]

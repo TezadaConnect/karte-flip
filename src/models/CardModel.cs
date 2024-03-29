@@ -1,26 +1,46 @@
-using System.Collections.Generic;
-using System.Numerics;
+using System;
 using Godot;
+using Godot.Collections;
 
-class CardModel {
+public class CardModel{
     private string mCardName;
     private string mCardDescription;
     private CardAbilityEnum mCardAbility;
-    private List<DirectionEnum> mCardListFlipDirections;
-    LocalAssetFileNameEnum mCardFileNameEnum;
+    private Array<DirectionEnum> mCardListFlipDirections;
+    private LocalAssetFileNameEnum mCardFilenameEnum;
     
     public CardModel(
         string cardName, 
         string cardDescription, 
         CardAbilityEnum cardAbility, 
-        List<DirectionEnum> cardListFlipDirections,
+        Array<DirectionEnum> cardListFlipDirections,
         LocalAssetFileNameEnum cardFileNameEnum
     ){
         mCardName = cardName;
         mCardDescription = cardDescription;
         mCardListFlipDirections = cardListFlipDirections;
         mCardAbility = cardAbility;
-        mCardFileNameEnum = cardFileNameEnum;
+        mCardFilenameEnum = cardFileNameEnum;
+    }
+
+    public Dictionary Serialize(){
+        Dictionary serializeValue = new();
+        serializeValue["card_name"] = mCardName;
+        serializeValue["card_description"] = mCardDescription;
+        serializeValue["card_ability"] = (int)mCardAbility;
+        serializeValue["card_list_of_flip_direction"] = mCardListFlipDirections;
+        serializeValue["card_filename_enum"] = (int)mCardFilenameEnum;
+        return serializeValue;
+    }
+
+    public static CardModel Deserialize(Dictionary serializeValue){
+        return new CardModel(
+            (string)serializeValue["card_name"], 
+            (string)serializeValue["card_description"], 
+            (CardAbilityEnum)(int)serializeValue["card_ability"],
+            (Array<DirectionEnum>)serializeValue["card_list_of_flip_direction"],
+            (LocalAssetFileNameEnum)(int)serializeValue["card_filename_enum"]
+        );
     }
 
     public string GetCardName(){
@@ -35,11 +55,11 @@ class CardModel {
         return mCardAbility;
     }
 
-    public List<DirectionEnum> GetCardListFlipDirections(){
+    public Array<DirectionEnum> GetCardListFlipDirections(){
         return mCardListFlipDirections;
     }
 
-    public LocalAssetFileNameEnum GetCardFileNameEnum(){
-        return mCardFileNameEnum;
+    public LocalAssetFileNameEnum GetCardFilenameEnum(){
+        return mCardFilenameEnum;
     }
 }

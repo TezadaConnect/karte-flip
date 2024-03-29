@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dy0cvrkphec4g"]
+[gd_scene load_steps=5 format=3 uid="uid://cy3y3jtswsp7l"]
 
 [ext_resource type="Script" path="res://src/controllers/SplashSceneController.cs" id="1_pgbcs"]
 [ext_resource type="Texture2D" uid="uid://btqx22nydrhbj" path="res://src/resources/assets/icons/splash.png" id="2_o4kkt"]

@@ -31,9 +31,9 @@ class GameTurnManager{
     }
 
     public Vector2I GetAtlasPositionBaseOnPlayerColor(){
-        if(mPlayerTurn.IsLightToken()){
-            return ATLAS_COORD_WHITE;
-        }
+        // if(mPlayerTurn.IsLightToken()){
+        //     return ATLAS_COORD_WHITE;
+        // }
         return ATLAS_COORD_BLACK;
     }
 

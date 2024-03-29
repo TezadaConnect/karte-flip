@@ -1,84 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Godot.Collections;
 
-public partial class TurnRpcService : NetworkingService{
-    private GameTurnManager _gameTurnManager;
-    private PlayerManager _playerManager;
-    private ScoringManager _scoringManager;
-    private MainGameInterface _mainGameInterFace;
+public partial class TurnRpcService : Node{
+	private List<PlayerModel> _listOfPlayers;
+	private TokenColorEnum _currentTokenTurn;
 
     public override void _Ready(){
-        base._Ready();
-        _gameTurnManager = GameTurnManager.GetInstance();
-        _playerManager = PlayerManager.GetInstance();
-        _scoringManager = ScoringManager.GetInstance();
+        _listOfPlayers = new List<PlayerModel>(2);
+		_currentTokenTurn = TokenColorEnum.LIGHT_TOKEN;
     }
 
-    public void SetInterfaceItem(MainGameInterface mainGameInterface){
-        _mainGameInterFace = mainGameInterface;
-    }
+	/*
+	* ********************************************************
+	*	SETTERS AND GETTERS
+	* ********************************************************
+	*/
+	public TokenColorEnum CurrentTokenTurn {
+		get { return _currentTokenTurn; }
+		set { _currentTokenTurn = CurrentTokenTurn; }
+	}
+	
+	/*
+	* ********************************************************
+	*	RPC EXECUTER FUNCTIONS
+	* ********************************************************
+	*/
+	public void ExecuteStartMatch(){
+		Rpc(nameof(StartMatch));
+	}
 
-    public void OnTapTile(
-        InputEvent @event, 
-        GridGroundTilemap tilemap, 
-        bool isOpenDialog,
-        bool isMaxTiles
-    ){
-        Rpc(nameof(OnTapGroundTile), @event, tilemap, isOpenDialog, isMaxTiles);
-    }
+	public void ExecuteQuitMatch(){
+		Rpc(nameof(QuitMatch));
+	}
 
-    private void OnTapGroundTile(
-        InputEvent @event, 
-        GridGroundTilemap tilemap, 
-        bool isOpenDialog,
-        bool isMaxTiles
-    ){
+	public void ExecuteAddTokenToTilemap(Vector2I position, CardModel card){
+		Dictionary serializeValue = card.Serialize();
+		Rpc(nameof(AddTokenToTilemap), position, serializeValue);
+	}
 
-		InputEventMouseButton mouseEvent = (InputEventMouseButton)@event;
+	/*
+	* ********************************************************
+	*	RPC LOGIC
+	* ********************************************************
+	*/
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void StartMatch(){
+		List<TokenColorEnum> allTokens = new List<TokenColorEnum>{ 
+			TokenColorEnum.LIGHT_TOKEN, 
+			TokenColorEnum.DARK_TOKEN 
+		};
 
-		if(!(mouseEvent.ButtonIndex == MouseButton.Left && @event.IsReleased())){
-			return;
+		TokenColorEnum randomToken = allTokens[new Random().Next(allTokens.Count)];
+
+		if(Multiplayer.IsServer()){
+			_listOfPlayers.Add(new PlayerModel(Multiplayer.GetUniqueId(), PlayerTypeEnum.PERSON, randomToken));
+		} else {
+			TokenColorEnum tokenHolder = randomToken == TokenColorEnum.DARK_TOKEN ? TokenColorEnum.LIGHT_TOKEN : TokenColorEnum.DARK_TOKEN;
+			_listOfPlayers.Add(new PlayerModel(Multiplayer.GetUniqueId(), PlayerTypeEnum.PERSON, tokenHolder));
 		}
 
-		if(isOpenDialog){ // Halt click event
-			return;
-		}
+		RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
+	}
 
-		Vector2I tilePostion = tilemap.LocalToMap(tilemap.GetLocalMousePosition());
-		TileData groundTileData = tilemap.GetCellTileData(tilemap.GROUND_LAYER, tilePostion);
-		
-		if(groundTileData == null){
-			return;
-		} 
-			
-		TileData tokenPlacementTilemap = tilemap.GetCellTileData(
-			tilemap.TOKEN_PLACEMENT_LAYER, 
-			tilePostion
-		);
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void QuitMatch(){
+		RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
+	}
 
-		if(tokenPlacementTilemap != null){
-			return;
-		}
-
-		TileHelper.AddAtlasFromGameTurnManagerToTilemap(tilePostion, tilemap);
-
-		CardModel cardDisplay = _gameTurnManager.GetCurrentCard();
-
-		TokenFlipService.FlipTokens( // Flip nearby tokens
-			tilePostion, 
-			tilemap, 
-			cardDisplay.GetCardListFlipDirections()
-		);
-
-		tilemap.PlayTileDropAudio();
-
-		// if(isMaxTiles){
-		// 	_mainGameInterFace.EndGameResult();
-		// 	return;
-		// }
-
-		// _mainGameInterFace.SetNextTurnPLayer();
-		// _mainGameInterFace.DisplayScore();	
-		
-		// _gameTurnManager.SetPlayerTurn(_playerManager.GetPlayerTwo());
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void AddTokenToTilemap(Vector2I position, Dictionary card){
+		CardModel cardModel = CardModel.Deserialize(card);
+		GridGroundTilemap holder = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
+		TileHelper.AddAtlasFromGameTurnManagerToTilemap(position, holder, _currentTokenTurn);
+		TokenFlipService.FlipTokens(position, holder, cardModel.GetCardListFlipDirections() , _currentTokenTurn);
+		_currentTokenTurn = _currentTokenTurn == TokenColorEnum.LIGHT_TOKEN ? TokenColorEnum.DARK_TOKEN : TokenColorEnum.LIGHT_TOKEN;
 	}
 }

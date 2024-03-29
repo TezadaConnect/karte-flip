@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 public partial class LobbySceneController : Node2D{
 	private RouteManager mRoute;
 	private AudioStreamPlayer mBackgroundMusic;
+	private NetworkingService _networkingService;
 
 	public override void _Ready(){
 		mRoute = RouteManager.GetIntance();
-		GetNode<AudioableButton>("PlayGameButton").Connect(
-			"pressed",
-			new Callable(this, "OnPressedPlayAIButton")
+		_networkingService = GetNode<NetworkingService>(
+			mRoute.GetSingletonAutoLoad(SingletonAutoLoadEnum.NETWORKING_SERVICE)
 		);
-		GetNode<AudioableButton>("CreditsButton").Connect(
-			"pressed",
-			new Callable(this, "OnPressedCreditsButton")
-		);
+		GetNode<AudioableButton>("PlayGameButton").Pressed += OnPressedPlayAIButton;
+		GetNode<AudioableButton>("CreditsButton").Pressed += OnPressedCreditsButton;
+		GetNode<AudioableButton>("CreateServerButton").Pressed += OnPressedCreateServerButton;
+		GetNode<AudioableButton>("JoinServerButton").Pressed += OnPressedJoinServerButton;
+		// Playe background music
 		mBackgroundMusic = GetNode<AudioStreamPlayer>("BackgroundAudioStreamPlayer");
 		mBackgroundMusic.Play();
 	}
@@ -37,4 +38,15 @@ public partial class LobbySceneController : Node2D{
 		mRoute.MoveToScene(SceneFileNameEnum.CREDIT_SCENE, GetTree());
 	}
 
+	private async void OnPressedCreateServerButton(){
+		await Task.Delay(500);
+		// mRoute.MoveToScene(SceneFileNameEnum.CREDIT_SCENE, GetTree());
+		_networkingService.CreateAServer();
+	}
+
+	private async void OnPressedJoinServerButton(){
+		await Task.Delay(500);
+		// mRoute.MoveToScene(SceneFileNameEnum.CREDIT_SCENE, GetTree());
+		_networkingService.JoinAServer();
+	}
 }

@@ -1,4 +1,4 @@
-enum LocalAssetFileNameEnum {
+public enum LocalAssetFileNameEnum {
     // Cards and tokens
     GREEN_CARD,
     BLUE_CARD,
