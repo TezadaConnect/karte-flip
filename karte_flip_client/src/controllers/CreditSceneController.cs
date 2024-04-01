@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 
 public partial class CreditSceneController : Node2D{
+	RouteManager _routeManager;
 
 	public override void _Ready(){
 		GetNode<AudioableButton>("PressToLobby").Connect(
@@ -10,11 +11,14 @@ public partial class CreditSceneController : Node2D{
 			new Callable(this, "OnPressedGoBackToLobby")
 		);
 		GetNode<AudioStreamPlayer>("HoorayAudioStreamPlayer").Play();
+		_routeManager = GetNode<RouteManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+		);
 	}
 
 	public async void OnPressedGoBackToLobby(){
 		await Task.Delay(500);
-		RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
+		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE);
 	}
 
 }

@@ -19,6 +19,7 @@ boot_splash/minimum_display_time=2500
 
 [autoload]
 
+ROUTE_MANAGER="*res://src/managers/RouteManager.cs"
 TURN_RPC_SERVICE="*res://src/services/networking_services/TurnRpcService.cs"
 NETWORKING_SERVICE="*res://src/services/networking_services/NetworkingService.cs"
 

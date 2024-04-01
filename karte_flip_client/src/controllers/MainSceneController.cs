@@ -19,10 +19,9 @@ public partial class MainSceneController : Node {
 	// Data Models
 	private CardModel _randomCard;
 	public override void _Ready(){
-		InitSceneManagers();
+		InitAutoLoads();
 		InitUiBindings();
 		InitializeListeners();
-		_turnRpcService = GetNode<TurnRpcService>(_routeManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.TURN_RPC_SERVICE));
 		DisplayRandomCard();
 		// ComputerTapGroundTile(); // Only execute when computer is first turn 
 	}
@@ -45,8 +44,13 @@ public partial class MainSceneController : Node {
 		}
     }
 
-	private void InitSceneManagers(){
-		_routeManager = RouteManager.GetIntance();
+	private void InitAutoLoads(){
+		_routeManager = GetNode<RouteManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+		);
+		_turnRpcService = GetNode<TurnRpcService>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.TURN_RPC_SERVICE)
+		);
 		// mGameTurnManager = GameTurnManager.GetInstance();
 		// mScoringManager = ScoringManager.GetInstance();
 		// mPlayerManager = PlayerManager.GetInstance();
@@ -139,9 +143,7 @@ public partial class MainSceneController : Node {
 		Label randomCardDescription = _hudTextureRect.GetNode<Label>("RandomCardDescription");
 		Label randomCardName = _hudTextureRect.GetNode<Label>("RandomCardName");
 		TextureRect randomCardTexture = GetNode<TextureRect>("HUDTextureRect").GetNode<TextureRect>("RandomCardTextureRect");
-		randomCardTexture.Texture = _routeManager.GetLocalAssetInTexture2D(
-			_randomCard.CardFilename
-		);
+		randomCardTexture.Texture = RouteManager.GetLocalAssetInTexture2D(_randomCard.CardFilename);
 		randomCardName.Text = _randomCard.CardName;
 		randomCardDescription.Text = _randomCard.CardDescription;
 	}

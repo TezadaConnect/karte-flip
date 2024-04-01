@@ -4,7 +4,11 @@ public partial class NetworkingService : Node{
     private const int PORT = 8080;
 	private const string SERVER_ADDRESS = "127.0.0.1";
 	private Label _usernameLabel;
+	private RouteManager _routeManager;
     public override void _Ready(){
+		_routeManager = GetNode<RouteManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+		);
 		Multiplayer.ConnectedToServer += ConnectedToServer;
 		Multiplayer.ConnectionFailed += ConnectionFailed;
 		Multiplayer.ServerDisconnected += ServerDisconnected;
@@ -35,7 +39,7 @@ public partial class NetworkingService : Node{
 
 	private void ServerDisconnected(){
 		GD.Print("Server has disconnected,");
-		RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
+		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE);
 	}
 
 	/*

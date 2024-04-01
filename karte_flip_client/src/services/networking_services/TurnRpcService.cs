@@ -11,7 +11,14 @@ namespace KarteFlipClient{
 		private PlayerModel _playerTwo;
 		private GridGroundTilemap _mainTilemap;
 		private TextureRect _turnDisplayTextureRect;
-		
+		private RouteManager _routeManager;
+
+        public override void _Ready(){
+            _routeManager = GetNode<RouteManager>(
+				RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+			);
+        }
+
         /*
 		* ********************************************************
 		*	SETTERS AND GETTERS
@@ -54,10 +61,7 @@ namespace KarteFlipClient{
 				}
 				_playerTwo = playerInfoHolder;
 			}
-			RouteManager.GetIntance().MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
-			await Task.Delay(100);
-			_mainTilemap = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
-			_turnDisplayTextureRect = GetNode<TextureRect>("/root/MainScene/HUDTextureRect/TurnTextureRect");
+			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE);
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -74,6 +78,9 @@ namespace KarteFlipClient{
 		* ********************************************************
 		*/
 		private void AddTokenToTilemap(Vector2I position, Dictionary card){
+			_mainTilemap ??= GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
+			_turnDisplayTextureRect ??= GetNode<TextureRect>("/root/MainScene/HUDTextureRect/TurnTextureRect");
+			
 			CardModel cardModel = CardModel.Deserialize(card);
 			
 			TileHelper.AddAtlasToken(
@@ -89,12 +96,10 @@ namespace KarteFlipClient{
 			);
 			_currentPlayerTurn = _currentPlayerTurn.Equals(_playerOne) ? _playerTwo : _playerOne;
 
-			RouteManager route = RouteManager.GetIntance();
-
 			if(_currentPlayerTurn.TokenColor == TokenColorEnum.DARK_TOKEN){
-				_turnDisplayTextureRect.Texture = route.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
+				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
 			} else {
-				_turnDisplayTextureRect.Texture = route.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
+				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
 			}
 		}
 

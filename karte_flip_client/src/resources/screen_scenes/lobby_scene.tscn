@@ -61,9 +61,9 @@ texture = ExtResource("2_bvo1g")
 
 [node name="PlayGameButton" type="Button" parent="."]
 offset_left = 290.0
-offset_top = 644.0
+offset_top = 856.0
 offset_right = 850.0
-offset_bottom = 804.0
+offset_bottom = 1016.0
 theme = SubResource("Theme_iodhb")
 theme_type_variation = &"FlatButton"
 theme_override_colors/font_color = Color(0, 0.537255, 0.337255, 1)
@@ -76,9 +76,9 @@ script = ExtResource("7_yjlti")
 
 [node name="CreditsButton" type="Button" parent="."]
 offset_left = 290.0
-offset_top = 1234.0
+offset_top = 1050.0
 offset_right = 850.0
-offset_bottom = 1394.0
+offset_bottom = 1210.0
 theme = SubResource("Theme_iodhb")
 theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 80
@@ -101,25 +101,15 @@ fit_content = true
 autowrap_mode = 2
 metadata/_edit_lock_ = true
 
-[node name="CreateServerButton" type="Button" parent="."]
-offset_left = 290.0
-offset_top = 842.0
-offset_right = 850.0
-offset_bottom = 1002.0
-theme_override_font_sizes/font_size = 70
-text = "Create Server"
-script = ExtResource("7_yjlti")
-
 [node name="FindMatchButton" type="Button" parent="."]
 offset_left = 290.0
-offset_top = 1039.0
+offset_top = 662.0
 offset_right = 850.0
-offset_bottom = 1199.0
+offset_bottom = 822.0
 theme_override_font_sizes/font_size = 70
-text = "Join Server"
+text = "Find Match"
 script = ExtResource("7_yjlti")
 
 [connection signal="pressed" from="PlayGameButton" to="PlayGameButton" method="PlayButtonTapAudio"]
 [connection signal="pressed" from="CreditsButton" to="CreditsButton" method="PlayButtonTapAudio"]
-[connection signal="pressed" from="CreateServerButton" to="CreateServerButton" method="PlayButtonTapAudio"]
 [connection signal="pressed" from="FindMatchButton" to="FindMatchButton" method="PlayButtonTapAudio"]
