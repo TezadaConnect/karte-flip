@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ch7grx0j1cc8"
-path="res://.godot/imported/play_button_idle.png-2c4b80f26c78131505f8319905ee18bd.ctex"
+uid="uid://b3jomssoqwfok"
+path="res://.godot/imported/no_button_idle.png-6f7cc07e4d98d404c6c783aeda1cb8bb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/resources/assets/imgs/buttons/play_button_idle.png"
-dest_files=["res://.godot/imported/play_button_idle.png-2c4b80f26c78131505f8319905ee18bd.ctex"]
+source_file="res://src/resources/assets/imgs/buttons/no_button_idle.png"
+dest_files=["res://.godot/imported/no_button_idle.png-6f7cc07e4d98d404c6c783aeda1cb8bb.ctex"]
 
 [params]
 

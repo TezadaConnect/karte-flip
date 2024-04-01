@@ -1,28 +1,30 @@
-[gd_scene load_steps=19 format=3 uid="uid://b130bctvgo74q"]
+[gd_scene load_steps=25 format=3 uid="uid://b130bctvgo74q"]
 
 [ext_resource type="Script" path="res://src/controllers/LobbySceneController.cs" id="1_id37g"]
 [ext_resource type="Texture2D" uid="uid://b6u7ohhir7y8u" path="res://src/resources/assets/imgs/backgrounds/lobby_brackground.png" id="2_bvo1g"]
 [ext_resource type="AudioStream" uid="uid://dcp8ctgv5o6dq" path="res://src/resources/assets/audios/background_audio.mp3" id="2_t04h4"]
-[ext_resource type="Texture2D" uid="uid://ch7grx0j1cc8" path="res://src/resources/assets/imgs/buttons/play_button_idle.png" id="4_1ojco"]
-[ext_resource type="Texture2D" uid="uid://cijqo81nn1l8u" path="res://src/resources/assets/imgs/buttons/play_button_pressed.png" id="5_oip52"]
+[ext_resource type="Texture2D" uid="uid://fedtik8ky4y8" path="res://src/resources/assets/imgs/buttons/p2c_button_idle.png" id="4_hno8d"]
+[ext_resource type="Texture2D" uid="uid://cxr3j8tddbw72" path="res://src/resources/assets/imgs/buttons/p2c_button_pressed.png" id="5_cxldr"]
 [ext_resource type="Texture2D" uid="uid://dbvte43xwydx" path="res://src/resources/assets/imgs/buttons/credit_button_idle.png" id="6_mto1x"]
 [ext_resource type="Texture2D" uid="uid://cjq3efndn0x2a" path="res://src/resources/assets/imgs/buttons/credit_button_pressed.png" id="7_l6hii"]
 [ext_resource type="Script" path="res://src/custom_node/AudioableButton.cs" id="7_yjlti"]
 [ext_resource type="FontFile" uid="uid://bsgtigrsshxwb" path="res://src/resources/assets/fonts/Inter/static/Inter-ExtraBold.ttf" id="8_kwips"]
+[ext_resource type="Texture2D" uid="uid://bf1ffgsmc4260" path="res://src/resources/assets/imgs/buttons/p2p_button_idle.png" id="10_mdctt"]
+[ext_resource type="Texture2D" uid="uid://byy3gmapf7720" path="res://src/resources/assets/imgs/buttons/p2p_button_pressed.png" id="11_s25e1"]
 
 [sub_resource type="Theme" id="Theme_iodhb"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsbcq"]
-texture = ExtResource("4_1ojco")
+texture = ExtResource("4_hno8d")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cc88g"]
-texture = ExtResource("5_oip52")
+texture = ExtResource("5_cxldr")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wkylh"]
-texture = ExtResource("5_oip52")
+texture = ExtResource("5_cxldr")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uynee"]
-texture = ExtResource("5_oip52")
+texture = ExtResource("5_cxldr")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_is18f"]
 texture = ExtResource("6_mto1x")
@@ -35,6 +37,18 @@ texture = ExtResource("7_l6hii")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pioqh"]
 texture = ExtResource("7_l6hii")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_trprc"]
+texture = ExtResource("10_mdctt")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qw5lt"]
+texture = ExtResource("11_s25e1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aaewj"]
+texture = ExtResource("11_s25e1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_26hs6"]
+texture = ExtResource("11_s25e1")
 
 [node name="LobbyScene" type="Node2D"]
 script = ExtResource("1_id37g")
@@ -107,7 +121,10 @@ offset_top = 662.0
 offset_right = 850.0
 offset_bottom = 822.0
 theme_override_font_sizes/font_size = 70
-text = "Find Match"
+theme_override_styles/normal = SubResource("StyleBoxTexture_trprc")
+theme_override_styles/hover = SubResource("StyleBoxTexture_qw5lt")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_aaewj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_26hs6")
 script = ExtResource("7_yjlti")
 
 [connection signal="pressed" from="PlayGameButton" to="PlayGameButton" method="PlayButtonTapAudio"]

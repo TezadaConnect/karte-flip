@@ -5,7 +5,7 @@ using Godot;
 public partial class RouteManager: Node{
 
     public async void MoveToScene(SceneFilenameEnum filenameEnum, string message){
-        string sceneName = Enum.GetName(filenameEnum);
+        GetTree().CurrentScene.Free();
         // Changing to loading scene
         string loadingScenePath = "res://src/resources/screen_scenes/loading_scene.tscn";
         PackedScene loadingScenePack = ResourceLoader.Load<PackedScene>(loadingScenePath);
@@ -15,6 +15,7 @@ public partial class RouteManager: Node{
         GetTree().Root.AddChild(loadingSceneController);
         GetTree().CurrentScene = loadingSceneController;
         // Next Scene
+        string sceneName = Enum.GetName(filenameEnum);
         string NextScenePath = "res://src/resources/screen_scenes/" + sceneName.ToLower() + ".tscn";
         PackedScene nextScene = ResourceLoader.Load<PackedScene>(NextScenePath);
         await Task.Delay(2000);
