@@ -30,12 +30,12 @@ public partial class LobbySceneController : Node2D{
     private async void OnPressedPlayAIButton(){
 		await Task.Delay(500);
 		GameTurnManager.GetInstance().SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
-		_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE);
+		_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE, null);
 	}
 
 	private async void OnPressedCreditsButton(){
 		await Task.Delay(500);
-		_routeManager.MoveToScene(SceneFilenameEnum.CREDIT_SCENE);
+		_routeManager.MoveToScene(SceneFilenameEnum.CREDIT_SCENE, "Loading credits, please wait.");
 	}
 
 	private async void OnPressedFindMatchButton(){

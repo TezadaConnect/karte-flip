@@ -9,6 +9,6 @@ public partial class SplashSceneController : Node2D{
 			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
 		);
 		await Task.Delay(2500);
-		routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE);
+		routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, null);
 	}
 }

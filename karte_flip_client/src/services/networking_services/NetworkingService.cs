@@ -39,7 +39,7 @@ public partial class NetworkingService : Node{
 
 	private void ServerDisconnected(){
 		GD.Print("Server has disconnected,");
-		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE);
+		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Diconneted from server.");
 	}
 
 	/*

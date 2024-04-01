@@ -49,7 +49,7 @@ namespace KarteFlipClient{
 		* ********************************************************
 		*/
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private async void StartMatch(Array<Dictionary> players){ // invoked by: server
+		private void StartMatch(Array<Dictionary> players){ // invoked by: server
 			foreach(Dictionary element in players.ToList()){
 				PlayerModel playerInfoHolder = PlayerModel.Deserialize(element);
 				if(playerInfoHolder.TokenColor == TokenColorEnum.LIGHT_TOKEN){
@@ -61,7 +61,7 @@ namespace KarteFlipClient{
 				}
 				_playerTwo = playerInfoHolder;
 			}
-			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE);
+			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE, "Starting match, please wait.");
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

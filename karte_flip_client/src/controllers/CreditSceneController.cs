@@ -18,7 +18,7 @@ public partial class CreditSceneController : Node2D{
 
 	public async void OnPressedGoBackToLobby(){
 		await Task.Delay(500);
-		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE);
+		_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Loading lobby, please wait.");
 	}
 
 }

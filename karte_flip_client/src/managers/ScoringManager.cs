@@ -5,7 +5,6 @@ class ScoringManager {
 
     private int mBlackScore;
     private int mWhiteScore;
-
     private static ScoringManager mScoringManager;
 
     public ScoringManager(){

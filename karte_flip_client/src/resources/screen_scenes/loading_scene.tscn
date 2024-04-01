@@ -47,7 +47,6 @@ offset_right = 1123.0
 offset_bottom = 736.0
 theme_override_fonts/font = ExtResource("1_4irq4")
 theme_override_font_sizes/font_size = 55
-text = "Please Wait Loading Game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
