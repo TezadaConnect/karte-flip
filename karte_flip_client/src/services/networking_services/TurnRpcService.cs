@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
 
@@ -49,7 +48,7 @@ namespace KarteFlipClient{
 		* ********************************************************
 		*/
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void StartMatch(Array<Dictionary> players){ // invoked by: server
+		private void StartMatch(Array<Dictionary> players){ // client function
 			foreach(Dictionary element in players.ToList()){
 				PlayerModel playerInfoHolder = PlayerModel.Deserialize(element);
 				if(playerInfoHolder.TokenColor == TokenColorEnum.LIGHT_TOKEN){
@@ -65,12 +64,18 @@ namespace KarteFlipClient{
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void RecieveDataToSpecificClient(Vector2I position, Dictionary card){ // invoked by: server
+		private void RecieveDataToSpecificClient(Vector2I position, Dictionary card){ // client function
 			AddTokenToTilemap(position, card);	
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void ProcessTurnDataOnServer(Vector2I position, Dictionary card){} // invoked by: local
+		private void DisconnectClient(){ // client function
+			Multiplayer.MultiplayerPeer = null;
+			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Your opponent leave the match.");
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void ProcessTurnDataOnServer(Vector2I position, Dictionary card){} // server function
 
 		/*
 		* ********************************************************

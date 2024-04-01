@@ -4,8 +4,8 @@ using Godot;
 using KarteFlipClient;
 
 static class TileHelper {
-    private static readonly Vector2I ATLAS_COORD_WHITE = new(1, 0);
-    private static readonly Vector2I ATLAS_COORD_BLACK = new(2, 0);
+    public static readonly Vector2I ATLAS_COORD_WHITE = new(1, 0);
+    public static readonly Vector2I ATLAS_COORD_BLACK = new(2, 0);
     public static Vector2I GetNextTilePositionByDirectection(Vector2I currentPosition, DirectionEnum directionEnum){
          if(directionEnum == DirectionEnum.RIGHT){
             return new Vector2I(currentPosition.X + 1, currentPosition.Y);

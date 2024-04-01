@@ -1,4 +1,4 @@
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using KarteFlipClient;
@@ -6,18 +6,22 @@ using KarteFlipClient;
 public partial class MainSceneController : Node {
 	// Managers
 	private RouteManager _routeManager;
-	// private GameTurnManager mGameTurnManager;
-	// private ScoringManager mScoringManager;
-	// private PlayerManager mPlayerManager;
+	
 	//Rpc
 	private TurnRpcService _turnRpcService;
+	
 	// UI NODE
 	private GridGroundTilemap mTileMap;
 	private TextureRect _hudTextureRect;
+	
 	// Dialogues
-	private TextureRect mDialogTextureRect;
+	private enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE }
+	private Dialogs _currentDialogue;
+	private DisplayDialog _displayDialog;
+
 	// Data Models
 	private CardModel _randomCard;
+
 	public override void _Ready(){
 		InitAutoLoads();
 		InitUiBindings();
@@ -34,6 +38,10 @@ public partial class MainSceneController : Node {
 		// if(IsMaxTiles()){
 		// 	return;
 		// }
+
+		if(!_displayDialog.IsDialogHidden()){
+			return;
+		}
 
 		if(@event is InputEventMouseButton){
 
@@ -61,15 +69,17 @@ public partial class MainSceneController : Node {
 		mTileMap = GetNode<GridGroundTilemap>("GridGroundTilemap");
 		_hudTextureRect = GetNode<TextureRect>("HUDTextureRect");
 		// Dialogues
-		mDialogTextureRect = GetNode<TextureRect>("DialogueBackgroundTextureRect");
+		_displayDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
+		AddChild(_displayDialog);
+		_displayDialog.SetDialogType(DialogType.TWO_BUTTON);
+		_displayDialog.GetConfirmButton().Pressed += OnPressedDialogConfirmButton;
+		_displayDialog.GetCancelButton().Pressed += OnPressedDialogCancelButton;
 	}
 
 	private void InitializeListeners(){
 		//Button Listeners
-		// GetNode<Button>("QuitButton").Pressed += OnPressedQuitButton;
-		// GetNode<Button>("RestartButton").Pressed += OnPressedRestartButton;
-		// mDialogTextureRect.GetNode<Button>("NewGameButton").Pressed += OnPressedNewGameButton;
-		// mDialogTextureRect.GetNode<Button>("CloseDialogButton").Pressed += OnPressedCloseDialogButton;
+		GetNode<Button>("QuitButton").Pressed += OnPressedQuitButton;
+		GetNode<Button>("RestartButton").Pressed += OnPressedRestartButton;
 	}
 
 	private void OnTapGroundTile(InputEvent @event){
@@ -138,6 +148,14 @@ public partial class MainSceneController : Node {
 		// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
 	// }
 
+	// private void DisplayScore(){
+	// 	mScoringManager.CalculateScore(mTileMap);
+	// 	Label blackScoreNodeHolder = mHUDTextureRect.GetNode<Label>("BlackScoreLabel"); 
+	// 	Label whiteScoreNodeHolder = mHUDTextureRect.GetNode<Label>("WhiteScoreLabel"); 
+	// 	blackScoreNodeHolder.Text = mScoringManager.GetBlackScore() + "x";
+	// 	whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
+	// }
+
 	private void DisplayRandomCard(){
 		SetRandomCard();
 		Label randomCardDescription = _hudTextureRect.GetNode<Label>("RandomCardDescription");
@@ -148,43 +166,38 @@ public partial class MainSceneController : Node {
 		randomCardDescription.Text = _randomCard.CardDescription;
 	}
 
-	// private void DisplayScore(){
-	// 	mScoringManager.CalculateScore(mTileMap);
-	// 	Label blackScoreNodeHolder = mHUDTextureRect.GetNode<Label>("BlackScoreLabel"); 
-	// 	Label whiteScoreNodeHolder = mHUDTextureRect.GetNode<Label>("WhiteScoreLabel"); 
-	// 	blackScoreNodeHolder.Text = mScoringManager.GetBlackScore() + "x";
-	// 	whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
-	// }
+	private void OnPressedRestartButton(){
+		_displayDialog.ShowDialog("Are you sure about restarting the game?");
+		_currentDialogue = Dialogs.RESTART_DIALOGUE;
+	}
 
-	// private async void OnPressedQuitButton(){
-	// 	ResetScoringAndTurnAndPlayerManagers();
-	// 	await Task.Delay(500);
-	// 	mRouteManager.MoveToScene(SceneFileNameEnum.LOBBY_SCENE, GetTree());
-	// }
+	private void OnPressedQuitButton(){
+		_displayDialog.ShowDialog("Are you sure about quiting game?");
+		_currentDialogue = Dialogs.QUIT_DIALOGUE;
+	}
 
-	// private void OnPressedNewGameButton(){
-	// 	mDialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").PlayBackwards("Intro");
-	// 	mTileMap.ClearLayer(mTileMap.TOKEN_PLACEMENT_LAYER);
-	// 	ResetScoringAndTurnAndPlayerManagers();
-	// 	DisplayScore();
-	// 	DisplayCardColorForTheTurn();
-	// 	ComputerTapGroundTile();
-	// 	// mRouteManager.MoveToScene(SceneFileNameEnum.MAIN_SCENE, GetTree());
-	// }
+	private async void OnPressedDialogConfirmButton(){
+		if(Dialogs.RESTART_DIALOGUE == _currentDialogue){
+			_displayDialog.CloseDialog();
+		}
 
-	// private void OnPressedCloseDialogButton(){
-	// 	mDialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").PlayBackwards("Intro");
-	// }
+		if(Dialogs.QUIT_DIALOGUE == _currentDialogue){
+			Multiplayer.MultiplayerPeer = null;
+			await Task.Delay(500);
+			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Leaving game, please wait.");
+		}
+	}
+
+	private void OnPressedDialogCancelButton(){
+		_displayDialog.CloseDialog();
+	}
+
 
 	// private void ResetScoringAndTurnAndPlayerManagers(){
 	// 	mScoringManager.ResetScore();
 	// 	mGameTurnManager.ResetTurn();
 	// 	mPlayerManager.ResetPlayers();
 	// 	mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
-	// }
-
-	// private void OnPressedRestartButton(){
-	// 	ShowDialog("Are you sure you want to restart the game?");
 	// }
 
 	// private void ShowDialog(string message){

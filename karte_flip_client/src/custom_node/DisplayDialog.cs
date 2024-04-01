@@ -1,3 +1,4 @@
+using Godot.Collections;
 using System.Threading.Tasks;
 using Godot;
 
@@ -65,6 +66,6 @@ public partial class DisplayDialog : Node2D{
 	}
 
 	public bool IsDialogHidden(){
-		return _dialogTextureRect.Scale.X == 0 && _dialogTextureRect.Scale.Y == 0;
+		return _dialogTextureRect.Scale.X != 1 && _dialogTextureRect.Scale.Y != 1;
 	}
 }

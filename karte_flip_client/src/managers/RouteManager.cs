@@ -38,4 +38,11 @@ public partial class RouteManager: Node{
         string singletonName = Enum.GetName(singletonAutoLoadEnum);
         return "/root/" + singletonName;
     }
+
+    public static PackedScene GetDrawables(SceneFilenameEnum filenameEnum){
+        string sceneName = Enum.GetName(filenameEnum);
+        string packedScenePatch = "res://src/resources/drawables/" + sceneName.ToLower() + ".tscn";
+        PackedScene packedScene = ResourceLoader.Load<PackedScene>(packedScenePatch);
+        return packedScene;
+    }
 }

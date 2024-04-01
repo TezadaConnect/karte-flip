@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 class ScoringManager {
@@ -22,7 +21,6 @@ class ScoringManager {
             tilemap.TOKEN_PLACEMENT_LAYER
         );
 
-        int whiteCount = 0;
         int blackCount = 0;
         
         foreach (Vector2I element in arrayOfTilePositionAtTokenLayer){
@@ -30,15 +28,13 @@ class ScoringManager {
                 tilemap.TOKEN_PLACEMENT_LAYER, element
             );
 
-            if(GameTurnManager.GetInstance().GetBlackAtlas() == tileAtlas){
+            if(TileHelper.ATLAS_COORD_BLACK == tileAtlas){
                 blackCount++;
-            } else {
-                whiteCount++;
             }
         }
 
-        mWhiteScore = whiteCount;
         mBlackScore = blackCount;
+        mWhiteScore = arrayOfTilePositionAtTokenLayer.Count - blackCount;
     }
 
     public int GetWhiteScore(){

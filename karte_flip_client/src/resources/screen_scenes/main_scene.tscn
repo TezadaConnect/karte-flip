@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://citm8bcblt0nx"]
+[gd_scene load_steps=20 format=3 uid="uid://citm8bcblt0nx"]
 
 [ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
@@ -13,14 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://s3jixk5f4pv7" path="res://src/resources/assets/imgs/cards_and_tokens/white_token.png" id="9_2srwh"]
 [ext_resource type="Texture2D" uid="uid://b1k8p55b00s1c" path="res://src/resources/assets/imgs/cards_and_tokens/black_token.png" id="10_5oyvp"]
 [ext_resource type="FontFile" uid="uid://bx80achq45o1p" path="res://src/resources/assets/fonts/Inter/static/Inter-Medium.ttf" id="10_hfl8f"]
-[ext_resource type="Texture2D" uid="uid://r6fa7h06ja53" path="res://src/resources/assets/imgs/backgrounds/dialog_background.png" id="12_mfwqg"]
-[ext_resource type="Texture2D" uid="uid://bvbyxhsxwsx8r" path="res://src/resources/assets/imgs/boxes/dialog_box.png" id="13_4cgb4"]
-[ext_resource type="Texture2D" uid="uid://cii6tkmovf4ty" path="res://src/resources/assets/imgs/buttons/new_game_button_idle.png" id="14_2lb4p"]
-[ext_resource type="Texture2D" uid="uid://btcckw4v1rc7w" path="res://src/resources/assets/imgs/buttons/close-button_idle.png" id="14_h88i1"]
-[ext_resource type="AudioStream" uid="uid://b1lpqhgf2d3h8" path="res://src/resources/assets/audios/win_audio.mp3" id="14_l15pk"]
-[ext_resource type="Texture2D" uid="uid://de0ub6g0s67tu" path="res://src/resources/assets/imgs/buttons/close_button_pressed.png" id="15_cksbb"]
-[ext_resource type="AudioStream" uid="uid://drg7ko3okqxx1" path="res://src/resources/assets/audios/lose_audio.mp3" id="15_ijgtg"]
-[ext_resource type="Texture2D" uid="uid://b2c2kacf07vhf" path="res://src/resources/assets/imgs/buttons/new_game_button_pressed.png" id="15_ym7g7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_15p5m"]
 texture = ExtResource("2_wiwdk")
@@ -51,50 +43,6 @@ texture = ExtResource("6_wdkx2")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eksjg"]
 texture = ExtResource("6_wdkx2")
-
-[sub_resource type="Animation" id="Animation_pufj2"]
-resource_name = "Intro"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1.51572, 1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05), Vector2(1.1, 1.1), Vector2(1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rq0wj"]
-_data = {
-"Intro": SubResource("Animation_pufj2")
-}
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2imsk"]
-texture = ExtResource("14_h88i1")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_im4w6"]
-texture = ExtResource("15_cksbb")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c3wvh"]
-texture = ExtResource("15_cksbb")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_abn35"]
-texture = ExtResource("15_cksbb")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qt3j"]
-texture = ExtResource("14_2lb4p")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_usn1y"]
-texture = ExtResource("15_ym7g7")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1att7"]
-texture = ExtResource("15_ym7g7")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_shjuf"]
-texture = ExtResource("15_ym7g7")
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_h78po")
@@ -282,74 +230,5 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("10_5oyvp")
 metadata/_edit_lock_ = true
 
-[node name="DialogueBackgroundTextureRect" type="TextureRect" parent="."]
-offset_left = -55.0
-offset_top = -76.0
-offset_right = 1148.0
-offset_bottom = 2036.0
-scale = Vector2(1e-05, 1e-05)
-pivot_offset = Vector2(600, 1056)
-texture = ExtResource("12_mfwqg")
-metadata/_edit_lock_ = true
-
-[node name="PopupAnimation" type="AnimationPlayer" parent="DialogueBackgroundTextureRect"]
-libraries = {
-"": SubResource("AnimationLibrary_rq0wj")
-}
-
-[node name="WinAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
-stream = ExtResource("14_l15pk")
-
-[node name="LoseAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
-stream = ExtResource("15_ijgtg")
-
-[node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 680.0
-offset_right = 1214.0
-offset_bottom = 1345.0
-texture = ExtResource("13_4cgb4")
-metadata/_edit_lock_ = true
-
-[node name="MessageLabel" type="Label" parent="DialogueBackgroundTextureRect"]
-layout_mode = 0
-offset_left = 123.0
-offset_top = 701.0
-offset_right = 1111.0
-offset_bottom = 1342.0
-theme_override_fonts/font = ExtResource("7_u0eu0")
-theme_override_font_sizes/font_size = 70
-text = "Match Is Over!"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="CloseDialogButton" type="Button" parent="DialogueBackgroundTextureRect"]
-layout_mode = 0
-offset_left = 719.0
-offset_top = 1256.0
-offset_right = 969.0
-offset_bottom = 1386.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_2imsk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_im4w6")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_c3wvh")
-theme_override_styles/focus = SubResource("StyleBoxTexture_abn35")
-script = ExtResource("8_addye")
-
-[node name="NewGameButton" type="Button" parent="DialogueBackgroundTextureRect"]
-layout_mode = 0
-offset_left = 266.0
-offset_top = 1257.0
-offset_right = 666.0
-offset_bottom = 1387.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_6qt3j")
-theme_override_styles/hover = SubResource("StyleBoxTexture_usn1y")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_1att7")
-theme_override_styles/focus = SubResource("StyleBoxTexture_shjuf")
-script = ExtResource("8_addye")
-
 [connection signal="pressed" from="RestartButton" to="RestartButton" method="PlayButtonTapAudio"]
 [connection signal="pressed" from="QuitButton" to="QuitButton" method="PlayButtonTapAudio"]
-[connection signal="pressed" from="DialogueBackgroundTextureRect/CloseDialogButton" to="DialogueBackgroundTextureRect/CloseDialogButton" method="PlayButtonTapAudio"]
-[connection signal="pressed" from="DialogueBackgroundTextureRect/NewGameButton" to="DialogueBackgroundTextureRect/NewGameButton" method="PlayButtonTapAudio"]

@@ -5,6 +5,7 @@ public partial class LobbySceneController : Node2D{
 	private RouteManager _routeManager;
 	private AudioStreamPlayer mBackgroundMusic;
 	private NetworkingService _networkingService;
+	private DisplayDialog _displayDialog;
 
 	public override void _Ready(){
 		_routeManager = GetNode<RouteManager>(
@@ -13,12 +14,19 @@ public partial class LobbySceneController : Node2D{
 		_networkingService = GetNode<NetworkingService>(
 			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.NETWORKING_SERVICE)
 		);
+
 		GetNode<AudioableButton>("PlayGameButton").Pressed += OnPressedPlayAIButton;
 		GetNode<AudioableButton>("CreditsButton").Pressed += OnPressedCreditsButton;
 		GetNode<AudioableButton>("FindMatchButton").Pressed += OnPressedFindMatchButton;
 		// Playe background music
 		mBackgroundMusic = GetNode<AudioStreamPlayer>("BackgroundAudioStreamPlayer");
 		mBackgroundMusic.Play();
+
+		_displayDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
+		AddChild(_displayDialog);
+		_displayDialog.SetDialogType(DialogType.ONE_BUTTON);
+		_displayDialog.GetConfirmButton().Pressed += CancelFindingMatch;
+		_displayDialog.GetConfirmButton().Text = "Cancel";
 	}
 
     public override void _Process(double delta){
@@ -40,6 +48,12 @@ public partial class LobbySceneController : Node2D{
 
 	private async void OnPressedFindMatchButton(){
 		await Task.Delay(500);
+		_displayDialog.ShowDialog("Finding Match");
 		_networkingService.JoinAServer();
+	}
+
+	private void CancelFindingMatch(){
+		Multiplayer.MultiplayerPeer = null;
+		_displayDialog.CloseDialog();
 	}
 }
