@@ -36,8 +36,10 @@ public partial class MainServerController : Node{
 	private void PeerConnected(long id){
 		string userID = id.ToString();
 		GD.Print("User: " + userID + " connected to the server");
-		_matchHandlerService.AddClientRecord(id);
-		_matchHandlerService.FindMatchForClient(id);
+		if(userID != null){
+			_matchHandlerService.AddClientRecord(id);
+			_matchHandlerService.FindMatchForClient(id);
+		}
 	}
 
 	private void PeerDisconnected(long id){

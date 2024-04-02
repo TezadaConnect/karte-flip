@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Godot.Collections;
-// using Godot.Collections;
 
 namespace KarteFlipServer{
     public partial class TurnRpcService: Node{
@@ -49,10 +48,13 @@ namespace KarteFlipServer{
         public void RemoveClientRecordWhenDisconnected(long clientID){
             _clientIDRecord.Remove(clientID);
             foreach (MatchRecordModel item in _matchList.ToList()){
-                foreach (long playerID in item.PlayersID.ToList()){
-                    if(playerID == clientID){
+                List<long> playersIDList = item.PlayersID.ToList();
+                foreach (long playerID in playersIDList){
+                    if(playerID.Equals(clientID)){
                         _matchList.Remove(item);
+                        continue;
                     }
+                    RpcId(playerID, nameof(DisconnectClient));
                 }
             }
         }
@@ -87,11 +89,6 @@ namespace KarteFlipServer{
         }
 
         [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-        public void StartMatch(Array<Dictionary> players){
-            GD.Print("Starting Match");
-        }    
-
-        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
         private void ProcessTurnDataOnServer(Vector2I position, Dictionary card){
             long senderID = Multiplayer.GetRemoteSenderId();
     
@@ -106,7 +103,13 @@ namespace KarteFlipServer{
             }
         }
         
-        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
         private void RecieveDataToSpecificClient(Vector2I position, Dictionary card){}
+
+        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+        private void DisconnectClient(){}
+
+        [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+        public void StartMatch(Array<Dictionary> players){}  
     }
 }
