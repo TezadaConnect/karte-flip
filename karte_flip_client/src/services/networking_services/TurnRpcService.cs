@@ -6,14 +6,11 @@ using Godot.Collections;
 namespace KarteFlipClient{
 	public partial class TurnRpcService : Node{
 		// Player Information
-		private PlayerModel _currentPlayerTurn;
-		private PlayerModel _playerOne;
-		private PlayerModel _playerTwo;
-		// U
-		private GridGroundTilemap _mainTilemap;
-		private TextureRect _turnDisplayTextureRect;
+		private PlayerManager _playerManager;
 		private RouteManager _routeManager;
 		private ScoringManager _scoringManager;
+		private GridGroundTilemap _mainTilemap;
+		private TextureRect _turnDisplayTextureRect;
 
         public override void _Ready(){
             _routeManager = GetNode<RouteManager>(
@@ -21,6 +18,9 @@ namespace KarteFlipClient{
 			);
 			_scoringManager = GetNode<ScoringManager>(
 				RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.SCORING_MANAGER)
+			);
+			_playerManager = GetNode<PlayerManager>(
+				RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.PLAYER_MANAGER)
 			);
         }
 
@@ -38,6 +38,7 @@ namespace KarteFlipClient{
 		* ********************************************************
 		*/
 		public void ExecuteQuitMatch(){
+			Multiplayer.MultiplayerPeer.Close();
 			Multiplayer.MultiplayerPeer = null;
 		}
 
@@ -56,15 +57,15 @@ namespace KarteFlipClient{
 			foreach(Dictionary element in players.ToList()){
 				PlayerModel playerInfoHolder = PlayerModel.Deserialize(element);
 				if(playerInfoHolder.TokenColor == TokenColorEnum.LIGHT_TOKEN){
-					_currentPlayerTurn = playerInfoHolder;
+					_playerManager.CurrentPlayerTurn = playerInfoHolder;
 				}
 				if(playerInfoHolder.PlayerID == Multiplayer.GetUniqueId()){
-					_playerOne = playerInfoHolder;
+					_playerManager.PlayerOne = playerInfoHolder;
 					continue;
 				}
-				_playerTwo = playerInfoHolder;
+				_playerManager.PlayerTwo = playerInfoHolder;
 			}
-			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE, "Starting match, please wait.");
+			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_VS_PLAYER_SCENE, "Starting match, please wait.");
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -74,7 +75,7 @@ namespace KarteFlipClient{
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 		private void DisconnectClient(){ // client function
-			Multiplayer.MultiplayerPeer = null;
+			ExecuteQuitMatch();
 			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Your opponent leave the match.");
 		}
 
@@ -95,17 +96,19 @@ namespace KarteFlipClient{
 			TileHelper.AddAtlasToken(
 				position, 
 				_mainTilemap, 
-				_currentPlayerTurn.TokenColor
+				_playerManager.CurrentPlayerTurn.TokenColor
 			);
 			TokenFlipService.FlipTokens(
 				position, 
 				_mainTilemap, 
 				cardModel.CardListFlipDirections , 
-				_currentPlayerTurn.TokenColor
+				_playerManager.CurrentPlayerTurn.TokenColor
 			);
-			_currentPlayerTurn = _currentPlayerTurn.Equals(_playerOne) ? _playerTwo : _playerOne;
+			_playerManager.CurrentPlayerTurn = _playerManager.CurrentPlayerTurn.Equals(
+				_playerManager.PlayerOne
+			) ? _playerManager.PlayerTwo : _playerManager.PlayerOne;
 
-			if(_currentPlayerTurn.TokenColor == TokenColorEnum.DARK_TOKEN){
+			if(_playerManager.CurrentPlayerTurn.TokenColor == TokenColorEnum.DARK_TOKEN){
 				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
 			} else {
 				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
@@ -115,16 +118,10 @@ namespace KarteFlipClient{
 		}
 
 		public bool IsMyTurn(){
-			if(_currentPlayerTurn.PlayerID == Multiplayer.GetUniqueId()){
+			if(_playerManager.CurrentPlayerTurn.PlayerID == Multiplayer.GetUniqueId()){
 				return true;
 			}
 			return false;
-		}
-
-		public bool IsMaxTiles(){
-			_mainTilemap ??= GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
-			List<Vector2I> allTileMapVector = _mainTilemap.GetUsedCells(_mainTilemap.TOKEN_PLACEMENT_LAYER).ToList();
-			return allTileMapVector.Count >= GridGroundTilemap.BOARD_TILE_COUNT;
 		}
 	}
 }

@@ -1,6 +1,10 @@
 public enum SingletonAutoLoadEnum{
-    ROUTE_MANAGER,
     NETWORKING_SERVICE,
     TURN_RPC_SERVICE,
-    SCORING_MANAGER
+    
+    //Managers
+    ROUTE_MANAGER,
+    SCORING_MANAGER,
+    PLAYER_MANAGER,
+    TURN_COMPUTER_MANAGER
 }

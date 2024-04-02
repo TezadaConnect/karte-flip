@@ -1,67 +1,30 @@
-using System.Threading.Tasks;
 using Godot;
-using KarteFlipClient;
 
 public partial class MainSceneController : Node {
 	// Managers
-	private RouteManager _routeManager;
-	
-	//Rpc
-	private TurnRpcService _turnRpcService;
+	protected RouteManager _routeManager;
 	
 	// UI NODE
-	private GridGroundTilemap mTileMap;
-	private TextureRect _hudTextureRect;
+	protected GridGroundTilemap _tilemap;
+	protected TextureRect _hudTextureRect;
 	
 	// Dialogues
-	private enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE }
-	private Dialogs _currentDialogue;
-	private DisplayDialog _displayDialog;
+	protected enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE, DISABLE_DIALOGUE }
+	protected Dialogs _currentDialogue;
+	protected DisplayDialog _displayDialog;
 
 	// Data Models
-	private CardModel _randomCard;
+	protected CardModel _randomCard;
 
-	public override void _Ready(){
-		InitAutoLoads();
-		InitUiBindings();
-		InitializeListeners();
-		DisplayRandomCard();
-		// ComputerTapGroundTile(); // Only execute when computer is first turn 
+	protected void InitializeListeners(){
+		//Button Listeners
+		GetNode<Button>("QuitButton").Pressed += OnPressedQuitButton;
+		GetNode<Button>("RestartButton").Pressed += OnPressedRestartButton;
 	}
 
-    public override void _Input(InputEvent @event){
-		if(_turnRpcService.IsMaxTiles()){
-			return;
-		}
-
-		if(!_displayDialog.IsDialogHidden()){
-			return;
-		}
-
-		if(@event is InputEventMouseButton){
-
-			if(_turnRpcService.IsMyTurn()){
-				OnTapGroundTile(@event);
-			}
-			// ComputerTapGroundTile();
-		}
-    }
-
-	private void InitAutoLoads(){
-		_routeManager = GetNode<RouteManager>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
-		);
-		_turnRpcService = GetNode<TurnRpcService>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.TURN_RPC_SERVICE)
-		);
-		// mGameTurnManager = GameTurnManager.GetInstance();
-		// mScoringManager = ScoringManager.GetInstance();
-		// mPlayerManager = PlayerManager.GetInstance();
-	}
-
-	private void InitUiBindings(){
+	protected void InitUiBindings(){
 		// Nodes
-		mTileMap = GetNode<GridGroundTilemap>("GridGroundTilemap");
+		_tilemap = GetNode<GridGroundTilemap>("GridGroundTilemap");
 		_hudTextureRect = GetNode<TextureRect>("HUDTextureRect");
 		// Dialogues
 		_displayDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
@@ -71,51 +34,27 @@ public partial class MainSceneController : Node {
 		_displayDialog.GetCancelButton().Pressed += OnPressedDialogCancelButton;
 	}
 
-	private void InitializeListeners(){
-		//Button Listeners
-		GetNode<Button>("QuitButton").Pressed += OnPressedQuitButton;
-		GetNode<Button>("RestartButton").Pressed += OnPressedRestartButton;
+	protected virtual void OnPressedDialogConfirmButton(){}
+
+	protected virtual void OnPressedRestartButton(){
+		_displayDialog.ShowDialog("Are you sure about restarting the game?");
+		_currentDialogue = Dialogs.RESTART_DIALOGUE;
 	}
 
-	private void OnTapGroundTile(InputEvent @event){
-
-		InputEventMouseButton mouseEvent = (InputEventMouseButton)@event;
-
-		if(!(mouseEvent.ButtonIndex == MouseButton.Left && @event.IsReleased())){
-			return;
-		}
-
-		Vector2I tilePostion = mTileMap.LocalToMap(mTileMap.GetLocalMousePosition());
-		TileData groundTileData = mTileMap.GetCellTileData(mTileMap.GROUND_LAYER, tilePostion);
-		
-		if(groundTileData == null){
-			return;
-		} 
-			
-		TileData tokenPlacementTilemap = mTileMap.GetCellTileData(
-			mTileMap.TOKEN_PLACEMENT_LAYER, 
-			tilePostion
-		);
-
-		if(tokenPlacementTilemap != null){
-			return;
-		}
-
-		_turnRpcService.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
-		mTileMap.PlayTileDropAudio();;
-		DisplayRandomCard();
-		
-		// if(IsMaxTiles()){
-		// 	EndGameResult();
-		// 	return;
-		// }
-		
-		// DisplayScore();	
-		
-		// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerTwo());
+	protected void OnPressedQuitButton(){
+		_displayDialog.ShowDialog("Are you sure about quiting game?");
+		_currentDialogue = Dialogs.QUIT_DIALOGUE;
 	}
 
-	private void DisplayRandomCard(){
+	protected void OnPressedDialogCancelButton(){
+		_displayDialog.CloseDialog();
+	}
+
+	protected void SetRandomCard(){
+		_randomCard = TileHelper.GetRandomCard();
+	}
+
+	protected void DisplayRandomCard(){
 		SetRandomCard();
 		Label randomCardDescription = _hudTextureRect.GetNode<Label>("RandomCardDescription");
 		Label randomCardName = _hudTextureRect.GetNode<Label>("RandomCardName");
@@ -125,127 +64,4 @@ public partial class MainSceneController : Node {
 		randomCardDescription.Text = _randomCard.CardDescription;
 	}
 
-	private void OnPressedRestartButton(){
-		_displayDialog.ShowDialog("Are you sure about restarting the game?");
-		_currentDialogue = Dialogs.RESTART_DIALOGUE;
-	}
-
-	private void OnPressedQuitButton(){
-		_displayDialog.ShowDialog("Are you sure about quiting game?");
-		_currentDialogue = Dialogs.QUIT_DIALOGUE;
-	}
-
-	private async void OnPressedDialogConfirmButton(){
-		if(Dialogs.RESTART_DIALOGUE == _currentDialogue){
-			_displayDialog.CloseDialog();
-		}
-
-		if(Dialogs.QUIT_DIALOGUE == _currentDialogue){
-			Multiplayer.MultiplayerPeer = null;
-			await Task.Delay(500);
-			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Leaving game, please wait.");
-		}
-	}
-
-	private void OnPressedDialogCancelButton(){
-		_displayDialog.CloseDialog();
-	}
-
-	// private void EndGameResult(){
-	// 	// DisplayScore();
-	// 	TokenColorEnum winnerColorToken = TokenColorEnum.NO_TOKEN;
-		
-	// 	string message = "";
-
-	// 	if(mScoringManager.GetBlackScore() > mScoringManager.GetWhiteScore()){
-	// 		winnerColorToken = TokenColorEnum.DARK_TOKEN;
-	// 	}
-
-	// 	if(mScoringManager.GetWhiteScore() > mScoringManager.GetBlackScore()){
-	// 		winnerColorToken = TokenColorEnum.LIGHT_TOKEN;
-	// 	}
-
-	// 	if(mPlayerManager.GetPlayerOne().GetTokenColorType() == winnerColorToken){
-	// 		_displayDialog.PlayWinSoundEffect();
-	// 		message = "You win!";
-	// 	}
-
-	// 	if(mPlayerManager.GetPlayerOne().GetTokenColorType() != winnerColorToken){
-	// 		_displayDialog.PlayLoseSoundEffect();
-	// 		message = "You lose!";
-	// 	}
-
-	// 	if(winnerColorToken != TokenColorEnum.DARK_TOKEN && winnerColorToken != TokenColorEnum.LIGHT_TOKEN){
-	// 		_displayDialog.PlayLoseSoundEffect();
-	// 		message = "Draw";
-	// 	}
-
-	// 	ShowDialog(message);
-	// }
-
-
-	private void SetRandomCard(){
-		_randomCard = TileHelper.GetRandomCard();
-	}
 }
-
-
-/*
-************************************************
-* AI CODES BEFORE
-************************************************
-*/
-
-// if(IsPlayerAComputer()){
-// 	return;
-// }
-
-// public bool IsPlayerAComputer(){
-// 	return mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER;
-// }
-
-// private void ResetScoringAndTurnAndPlayerManagers(){
-// 	mScoringManager.ResetScore();
-// 	mGameTurnManager.ResetTurn();
-// 	mPlayerManager.ResetPlayers();
-// 	mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
-// }
-
-// private void ShowDialog(string message){
-// 	mDialogTextureRect.GetNode<Label>("MessageLabel").Text = message;
-// 	mDialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").Play("Intro");
-// }
-
-
-// private async void ComputerTapGroundTile(){
-	// if(!IsPlayerAComputer()){
-	// 	return;
-	// }
-
-	// if(IsMaxTiles()){
-	// 	return;
-	// }
-	
-	// await Task.Delay(500);
-
-	// ComputerOpponentService.GetComputerTileMove(mTileMap, mGameTurnManager.GetCurrentCard());
-
-	// mTileMap.PlayTileDropAudio();
-
-	// if(IsMaxTiles()){
-	// 	EndGameResult();
-	// 	return;
-	// }
-
-	// SetNextTurnPLayer();
-	// DisplayScore();
-	// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
-// }
-
-// private void DisplayScore(){
-// 	mScoringManager.CalculateScore(mTileMap);
-// 	Label blackScoreNodeHolder = mHUDTextureRect.GetNode<Label>("BlackScoreLabel"); 
-// 	Label whiteScoreNodeHolder = mHUDTextureRect.GetNode<Label>("WhiteScoreLabel"); 
-// 	blackScoreNodeHolder.Text = mScoringManager.GetBlackScore() + "x";
-// 	whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
-// }

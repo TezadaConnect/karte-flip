@@ -37,8 +37,12 @@ public partial class LobbySceneController : Node2D{
 
     private async void OnPressedPlayAIButton(){
 		await Task.Delay(500);
-		GameTurnManager.GetInstance().SetGamePlayType(GamePlayTypeEnum.VS_COMPUTER);
-		_routeManager.MoveToScene(SceneFilenameEnum.MAIN_SCENE, null);
+		GetNode<PlayerManager>(
+			RouteManager.GetSingletonAutoLoad(
+				SingletonAutoLoadEnum.PLAYER_MANAGER
+			)
+		).InitComputerVsPlayer();
+		_routeManager.MoveToScene(SceneFilenameEnum.MAIN_VS_COMPUTER_SCENE, "Starting match, please wait.");
 	}
 
 	private async void OnPressedCreditsButton(){
@@ -53,7 +57,7 @@ public partial class LobbySceneController : Node2D{
 	}
 
 	private void CancelFindingMatch(){
-		Multiplayer.MultiplayerPeer = null;
+		_networkingService.CloseConnection();
 		_displayDialog.CloseDialog();
 	}
 }

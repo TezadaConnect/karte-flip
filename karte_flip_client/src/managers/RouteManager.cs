@@ -5,15 +5,7 @@ using Godot;
 public partial class RouteManager: Node{
 
     public async void MoveToScene(SceneFilenameEnum filenameEnum, string message){
-        GetTree().CurrentScene.Free();
-        // Changing to loading scene
-        string loadingScenePath = "res://src/resources/screen_scenes/loading_scene.tscn";
-        PackedScene loadingScenePack = ResourceLoader.Load<PackedScene>(loadingScenePath);
-        LoadingSceneController loadingSceneController = loadingScenePack.Instantiate<LoadingSceneController>();
-        loadingSceneController.SetLoadingMessage(message);
-        GetTree().UnloadCurrentScene();
-        GetTree().Root.AddChild(loadingSceneController);
-        GetTree().CurrentScene = loadingSceneController;
+        DisplayLoadingScreen(message);
         // Next Scene
         string sceneName = Enum.GetName(filenameEnum);
         string NextScenePath = "res://src/resources/screen_scenes/" + sceneName.ToLower() + ".tscn";
@@ -44,5 +36,17 @@ public partial class RouteManager: Node{
         string packedScenePatch = "res://src/resources/drawables/" + sceneName.ToLower() + ".tscn";
         PackedScene packedScene = ResourceLoader.Load<PackedScene>(packedScenePatch);
         return packedScene;
+    }
+
+    private void DisplayLoadingScreen(string message){
+        GetTree().CurrentScene.Free();
+        // Changing to loading scene
+        string loadingScenePath = "res://src/resources/screen_scenes/loading_scene.tscn";
+        PackedScene loadingScenePack = ResourceLoader.Load<PackedScene>(loadingScenePath);
+        LoadingSceneController loadingSceneController = loadingScenePack.Instantiate<LoadingSceneController>();
+        loadingSceneController.SetLoadingMessage(message);
+        GetTree().UnloadCurrentScene();
+        GetTree().Root.AddChild(loadingSceneController);
+        GetTree().CurrentScene = loadingSceneController;
     }
 }

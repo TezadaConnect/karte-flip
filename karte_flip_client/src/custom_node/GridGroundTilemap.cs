@@ -1,5 +1,6 @@
 using Godot;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class GridGroundTilemap : TileMap{
 	// LAYERS
@@ -19,5 +20,10 @@ public partial class GridGroundTilemap : TileMap{
 
 	public void PlayTileDropAudio(){
 		GetNode<AudioStreamPlayer>("TileDropAudioStreamPlayer").Play();
+	}
+
+	public bool IsMaxTiles(){
+		List<Vector2I> allTileMapVector = GetUsedCells(TOKEN_PLACEMENT_LAYER).ToList();
+		return allTileMapVector.Count >= BOARD_TILE_COUNT;
 	}
 }

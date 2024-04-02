@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://citm8bcblt0nx"]
 
-[ext_resource type="Script" path="res://src/controllers/MainSceneController.cs" id="1_h78po"]
+[ext_resource type="Script" path="res://src/controllers/MainVsPlayerSceneController.cs" id="1_rmnqg"]
 [ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
 [ext_resource type="Texture2D" uid="uid://d0etgrovxg6o1" path="res://src/resources/assets/imgs/tiles/land_and_tokens_tiles.png" id="2_wiwdk"]
 [ext_resource type="Script" path="res://src/custom_node/GridGroundTilemap.cs" id="3_qw72q"]
@@ -45,7 +45,7 @@ texture = ExtResource("6_wdkx2")
 texture = ExtResource("6_wdkx2")
 
 [node name="MainScene" type="Node2D"]
-script = ExtResource("1_h78po")
+script = ExtResource("1_rmnqg")
 
 [node name="BackgroundColorRect" type="ColorRect" parent="."]
 offset_left = -154.0

@@ -32,15 +32,14 @@ public partial class ScoringManager : Node2D {
         _whiteScore = whiteCount;
     }
 
-
     public void ResetScore(){
         _blackScore = 0;
         _whiteScore = 0;
     }
 
     public void DisplayScore(GridGroundTilemap gridGroundTilemap){
-        _blackScoreLabel ??= GetNode<Label>("/root/MainScene/HUDTextureRect/BlackScoreLabel");
-        _whiteScoreLabel ??= GetNode<Label>("/root/MainScene/HUDTextureRect/WhiteScoreLabel");
+        _blackScoreLabel = GetNode<Label>("/root/MainScene/HUDTextureRect/BlackScoreLabel");
+        _whiteScoreLabel = GetNode<Label>("/root/MainScene/HUDTextureRect/WhiteScoreLabel");
         CalculateScore(gridGroundTilemap);
         _blackScoreLabel.Text = _blackScore + "x";
         _whiteScoreLabel.Text = _whiteScore + "x";

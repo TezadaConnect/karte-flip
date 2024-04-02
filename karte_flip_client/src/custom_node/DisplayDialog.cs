@@ -61,8 +61,13 @@ public partial class DisplayDialog : Node2D{
 		_popAnumation.Play("Intro");
 	}
 
-	public void CloseDialog(){
+	public async void CloseDialog(){
 		_popAnumation.PlayBackwards("Intro");
+		await Task.Delay(1000);
+		if(_cancelButton != null){
+			GetCancelButton().Text = "No";
+		}
+		GetConfirmButton().Text = "Yes";	
 	}
 	
 	public Button GetConfirmButton(){
@@ -84,5 +89,4 @@ public partial class DisplayDialog : Node2D{
 	public void PlayWinSoundEffect(){
 		_winAudio.Play();
 	}
-	
 }

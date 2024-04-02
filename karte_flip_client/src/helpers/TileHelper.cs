@@ -22,10 +22,6 @@ static class TileHelper {
         return new Vector2I(currentPosition.X, currentPosition.Y + 1);
     }
 
-    public static Vector2I GetAtlasPositionFromGameTurnManager(){
-        return GameTurnManager.GetInstance().GetAtlasPositionBaseOnPlayerColor();
-    }
-
     public static void AddAtlasToken(
         Vector2I position, 
         GridGroundTilemap tilemap, 

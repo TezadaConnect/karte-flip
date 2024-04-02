@@ -1,5 +1,6 @@
 public enum SceneFilenameEnum{
-    MAIN_SCENE,
+    MAIN_VS_PLAYER_SCENE,
+    MAIN_VS_COMPUTER_SCENE,
     LOBBY_SCENE,
     SPLASH_SCENE,
     CREDIT_SCENE,

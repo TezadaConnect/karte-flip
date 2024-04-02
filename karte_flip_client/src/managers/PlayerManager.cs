@@ -1,64 +1,54 @@
 using System;
 using System.Collections.Generic;
+using Godot;
 using KarteFlipClient;
 
-class PlayerManager{
-    private PlayerModel mPlayerOne;
-	private PlayerModel mPlayerTwo;
-    private static PlayerManager mPlayerManagerInstance;
+public partial class PlayerManager : Node2D {
+	private PlayerModel _currentPlayerTurn;
+    private PlayerModel _playerOne;
+	private PlayerModel _playerTwo;
 
-    public PlayerManager(){
-        PlayerSetup();
-    }
+	private readonly List<TokenColorEnum> _allTokens = new List<TokenColorEnum>{ 
+		TokenColorEnum.LIGHT_TOKEN, 
+		TokenColorEnum.DARK_TOKEN 
+	};
 
-    public static PlayerManager GetInstance(){
-        mPlayerManagerInstance ??= new PlayerManager();
-        return mPlayerManagerInstance;
-    }
+	public PlayerModel CurrentPlayerTurn {
+		get { return _currentPlayerTurn; }
+		set { _currentPlayerTurn = value; }
+	}
 
-    private void PlayerSetup(){
-        GameTurnManager turnManagerHolder = GameTurnManager.GetInstance();
+	public PlayerModel PlayerOne {
+		get { return _playerOne; }
+		set { _playerOne = value; }
+	}
 
-		List<TokenColorEnum> allTokens = new List<TokenColorEnum>{ 
-			TokenColorEnum.LIGHT_TOKEN, 
-			TokenColorEnum.DARK_TOKEN 
+	public PlayerModel PlayerTwo{
+		get { return _playerTwo; }
+		set { _playerTwo = value; }
+	}
+
+	public void InitComputerVsPlayer(){
+		
+		TokenColorEnum randomToken = _allTokens[new Random().Next(_allTokens.Count)];
+
+		TokenColorEnum reverseOfRandomToken = 
+			randomToken == TokenColorEnum.DARK_TOKEN ? 
+			TokenColorEnum.LIGHT_TOKEN : 
+			TokenColorEnum.DARK_TOKEN;
+
+		_playerOne = new PlayerModel(){
+			PlayerID = 1, 
+			PlayerType = PlayerTypeEnum.PERSON, 
+			TokenColor = randomToken
 		};
 
-		TokenColorEnum randomToken = allTokens[new Random().Next(allTokens.Count)]; 
+		_playerTwo = new PlayerModel(){
+			PlayerID = 2, 
+			PlayerType = PlayerTypeEnum.COMPUTER, 
+			TokenColor = reverseOfRandomToken
+		};
 
-		// if(turnManagerHolder.GetGamePlayType() == GamePlayTypeEnum.VS_COMPUTER){
-		// 	mPlayerOne = new PlayerModel(PlayerTypeEnum.PERSON, randomToken);
-		// 	mPlayerTwo = new PlayerModel(
-		// 		PlayerTypeEnum.COMPUTER, 
-		// 		GetReverseTokenColor(randomToken)
-		// 	);
-		// }
-
-		if(turnManagerHolder.GetGamePlayType() == GamePlayTypeEnum.VS_PERSON){
-			//Put code here for player server 1v1 code
-            return;
-		}
-
-		if(randomToken == TokenColorEnum.LIGHT_TOKEN){
-			turnManagerHolder.SetPlayerTurn(mPlayerOne);
-		} else {
-			turnManagerHolder.SetPlayerTurn(mPlayerTwo);
-		}
+		_currentPlayerTurn = _playerOne.TokenColor == TokenColorEnum.LIGHT_TOKEN ? _playerOne : _playerTwo;
 	}
-
-    private TokenColorEnum GetReverseTokenColor(TokenColorEnum value){
-		return value == TokenColorEnum.LIGHT_TOKEN ? TokenColorEnum.DARK_TOKEN : TokenColorEnum.LIGHT_TOKEN;
-	}
-
-    public void ResetPlayers(){
-        PlayerSetup();
-    }
-
-    public PlayerModel GetPlayerOne(){
-        return mPlayerOne;
-    }
-
-     public PlayerModel GetPlayerTwo(){
-        return mPlayerTwo;
-    }
 }
