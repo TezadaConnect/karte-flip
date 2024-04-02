@@ -8,9 +8,17 @@ public partial class DisplayDialog : Node2D{
 	private TextureRect _dialogTextureRect;
 	private Button _confirmButton;
 	private Button _cancelButton;
+	private AnimationPlayer _popAnumation;
+	private Label _messageLabel;
+	private AudioStreamPlayer _loseAudio;
+	private AudioStreamPlayer _winAudio;
 
 	public override void _Ready(){
 		_dialogTextureRect = GetNode<TextureRect>("DialogueBackgroundTextureRect");
+		_popAnumation = _dialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation");
+		_messageLabel = _dialogTextureRect.GetNode<Label>("MessageLabel");
+		_loseAudio = _dialogTextureRect.GetNode<AudioStreamPlayer>("LoseAudioStreamPlayer");
+		_winAudio = _dialogTextureRect.GetNode<AudioStreamPlayer>("WinAudioStreamPlayer");
 		SetDialogType(DialogType.ONE_BUTTON);
 	}
 
@@ -49,12 +57,12 @@ public partial class DisplayDialog : Node2D{
 	}
 
 	public void ShowDialog(string message){
-		_dialogTextureRect.GetNode<Label>("MessageLabel").Text = message;
-		_dialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").Play("Intro");
+		_messageLabel.Text = message;
+		_popAnumation.Play("Intro");
 	}
 
 	public void CloseDialog(){
-		_dialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").PlayBackwards("Intro");
+		_popAnumation.PlayBackwards("Intro");
 	}
 	
 	public Button GetConfirmButton(){
@@ -68,4 +76,13 @@ public partial class DisplayDialog : Node2D{
 	public bool IsDialogHidden(){
 		return _dialogTextureRect.Scale.X != 1 && _dialogTextureRect.Scale.Y != 1;
 	}
+
+	public void PlayLoseSoundEffect(){
+		_loseAudio.Play();
+	}
+
+	public void PlayWinSoundEffect(){
+		_winAudio.Play();
+	}
+	
 }

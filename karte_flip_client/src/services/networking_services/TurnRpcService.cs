@@ -1,20 +1,26 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Godot.Collections;
 
 namespace KarteFlipClient{
 	public partial class TurnRpcService : Node{
-		// private TokenColorEnum _currentTokenTurn;
+		// Player Information
 		private PlayerModel _currentPlayerTurn;
 		private PlayerModel _playerOne;
 		private PlayerModel _playerTwo;
+		// U
 		private GridGroundTilemap _mainTilemap;
 		private TextureRect _turnDisplayTextureRect;
 		private RouteManager _routeManager;
+		private ScoringManager _scoringManager;
 
         public override void _Ready(){
             _routeManager = GetNode<RouteManager>(
 				RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+			);
+			_scoringManager = GetNode<ScoringManager>(
+				RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.SCORING_MANAGER)
 			);
         }
 
@@ -23,10 +29,8 @@ namespace KarteFlipClient{
 		*	SETTERS AND GETTERS
 		* ********************************************************
 		*/
-        public PlayerModel CurrentPlayerTurn {
-			get { return _currentPlayerTurn; }
-			set { _currentPlayerTurn = value; }
-		}
+
+		// CODE HERE...
 		
 		/*
 		* ********************************************************
@@ -106,6 +110,8 @@ namespace KarteFlipClient{
 			} else {
 				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
 			}
+
+			_scoringManager.DisplayScore(_mainTilemap);
 		}
 
 		public bool IsMyTurn(){
@@ -113,6 +119,12 @@ namespace KarteFlipClient{
 				return true;
 			}
 			return false;
+		}
+
+		public bool IsMaxTiles(){
+			_mainTilemap ??= GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
+			List<Vector2I> allTileMapVector = _mainTilemap.GetUsedCells(_mainTilemap.TOKEN_PLACEMENT_LAYER).ToList();
+			return allTileMapVector.Count >= GridGroundTilemap.BOARD_TILE_COUNT;
 		}
 	}
 }

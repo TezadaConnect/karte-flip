@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Threading.Tasks;
 
 public partial class CreditSceneController : Node2D{

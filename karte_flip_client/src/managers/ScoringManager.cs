@@ -1,27 +1,20 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
-class ScoringManager {
+public partial class ScoringManager : Node2D {
+    private int _blackScore;
+    private int _whiteScore;
+    private Label _whiteScoreLabel;
+    private Label _blackScoreLabel;
 
-    private int mBlackScore;
-    private int mWhiteScore;
-    private static ScoringManager mScoringManager;
-
-    public ScoringManager(){
-        mBlackScore = 0;
-        mWhiteScore = 0;
-    }
-
-    public static ScoringManager GetInstance(){
-        mScoringManager ??= new ScoringManager();
-        return mScoringManager;
-    }
-
-    public void CalculateScore(GridGroundTilemap tilemap){
-        Godot.Collections.Array<Vector2I> arrayOfTilePositionAtTokenLayer = tilemap.GetUsedCells(
+    private void CalculateScore(GridGroundTilemap tilemap){
+        List<Vector2I> arrayOfTilePositionAtTokenLayer = tilemap.GetUsedCells(
             tilemap.TOKEN_PLACEMENT_LAYER
-        );
+        ).ToList();
 
         int blackCount = 0;
+        int whiteCount = 0;
         
         foreach (Vector2I element in arrayOfTilePositionAtTokenLayer){
             Vector2I tileAtlas = tilemap.GetCellAtlasCoords(
@@ -30,22 +23,26 @@ class ScoringManager {
 
             if(TileHelper.ATLAS_COORD_BLACK == tileAtlas){
                 blackCount++;
+            } else {
+                whiteCount++;
             }
         }
 
-        mBlackScore = blackCount;
-        mWhiteScore = arrayOfTilePositionAtTokenLayer.Count - blackCount;
+        _blackScore = blackCount;
+        _whiteScore = whiteCount;
     }
 
-    public int GetWhiteScore(){
-        return mWhiteScore;
-    }
-    public int GetBlackScore(){
-        return mBlackScore;
-    }
 
     public void ResetScore(){
-        mBlackScore = 0;
-        mWhiteScore = 0;
+        _blackScore = 0;
+        _whiteScore = 0;
     }
+
+    public void DisplayScore(GridGroundTilemap gridGroundTilemap){
+        _blackScoreLabel ??= GetNode<Label>("/root/MainScene/HUDTextureRect/BlackScoreLabel");
+        _whiteScoreLabel ??= GetNode<Label>("/root/MainScene/HUDTextureRect/WhiteScoreLabel");
+        CalculateScore(gridGroundTilemap);
+        _blackScoreLabel.Text = _blackScore + "x";
+        _whiteScoreLabel.Text = _whiteScore + "x";
+	}
 }

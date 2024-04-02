@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using KarteFlipClient;
@@ -31,13 +30,9 @@ public partial class MainSceneController : Node {
 	}
 
     public override void _Input(InputEvent @event){
-		// if(IsPlayerAComputer()){
-		// 	return;
-		// }
-
-		// if(IsMaxTiles()){
-		// 	return;
-		// }
+		if(_turnRpcService.IsMaxTiles()){
+			return;
+		}
 
 		if(!_displayDialog.IsDialogHidden()){
 			return;
@@ -90,10 +85,6 @@ public partial class MainSceneController : Node {
 			return;
 		}
 
-		// if(IsOpenDialogue()){ // Halt click event
-		// 	return;
-		// }
-
 		Vector2I tilePostion = mTileMap.LocalToMap(mTileMap.GetLocalMousePosition());
 		TileData groundTileData = mTileMap.GetCellTileData(mTileMap.GROUND_LAYER, tilePostion);
 		
@@ -113,6 +104,7 @@ public partial class MainSceneController : Node {
 		_turnRpcService.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
 		mTileMap.PlayTileDropAudio();;
 		DisplayRandomCard();
+		
 		// if(IsMaxTiles()){
 		// 	EndGameResult();
 		// 	return;
@@ -122,39 +114,6 @@ public partial class MainSceneController : Node {
 		
 		// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerTwo());
 	}
-
-	// private async void ComputerTapGroundTile(){
-		// if(!IsPlayerAComputer()){
-		// 	return;
-		// }
-
-		// if(IsMaxTiles()){
-		// 	return;
-		// }
-		
-		// await Task.Delay(500);
-
-		// ComputerOpponentService.GetComputerTileMove(mTileMap, mGameTurnManager.GetCurrentCard());
-
-		// mTileMap.PlayTileDropAudio();
-
-		// if(IsMaxTiles()){
-		// 	EndGameResult();
-		// 	return;
-		// }
-
-		// SetNextTurnPLayer();
-		// DisplayScore();
-		// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
-	// }
-
-	// private void DisplayScore(){
-	// 	mScoringManager.CalculateScore(mTileMap);
-	// 	Label blackScoreNodeHolder = mHUDTextureRect.GetNode<Label>("BlackScoreLabel"); 
-	// 	Label whiteScoreNodeHolder = mHUDTextureRect.GetNode<Label>("WhiteScoreLabel"); 
-	// 	blackScoreNodeHolder.Text = mScoringManager.GetBlackScore() + "x";
-	// 	whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
-	// }
 
 	private void DisplayRandomCard(){
 		SetRandomCard();
@@ -192,23 +151,10 @@ public partial class MainSceneController : Node {
 		_displayDialog.CloseDialog();
 	}
 
-
-	// private void ResetScoringAndTurnAndPlayerManagers(){
-	// 	mScoringManager.ResetScore();
-	// 	mGameTurnManager.ResetTurn();
-	// 	mPlayerManager.ResetPlayers();
-	// 	mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
-	// }
-
-	// private void ShowDialog(string message){
-	// 	mDialogTextureRect.GetNode<Label>("MessageLabel").Text = message;
-	// 	mDialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").Play("Intro");
-	// }
-
 	// private void EndGameResult(){
-	// 	DisplayScore();
+	// 	// DisplayScore();
 	// 	TokenColorEnum winnerColorToken = TokenColorEnum.NO_TOKEN;
-	// 	AudioStreamPlayer loseAudio = mDialogTextureRect.GetNode<AudioStreamPlayer>("LoseAudioStreamPlayer");
+		
 	// 	string message = "";
 
 	// 	if(mScoringManager.GetBlackScore() > mScoringManager.GetWhiteScore()){
@@ -220,37 +166,86 @@ public partial class MainSceneController : Node {
 	// 	}
 
 	// 	if(mPlayerManager.GetPlayerOne().GetTokenColorType() == winnerColorToken){
-	// 		mDialogTextureRect.GetNode<AudioStreamPlayer>("WinAudioStreamPlayer").Play();
+	// 		_displayDialog.PlayWinSoundEffect();
 	// 		message = "You win!";
 	// 	}
 
 	// 	if(mPlayerManager.GetPlayerOne().GetTokenColorType() != winnerColorToken){
-	// 		loseAudio.Play();
+	// 		_displayDialog.PlayLoseSoundEffect();
 	// 		message = "You lose!";
 	// 	}
 
 	// 	if(winnerColorToken != TokenColorEnum.DARK_TOKEN && winnerColorToken != TokenColorEnum.LIGHT_TOKEN){
-	// 		loseAudio.Play();
+	// 		_displayDialog.PlayLoseSoundEffect();
 	// 		message = "Draw";
 	// 	}
 
 	// 	ShowDialog(message);
 	// }
 
-	// public bool IsMaxTiles(){
-	// 	List<Vector2I> allTileMapVector = mTileMap.GetUsedCells(mTileMap.TOKEN_PLACEMENT_LAYER).ToList();
-	// 	return allTileMapVector.Count >= GridGroundTilemap.BOARD_TILE_COUNT;
-	// }
-
-	// public bool IsOpenDialogue(){
-	// 	return mDialogTextureRect.Scale.X == 1 && mDialogTextureRect.Scale.Y == 1;
-	// }
-
-	// public bool IsPlayerAComputer(){
-	// 	return mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER;
-	// }
 
 	private void SetRandomCard(){
 		_randomCard = TileHelper.GetRandomCard();
 	}
 }
+
+
+/*
+************************************************
+* AI CODES BEFORE
+************************************************
+*/
+
+// if(IsPlayerAComputer()){
+// 	return;
+// }
+
+// public bool IsPlayerAComputer(){
+// 	return mGameTurnManager.GetPlayerTurn().GetPlayerType() == PlayerTypeEnum.COMPUTER;
+// }
+
+// private void ResetScoringAndTurnAndPlayerManagers(){
+// 	mScoringManager.ResetScore();
+// 	mGameTurnManager.ResetTurn();
+// 	mPlayerManager.ResetPlayers();
+// 	mTurnTextureRect.Texture = mRouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
+// }
+
+// private void ShowDialog(string message){
+// 	mDialogTextureRect.GetNode<Label>("MessageLabel").Text = message;
+// 	mDialogTextureRect.GetNode<AnimationPlayer>("PopupAnimation").Play("Intro");
+// }
+
+
+// private async void ComputerTapGroundTile(){
+	// if(!IsPlayerAComputer()){
+	// 	return;
+	// }
+
+	// if(IsMaxTiles()){
+	// 	return;
+	// }
+	
+	// await Task.Delay(500);
+
+	// ComputerOpponentService.GetComputerTileMove(mTileMap, mGameTurnManager.GetCurrentCard());
+
+	// mTileMap.PlayTileDropAudio();
+
+	// if(IsMaxTiles()){
+	// 	EndGameResult();
+	// 	return;
+	// }
+
+	// SetNextTurnPLayer();
+	// DisplayScore();
+	// mGameTurnManager.SetPlayerTurn(mPlayerManager.GetPlayerOne());
+// }
+
+// private void DisplayScore(){
+// 	mScoringManager.CalculateScore(mTileMap);
+// 	Label blackScoreNodeHolder = mHUDTextureRect.GetNode<Label>("BlackScoreLabel"); 
+// 	Label whiteScoreNodeHolder = mHUDTextureRect.GetNode<Label>("WhiteScoreLabel"); 
+// 	blackScoreNodeHolder.Text = mScoringManager.GetBlackScore() + "x";
+// 	whiteScoreNodeHolder.Text = mScoringManager.GetWhiteScore() + "X";
+// }

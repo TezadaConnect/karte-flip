@@ -121,6 +121,7 @@ script = ExtResource("9_ntckn")
 
 [node name="Confirm2Button" type="Button" parent="DialogueBackgroundTextureRect"]
 visible = false
+layout_mode = 0
 offset_left = 255.0
 offset_top = 1256.0
 offset_right = 655.0
@@ -137,6 +138,7 @@ script = ExtResource("9_ntckn")
 
 [node name="Confirm1Button" type="Button" parent="DialogueBackgroundTextureRect"]
 visible = false
+layout_mode = 0
 offset_left = 439.0
 offset_top = 1256.0
 offset_right = 839.0
