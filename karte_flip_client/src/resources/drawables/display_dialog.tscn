@@ -1,0 +1,155 @@
+[gd_scene load_steps=22 format=3 uid="uid://bvc5bqydp4b5o"]
+
+[ext_resource type="Script" path="res://src/custom_node/DisplayDialog.cs" id="1_e4wjo"]
+[ext_resource type="Texture2D" uid="uid://r6fa7h06ja53" path="res://src/resources/assets/imgs/backgrounds/dialog_background.png" id="2_vrwmy"]
+[ext_resource type="AudioStream" uid="uid://b1lpqhgf2d3h8" path="res://src/resources/assets/audios/win_audio.mp3" id="3_aw31x"]
+[ext_resource type="AudioStream" uid="uid://drg7ko3okqxx1" path="res://src/resources/assets/audios/lose_audio.mp3" id="4_sbhfs"]
+[ext_resource type="Texture2D" uid="uid://bvbyxhsxwsx8r" path="res://src/resources/assets/imgs/boxes/dialog_box.png" id="5_du25w"]
+[ext_resource type="FontFile" uid="uid://cwxmhchph2w6o" path="res://src/resources/assets/fonts/Inter/static/Inter-Bold.ttf" id="6_wsj66"]
+[ext_resource type="Texture2D" uid="uid://c411mjnrvfjjl" path="res://src/resources/assets/imgs/buttons/white_button_idle.png" id="7_q2v7h"]
+[ext_resource type="Texture2D" uid="uid://c7okol2rwkjer" path="res://src/resources/assets/imgs/buttons/white_button_pressed.png" id="8_8ipic"]
+[ext_resource type="Script" path="res://src/custom_node/AudioableButton.cs" id="9_ntckn"]
+[ext_resource type="Texture2D" uid="uid://c22r7qomuoef6" path="res://src/resources/assets/imgs/buttons/button_idle.png" id="10_em6wj"]
+[ext_resource type="Texture2D" uid="uid://cife23kgp4cqr" path="res://src/resources/assets/imgs/buttons/button_pressed.png" id="11_0uex1"]
+
+[sub_resource type="Animation" id="Animation_pufj2"]
+resource_name = "Intro"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1.51572, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rq0wj"]
+_data = {
+"Intro": SubResource("Animation_pufj2")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gi2ke"]
+texture = ExtResource("7_q2v7h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_770qp"]
+texture = ExtResource("8_8ipic")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4lvqr"]
+texture = ExtResource("8_8ipic")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ksi00"]
+texture = ExtResource("8_8ipic")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tpk5a"]
+texture = ExtResource("10_em6wj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kc6dv"]
+texture = ExtResource("11_0uex1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v44tu"]
+texture = ExtResource("11_0uex1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fak6m"]
+texture = ExtResource("11_0uex1")
+
+[node name="DisplayDialog" type="Node2D"]
+script = ExtResource("1_e4wjo")
+
+[node name="DialogueBackgroundTextureRect" type="TextureRect" parent="."]
+offset_left = -55.0
+offset_top = -76.0
+offset_right = 1148.0
+offset_bottom = 2036.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(600, 1056)
+texture = ExtResource("2_vrwmy")
+metadata/_edit_lock_ = true
+
+[node name="PopupAnimation" type="AnimationPlayer" parent="DialogueBackgroundTextureRect"]
+libraries = {
+"": SubResource("AnimationLibrary_rq0wj")
+}
+
+[node name="WinAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
+stream = ExtResource("3_aw31x")
+
+[node name="LoseAudioStreamPlayer" type="AudioStreamPlayer" parent="DialogueBackgroundTextureRect"]
+stream = ExtResource("4_sbhfs")
+
+[node name="DialogBoxTextureRect" type="TextureRect" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 680.0
+offset_right = 1214.0
+offset_bottom = 1345.0
+texture = ExtResource("5_du25w")
+metadata/_edit_lock_ = true
+
+[node name="MessageLabel" type="Label" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 701.0
+offset_right = 1111.0
+offset_bottom = 1342.0
+theme_override_fonts/font = ExtResource("6_wsj66")
+theme_override_font_sizes/font_size = 70
+text = "Match Is Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CancelButton" type="Button" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 719.0
+offset_top = 1256.0
+offset_right = 969.0
+offset_bottom = 1386.0
+theme_override_colors/font_color = Color(0.435294, 0.435294, 0.435294, 1)
+theme_override_fonts/font = ExtResource("6_wsj66")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_gi2ke")
+theme_override_styles/hover = SubResource("StyleBoxTexture_770qp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_4lvqr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_ksi00")
+text = "No"
+script = ExtResource("9_ntckn")
+
+[node name="Confirm2Button" type="Button" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 255.0
+offset_top = 1256.0
+offset_right = 655.0
+offset_bottom = 1386.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_wsj66")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_tpk5a")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kc6dv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_v44tu")
+theme_override_styles/focus = SubResource("StyleBoxTexture_fak6m")
+text = "Yes"
+script = ExtResource("9_ntckn")
+
+[node name="Confirm1Button" type="Button" parent="DialogueBackgroundTextureRect"]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 1256.0
+offset_right = 839.0
+offset_bottom = 1386.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_wsj66")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_tpk5a")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kc6dv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_v44tu")
+theme_override_styles/focus = SubResource("StyleBoxTexture_fak6m")
+text = "Ok"
+script = ExtResource("9_ntckn")
+
+[connection signal="pressed" from="DialogueBackgroundTextureRect/CancelButton" to="DialogueBackgroundTextureRect/CancelButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="DialogueBackgroundTextureRect/Confirm2Button" to="DialogueBackgroundTextureRect/Confirm2Button" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="DialogueBackgroundTextureRect/Confirm1Button" to="DialogueBackgroundTextureRect/Confirm1Button" method="PlayButtonTapAudio"]

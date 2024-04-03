@@ -1,0 +1,10 @@
+public enum SingletonAutoLoadEnum{
+    NETWORKING_SERVICE,
+    
+    //Managers
+    ROUTE_MANAGER,
+    SCORING_MANAGER,
+    PLAYER_MANAGER,
+    COMPUTER_TURN_MANAGER,
+    PLAYER_TURN_MANAGER,
+}

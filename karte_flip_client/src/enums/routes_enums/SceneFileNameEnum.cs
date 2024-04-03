@@ -1,0 +1,9 @@
+public enum SceneFilenameEnum{
+    VS_PLAYER_MATCH_SCENE,
+    VS_COMPUTER_MATCH_SCENE,
+    LOBBY_SCENE,
+    SPLASH_SCENE,
+    CREDIT_SCENE,
+    //
+    DISPLAY_DIALOG
+}

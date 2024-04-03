@@ -1,11 +1,13 @@
 # Godot 4+ specific ignores
-.godot/
+karte_flip_client/.godot/
+karte_flip_server/.godot/
 exports
-.DS_Store
-src/.DS_Store 
-src/resources/.DS_Store 
-src/resources/assets/.DS_Store
-src/resources/assets/fonts/.DS_Store
-src/resources/assets/fonts/Inter/.DS_Store
-src/resources/assets/imgs/.DS_Store
-src/resources/assets/imgs/backgrounds/.DS_Store
+karte_flip_server/.DS_Store
+karte_flip_client/.DS_Store
+karte_flip_client/src/.DS_Store 
+karte_flip_client/src/resources/.DS_Store 
+karte_flip_client/src/resources/assets/.DS_Store
+karte_flip_client/src/resources/assets/fonts/.DS_Store
+karte_flip_client/src/resources/assets/fonts/Inter/.DS_Store
+karte_flip_client/src/resources/assets/imgs/.DS_Store
+karte_flip_client/src/resources/assets/imgs/backgrounds/.DS_Store

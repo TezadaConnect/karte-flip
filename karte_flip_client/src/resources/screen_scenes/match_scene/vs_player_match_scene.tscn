@@ -1,0 +1,234 @@
+[gd_scene load_steps=20 format=3 uid="uid://citm8bcblt0nx"]
+
+[ext_resource type="Script" path="res://src/controllers/MainVsPlayerSceneController.cs" id="1_rmnqg"]
+[ext_resource type="Texture2D" uid="uid://bichqkmwe54yf" path="res://src/resources/assets/imgs/backgrounds/main-background.png" id="2_di5wl"]
+[ext_resource type="Texture2D" uid="uid://d0etgrovxg6o1" path="res://src/resources/assets/imgs/tiles/land_and_tokens_tiles.png" id="2_wiwdk"]
+[ext_resource type="Script" path="res://src/custom_node/GridGroundTilemap.cs" id="3_qw72q"]
+[ext_resource type="AudioStream" uid="uid://cjrnrltfs03dj" path="res://src/resources/assets/audios/token_drop_audio.mp3" id="5_httaf"]
+[ext_resource type="Texture2D" uid="uid://cdjsprxqfjq5" path="res://src/resources/assets/imgs/buttons/restart_button_idle.png" id="5_ldvxi"]
+[ext_resource type="Texture2D" uid="uid://dyvyilr3cbk4l" path="res://src/resources/assets/imgs/buttons/restart-button_pressed.png" id="6_wdkx2"]
+[ext_resource type="FontFile" uid="uid://cwxmhchph2w6o" path="res://src/resources/assets/fonts/Inter/static/Inter-Bold.ttf" id="7_u0eu0"]
+[ext_resource type="Script" path="res://src/custom_node/AudioableButton.cs" id="8_addye"]
+[ext_resource type="Texture2D" uid="uid://2mxq71hdm6rg" path="res://src/resources/assets/imgs/boxes/hud_box.png" id="8_uba4h"]
+[ext_resource type="Texture2D" uid="uid://s3jixk5f4pv7" path="res://src/resources/assets/imgs/cards_and_tokens/white_token.png" id="9_2srwh"]
+[ext_resource type="Texture2D" uid="uid://b1k8p55b00s1c" path="res://src/resources/assets/imgs/cards_and_tokens/black_token.png" id="10_5oyvp"]
+[ext_resource type="FontFile" uid="uid://bx80achq45o1p" path="res://src/resources/assets/fonts/Inter/static/Inter-Medium.ttf" id="10_hfl8f"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_15p5m"]
+texture = ExtResource("2_wiwdk")
+texture_region_size = Vector2i(150, 150)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_byslj"]
+tile_size = Vector2i(150, 150)
+sources/0 = SubResource("TileSetAtlasSource_15p5m")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aage1"]
+texture = ExtResource("5_ldvxi")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ea44q"]
+texture = ExtResource("6_wdkx2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hbryn"]
+texture = ExtResource("6_wdkx2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eksjg"]
+texture = ExtResource("6_wdkx2")
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_rmnqg")
+
+[node name="BackgroundColorRect" type="ColorRect" parent="."]
+offset_left = -154.0
+offset_top = -133.0
+offset_right = 1286.0
+offset_bottom = 2106.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -49.0
+offset_top = -33.0
+offset_right = 1140.0
+offset_bottom = 1987.0
+texture = ExtResource("2_di5wl")
+metadata/_edit_lock_ = true
+
+[node name="GridGroundTilemap" type="TileMap" parent="."]
+position = Vector2(32, -64)
+tile_set = SubResource("TileSet_byslj")
+rendering_quadrant_size = 6
+format = 2
+layer_0/name = "ground"
+layer_0/tile_data = PackedInt32Array(131072, 0, 1, 196608, 65536, 1, 262144, 65536, 1, 327680, 65536, 1, 393216, 65536, 1, 458752, 65536, 1, 524288, 0, 1610612737, 131073, 65536, 1342177281, 196609, 0, 0, 262145, 0, 0, 327681, 0, 0, 393217, 0, 0, 458753, 0, 0, 524289, 65536, 1610612737, 131074, 65536, 1342177281, 196610, 0, 0, 262146, 0, 0, 327682, 0, 0, 393218, 0, 0, 458754, 0, 0, 524290, 65536, 1610612737, 131075, 65536, 1342177281, 196611, 0, 0, 262147, 0, 0, 327683, 0, 0, 393219, 0, 0, 458755, 0, 0, 524291, 65536, 1610612737, 131076, 65536, 1342177281, 196612, 0, 0, 262148, 0, 0, 327684, 0, 0, 393220, 0, 0, 458756, 0, 0, 524292, 65536, 1610612737, 131077, 65536, 1342177281, 196613, 0, 0, 262149, 0, 0, 327685, 0, 0, 393221, 0, 0, 458757, 0, 0, 524293, 65536, 1610612737, 131078, 0, 1342177281, 196614, 65536, 805306369, 262150, 65536, 805306369, 327686, 65536, 805306369, 393222, 65536, 805306369, 458758, 65536, 805306369, 524294, 0, 805306369)
+layer_1/name = "token_placement"
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "card_display"
+layer_2/tile_data = PackedInt32Array()
+script = ExtResource("3_qw72q")
+metadata/_edit_lock_ = true
+
+[node name="TileDropAudioStreamPlayer" type="AudioStreamPlayer" parent="GridGroundTilemap"]
+stream = ExtResource("5_httaf")
+volume_db = 5.0
+pitch_scale = 0.7
+
+[node name="RestartButton" type="Button" parent="."]
+offset_left = 39.0
+offset_top = 53.0
+offset_right = 399.0
+offset_bottom = 173.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_aage1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ea44q")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hbryn")
+theme_override_styles/focus = SubResource("StyleBoxTexture_eksjg")
+script = ExtResource("8_addye")
+metadata/_edit_lock_ = true
+
+[node name="QuitButton" type="Button" parent="."]
+offset_left = 870.0
+offset_top = 53.0
+offset_right = 1082.0
+offset_bottom = 173.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 60
+text = "Quit"
+flat = true
+script = ExtResource("8_addye")
+
+[node name="HUDTextureRect" type="TextureRect" parent="."]
+offset_left = -22.0
+offset_top = 1358.0
+offset_right = 1148.0
+offset_bottom = 1991.0
+texture = ExtResource("8_uba4h")
+
+[node name="RandomCardTextureRect" type="TextureRect" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 330.0
+offset_right = 258.0
+offset_bottom = 530.0
+texture = ExtResource("10_5oyvp")
+metadata/_edit_lock_ = true
+
+[node name="RandomCardName" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 282.0
+offset_top = 346.0
+offset_right = 1092.0
+offset_bottom = 443.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 70
+text = "Card Name"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="RandomCardDescription" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 441.0
+offset_right = 1102.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0.764706, 0.764706, 0.764706, 1)
+theme_override_fonts/font = ExtResource("10_hfl8f")
+theme_override_font_sizes/font_size = 40
+text = "Card description"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TurnTextureRect" type="TextureRect" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 955.0
+offset_top = 144.0
+offset_right = 1105.0
+offset_bottom = 294.0
+texture = ExtResource("9_2srwh")
+metadata/_edit_lock_ = true
+
+[node name="TurnLabel" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 850.0
+offset_top = 51.0
+offset_right = 1111.0
+offset_bottom = 132.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 60
+text = "TURN"
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ScoreLabel" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 60.0
+offset_right = 319.0
+offset_bottom = 141.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 60
+text = "SCORE"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="WhiteScoreLabel" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 150.0
+offset_right = 602.0
+offset_bottom = 228.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 60
+text = "0x"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="WhiteScoreTextureRect" type="TextureRect" parent="HUDTextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.034
+anchor_bottom = 0.063
+offset_left = 378.0
+offset_top = 144.0
+offset_right = 488.22
+offset_bottom = 254.121
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("9_2srwh")
+metadata/_edit_lock_ = true
+
+[node name="BlackScoreLabel" type="Label" parent="HUDTextureRect"]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 152.0
+offset_right = 285.0
+offset_bottom = 230.0
+theme_override_fonts/font = ExtResource("7_u0eu0")
+theme_override_font_sizes/font_size = 60
+text = "0x"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="BlackScoreTextureRect" type="TextureRect" parent="HUDTextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.034
+anchor_bottom = 0.063
+offset_left = 61.0
+offset_top = 147.0
+offset_right = 171.22
+offset_bottom = 257.121
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("10_5oyvp")
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="RestartButton" to="RestartButton" method="PlayButtonTapAudio"]
+[connection signal="pressed" from="QuitButton" to="QuitButton" method="PlayButtonTapAudio"]
