@@ -21,10 +21,10 @@ boot_splash/minimum_display_time=2500
 
 ROUTE_MANAGER="*res://src/managers/RouteManager.cs"
 PLAYER_MANAGER="*res://src/managers/PlayerManager.cs"
-TURN_RPC_SERVICE="*res://src/services/networking_services/TurnRpcService.cs"
-NETWORKING_SERVICE="*res://src/services/networking_services/NetworkingService.cs"
+PLAYER_TURN_MANAGER="*res://src/managers/turn_manager/PlayerTurnManager.cs"
+NETWORKING_SERVICE="*res://src/services/NetworkingService.cs"
 SCORING_MANAGER="*res://src/managers/ScoringManager.cs"
-TURN_COMPUTER_MANAGER="*res://src/managers/TurnComputerManager.cs"
+COMPUTER_TURN_MANAGER="*res://src/managers/turn_manager/ComputerTurnManager.cs"
 
 [display]
 

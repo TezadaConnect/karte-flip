@@ -3,7 +3,7 @@ using KarteFlipClient;
 using System.Threading.Tasks;
 
 public partial class MainVsPlayerSceneController: MainSceneController{
-    private TurnRpcService _turnRpcService;
+    private PlayerTurnManager _playerTurnManager;
 
     public override void _Ready(){
 		InitAutoLoads();
@@ -22,7 +22,7 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 		}
 
 		if(@event is InputEventMouseButton){
-			if(_turnRpcService.IsMyTurn()){
+			if(_playerTurnManager.IsMyTurn()){
 				OnTapGroundTile(@event);
 			}
 		}
@@ -32,8 +32,8 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 		_routeManager = GetNode<RouteManager>(
 			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
 		);
-		_turnRpcService = GetNode<TurnRpcService>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.TURN_RPC_SERVICE)
+		_playerTurnManager = GetNode<PlayerTurnManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.PLAYER_TURN_MANAGER)
 		);
 	}
 
@@ -61,7 +61,7 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 			return;
 		}
 
-		_turnRpcService.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
+		_playerTurnManager.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
 		DisplayRandomCard();
 	}
 
@@ -78,7 +78,7 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 		}
 
 		if(Dialogs.QUIT_DIALOGUE == _currentDialogue){
-			_turnRpcService.ExecuteQuitMatch();
+			_playerTurnManager.ExecuteQuitMatch();
 			await Task.Delay(500);
 			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Leaving game, please wait.");
 		}

@@ -1,17 +1,10 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
 
 namespace KarteFlipClient{
-	public partial class TurnRpcService : Node{
-		// Player Information
-		private PlayerManager _playerManager;
+	public partial class PlayerTurnManager : TurnManager {
 		private RouteManager _routeManager;
-		private ScoringManager _scoringManager;
-		private GridGroundTilemap _mainTilemap;
-		private TextureRect _turnDisplayTextureRect;
-		private DisplayDialog _resultDialog;
 
         public override void _Ready(){
             _routeManager = GetNode<RouteManager>(
@@ -25,14 +18,6 @@ namespace KarteFlipClient{
 			);
 			_resultDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
         }
-
-        /*
-		* ********************************************************
-		*	SETTERS AND GETTERS
-		* ********************************************************
-		*/
-
-		// CODE HERE...
 		
 		/*
 		* ********************************************************
@@ -89,94 +74,34 @@ namespace KarteFlipClient{
 		*	LOGICS
 		* ********************************************************
 		*/
-		private void AddTokenToTilemap(Vector2I position, Dictionary card){
-			_mainTilemap ??= GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
-			_turnDisplayTextureRect ??= GetNode<TextureRect>("/root/MainScene/HUDTextureRect/TurnTextureRect");
-			
+		private void AddTokenToTilemap(Vector2I position, Dictionary card){		
 			CardModel cardModel = CardModel.Deserialize(card);
-			
-			TileHelper.AddAtlasToken(
-				position, 
-				_mainTilemap, 
-				_playerManager.CurrentPlayerTurn.TokenColor
-			);
-			TokenFlipService.FlipTokens(
-				position, 
-				_mainTilemap, 
-				cardModel.CardListFlipDirections , 
-				_playerManager.CurrentPlayerTurn.TokenColor
-			);
-			_playerManager.CurrentPlayerTurn = _playerManager.CurrentPlayerTurn.Equals(
-				_playerManager.PlayerOne
-			) ? _playerManager.PlayerTwo : _playerManager.PlayerOne;
-
-			if(_playerManager.CurrentPlayerTurn.TokenColor == TokenColorEnum.DARK_TOKEN){
-				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.BLACK_TOKEN);
-			} else {
-				_turnDisplayTextureRect.Texture = RouteManager.GetLocalAssetInTexture2D(LocalAssetFileNameEnum.WHITE_TOKEN);
-			}
-
+			DrawTokens(position, cardModel.CardListFlipDirections);
+			ShiftPlayer();
 			_mainTilemap.PlayTileDropAudio();
 			_scoringManager.DisplayScore(_mainTilemap);
 			EndGameResult();
 		}
 
-		public bool IsMyTurn(){
+		public override bool IsMyTurn(){
 			if(_playerManager.CurrentPlayerTurn.PlayerID == Multiplayer.GetUniqueId()){
 				return true;
 			}
 			return false;
 		}
 
-		private void EndGameResult(){
-        // GridGroundTilemap _mainTilemap = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap"); ensurr this is not empty
-			if(!_mainTilemap.IsMaxTiles()){
-				return;
-			}
-			
-			bool isblackWin = _scoringManager.BlackScore > _scoringManager.WhiteScore;
-
-			if(isblackWin){
-				ShowResultModal(TokenColorEnum.DARK_TOKEN);
-				return;
-			}
-			
-			ShowResultModal(TokenColorEnum.LIGHT_TOKEN); 
-		}
-
-		private void ShowResultModal(TokenColorEnum winningColor){ // Todo make this more faster
+		protected override void MakeResultDialog(TokenColorEnum winningColor){ // Todo make this more faster
 			MainVsPlayerSceneController mainScene = GetNode<MainVsPlayerSceneController>("/root/MainScene");
-			mainScene.AddChild(_resultDialog);
-			_resultDialog.SetDialogType(DialogType.ONE_BUTTON);
-			_resultDialog.GetConfirmButton().Text = "Ok";
-			_resultDialog.GetConfirmButton().Pressed += async () => {
-				_resultDialog.CloseDialog();
-				await Task.Delay(2000);
-				_resultDialog.Free();
-				_resultDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
-			};
-
+			InstantiateResultDialog(mainScene);
 			PlayerModel playerWinner = null;
-			
 			if(_playerManager.PlayerOne.TokenColor == winningColor){
 				playerWinner = _playerManager.PlayerOne;
 			}
-
 			if(_playerManager.PlayerTwo.TokenColor == winningColor){
 				playerWinner = _playerManager.PlayerTwo;
 			}
-
 			bool isMeTheWinner = playerWinner.PlayerID == Multiplayer.MultiplayerPeer.GetUniqueId();
-
-			if(isMeTheWinner){
-				_resultDialog.ShowDialog("You Win!");
-				_resultDialog.SetDialogType(DialogType.ONE_BUTTON);
-				_resultDialog.PlayWinSoundEffect();
-				return;
-			}
-					
-			_resultDialog.ShowDialog("You Lose!"); 
-			_resultDialog.PlayLoseSoundEffect();
+			ShowDialogBaseOnResult(isMeTheWinner);
 		}
 	}
 }

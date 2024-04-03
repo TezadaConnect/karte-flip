@@ -3,7 +3,7 @@ using Godot;
 
 public partial class MainVsComputerSceneController: MainSceneController {
 
-    TurnComputerManager _computerTurnManager;
+    ComputerTurnManager _computerTurnManager;
 
      public override void _Ready(){
 		InitAutoLoads();
@@ -17,8 +17,8 @@ public partial class MainVsComputerSceneController: MainSceneController {
 		_routeManager = GetNode<RouteManager>(
 			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
 		);
-		_computerTurnManager = GetNode<TurnComputerManager>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.TURN_COMPUTER_MANAGER)
+		_computerTurnManager = GetNode<ComputerTurnManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.COMPUTER_TURN_MANAGER)
 		);
 	}
 

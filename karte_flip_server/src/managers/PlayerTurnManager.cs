@@ -5,7 +5,7 @@ using Godot;
 using Godot.Collections;
 
 namespace KarteFlipServer{
-    public partial class TurnRpcService: Node{
+    public partial class PlayerTurnManager: Node{
         public List<MatchRecordModel> _matchList;
         public List<long> _clientIDRecord;
 

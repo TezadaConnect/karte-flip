@@ -2,11 +2,11 @@ using Godot;
 using KarteFlipServer;
 
 public partial class MainServerController : Node{
-	private TurnRpcService _matchHandlerService;
+	private PlayerTurnManager _matchHandlerService;
     private const int PORT = 8080;
     public override void _Ready(){
 		// Connect the function to the signal
-		_matchHandlerService = GetNode<TurnRpcService>("/root/TURN_RPC_SERVICE");
+		_matchHandlerService = GetNode<PlayerTurnManager>("/root/PLAYER_TURN_MANAGER");
 		Multiplayer.PeerConnected += PeerConnected;
 		Multiplayer.PeerDisconnected += PeerDisconnected;
 		CreateAServer();
