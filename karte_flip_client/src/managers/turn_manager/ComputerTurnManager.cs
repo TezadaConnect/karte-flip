@@ -69,7 +69,7 @@ public partial class ComputerTurnManager : TurnManager{
     }
 
     protected override void MakeResultDialog(TokenColorEnum winningColor){ // Todo make this more faster
-        MainVsComputerSceneController mainScene = GetNode<MainVsComputerSceneController>("/root/MainScene");
+        VsComputerMatchSceneController mainScene = GetNode<VsComputerMatchSceneController>("/root/MainScene");
         InstantiateResultDialog(mainScene);
         bool isMeWithColorWinning = _playerManager.PlayerOne.TokenColor == winningColor;
         ShowDialogBaseOnResult(isMeWithColorWinning);

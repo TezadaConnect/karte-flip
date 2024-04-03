@@ -2,7 +2,7 @@ using Godot;
 
 public enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE, DISABLE_DIALOGUE }
 
-public partial class MainSceneController : Node {
+public partial class MatchSceneController : Node {
 	// Managers
 	protected RouteManager _routeManager;
 	

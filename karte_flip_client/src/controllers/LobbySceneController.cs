@@ -42,7 +42,7 @@ public partial class LobbySceneController : Node2D{
 				SingletonAutoLoadEnum.PLAYER_MANAGER
 			)
 		).InitComputerVsPlayer();
-		_routeManager.MoveToScene(SceneFilenameEnum.MAIN_VS_COMPUTER_SCENE, "Starting match, please wait.");
+		_routeManager.MoveToScene(SceneFilenameEnum.VS_COMPUTER_MATCH_SCENE, "Starting match, please wait.");
 	}
 
 	private async void OnPressedCreditsButton(){

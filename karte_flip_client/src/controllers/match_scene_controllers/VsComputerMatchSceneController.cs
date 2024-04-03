@@ -1,15 +1,25 @@
-using Godot;
-using KarteFlipClient;
 using System.Threading.Tasks;
+using Godot;
 
-public partial class MainVsPlayerSceneController: MainSceneController{
-    private PlayerTurnManager _playerTurnManager;
+public partial class VsComputerMatchSceneController: MatchSceneController {
 
-    public override void _Ready(){
+    ComputerTurnManager _computerTurnManager;
+
+     public override void _Ready(){
 		InitAutoLoads();
 		InitUiBindings();
 		InitializeListeners();
 		DisplayRandomCard();
+		_computerTurnManager.ComputerFirstTurn();
+	}
+
+    private void InitAutoLoads(){
+		_routeManager = GetNode<RouteManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
+		);
+		_computerTurnManager = GetNode<ComputerTurnManager>(
+			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.COMPUTER_TURN_MANAGER)
+		);
 	}
 
     public override void _Input(InputEvent @event){
@@ -22,20 +32,11 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 		}
 
 		if(@event is InputEventMouseButton){
-			if(_playerTurnManager.IsMyTurn()){
+			if(_computerTurnManager.IsMyTurn()){
 				OnTapGroundTile(@event);
 			}
 		}
     }
-
-	private void InitAutoLoads(){
-		_routeManager = GetNode<RouteManager>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.ROUTE_MANAGER)
-		);
-		_playerTurnManager = GetNode<PlayerTurnManager>(
-			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.PLAYER_TURN_MANAGER)
-		);
-	}
 
 	private void OnTapGroundTile(InputEvent @event){
 
@@ -61,24 +62,23 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 			return;
 		}
 
-		_playerTurnManager.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
+		_computerTurnManager.AddTokenToTilemap(tilePostion, _randomCard);
+		_tilemap.PlayTileDropAudio();
 		DisplayRandomCard();
-	}
-
-	protected override void OnPressedRestartButton(){
-		_displayDialog.ShowDialog("You cant restart a P2P match.");
-		_displayDialog.GetCancelButton().Text = "Close";
-		_displayDialog.GetConfirmButton().Text = "Ok";
-		_currentDialogue = Dialogs.RESTART_DIALOGUE;
+        _computerTurnManager.ComputerTapGroundTile();
 	}
 
 	protected override async void OnPressedDialogConfirmButton(){
 		if(Dialogs.RESTART_DIALOGUE == _currentDialogue){
-			_displayDialog.CloseDialog();	
+            _computerTurnManager.ResettingTurn();
+            _randomCard = TileHelper.GetRandomCard();
+			_computerTurnManager.ComputerFirstTurn();
+			_displayDialog.CloseDialog();
 		}
 
 		if(Dialogs.QUIT_DIALOGUE == _currentDialogue){
-			_playerTurnManager.ExecuteQuitMatch();
+			Multiplayer.MultiplayerPeer = null;
+            _computerTurnManager.ResettingTurn();
 			await Task.Delay(500);
 			_routeManager.MoveToScene(SceneFilenameEnum.LOBBY_SCENE, "Leaving game, please wait.");
 		}

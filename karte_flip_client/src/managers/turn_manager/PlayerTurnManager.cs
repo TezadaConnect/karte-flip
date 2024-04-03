@@ -52,7 +52,7 @@ namespace KarteFlipClient{
 				}
 				_playerManager.PlayerTwo = playerInfoHolder;
 			}
-			_routeManager.MoveToScene(SceneFilenameEnum.MAIN_VS_PLAYER_SCENE, "Starting match, please wait.");
+			_routeManager.MoveToScene(SceneFilenameEnum.VS_PLAYER_MATCH_SCENE, "Starting match, please wait.");
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -91,7 +91,7 @@ namespace KarteFlipClient{
 		}
 
 		protected override void MakeResultDialog(TokenColorEnum winningColor){ // Todo make this more faster
-			MainVsPlayerSceneController mainScene = GetNode<MainVsPlayerSceneController>("/root/MainScene");
+			VsPlayerMatchSceneController mainScene = GetNode<VsPlayerMatchSceneController>("/root/MainScene");
 			InstantiateResultDialog(mainScene);
 			PlayerModel playerWinner = null;
 			if(_playerManager.PlayerOne.TokenColor == winningColor){
