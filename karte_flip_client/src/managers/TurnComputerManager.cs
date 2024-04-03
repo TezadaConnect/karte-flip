@@ -8,6 +8,7 @@ public partial class TurnComputerManager : Node{
     private GridGroundTilemap _mainTilemap;
     private TextureRect _turnDisplayTextureRect;
     private CardModel _aiRandomCard;
+    private DisplayDialog _resultDialog;
 
     public override void _Ready(){
         _aiRandomCard = TileHelper.GetRandomCard();
@@ -17,6 +18,7 @@ public partial class TurnComputerManager : Node{
         _scoringManager = GetNode<ScoringManager>(
 			RouteManager.GetSingletonAutoLoad(SingletonAutoLoadEnum.SCORING_MANAGER)
 		);
+        _resultDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
     }
 
     public bool IsMyTurn(){
@@ -43,6 +45,7 @@ public partial class TurnComputerManager : Node{
 
         ShiftPlayer();
         _scoringManager.DisplayScore(_mainTilemap);
+        EndGameResult();
     }
 
     public async void ComputerTapGroundTile(){
@@ -64,6 +67,7 @@ public partial class TurnComputerManager : Node{
         ShiftPlayer();
         _scoringManager.DisplayScore(_mainTilemap);
         _aiRandomCard = TileHelper.GetRandomCard();
+        EndGameResult();
     }
 
     private void ShiftPlayer(){
@@ -90,5 +94,50 @@ public partial class TurnComputerManager : Node{
         _mainTilemap = null;
     }
 
-    // public void 
+    public void ComputerFirstTurn(){
+        if(_playerManager.CurrentPlayerTurn.PlayerType == PlayerTypeEnum.COMPUTER){
+            ComputerTapGroundTile();
+        }
+    }
+
+    private void EndGameResult(){
+        // GridGroundTilemap _mainTilemap = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap"); ensurr this is not empty
+        if(!_mainTilemap.IsMaxTiles()){
+            return;
+        }
+        
+        bool isblackWin = _scoringManager.BlackScore > _scoringManager.WhiteScore;
+
+        if(isblackWin){
+            ShowResultModal(TokenColorEnum.DARK_TOKEN);
+            return;
+        }
+        
+        ShowResultModal(TokenColorEnum.LIGHT_TOKEN); 
+    }
+
+    private void ShowResultModal(TokenColorEnum winningColor){ // Todo make this more faster
+        MainVsComputerSceneController mainScene = GetNode<MainVsComputerSceneController>("/root/MainScene");
+        mainScene.AddChild(_resultDialog);
+        _resultDialog.SetDialogType(DialogType.ONE_BUTTON);
+        _resultDialog.GetConfirmButton().Text = "Ok";
+        _resultDialog.GetConfirmButton().Pressed += async () => {
+            _resultDialog.CloseDialog();
+            await Task.Delay(2000);
+            _resultDialog.Free();
+            _resultDialog = RouteManager.GetDrawables(SceneFilenameEnum.DISPLAY_DIALOG).Instantiate<DisplayDialog>();
+        };
+
+        bool isMeWithColorWinning = _playerManager.PlayerOne.TokenColor == winningColor;
+
+        if(isMeWithColorWinning){
+            _resultDialog.ShowDialog("You Win!");
+            _resultDialog.SetDialogType(DialogType.ONE_BUTTON);
+            _resultDialog.PlayWinSoundEffect();
+            return;
+        }
+                
+        _resultDialog.ShowDialog("You Lose!"); 
+        _resultDialog.PlayLoseSoundEffect();
+    }
 }

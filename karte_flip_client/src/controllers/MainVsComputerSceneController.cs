@@ -10,6 +10,7 @@ public partial class MainVsComputerSceneController: MainSceneController {
 		InitUiBindings();
 		InitializeListeners();
 		DisplayRandomCard();
+		_computerTurnManager.ComputerFirstTurn();
 	}
 
     private void InitAutoLoads(){
@@ -71,6 +72,7 @@ public partial class MainVsComputerSceneController: MainSceneController {
 		if(Dialogs.RESTART_DIALOGUE == _currentDialogue){
             _computerTurnManager.ResettingTurn();
             _randomCard = TileHelper.GetRandomCard();
+			_computerTurnManager.ComputerFirstTurn();
 			_displayDialog.CloseDialog();
 		}
 

@@ -8,6 +8,14 @@ public partial class ScoringManager : Node2D {
     private Label _whiteScoreLabel;
     private Label _blackScoreLabel;
 
+    public int BlackScore{
+        get { return _blackScore; }
+    }
+
+    public int WhiteScore{
+        get { return _whiteScore; }
+    }
+
     private void CalculateScore(GridGroundTilemap tilemap){
         List<Vector2I> arrayOfTilePositionAtTokenLayer = tilemap.GetUsedCells(
             tilemap.TOKEN_PLACEMENT_LAYER
@@ -43,5 +51,7 @@ public partial class ScoringManager : Node2D {
         CalculateScore(gridGroundTilemap);
         _blackScoreLabel.Text = _blackScore + "x";
         _whiteScoreLabel.Text = _whiteScore + "x";
+
+        
 	}
 }

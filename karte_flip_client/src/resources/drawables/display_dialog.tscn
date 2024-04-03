@@ -103,7 +103,6 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="CancelButton" type="Button" parent="DialogueBackgroundTextureRect"]
-visible = false
 layout_mode = 0
 offset_left = 719.0
 offset_top = 1256.0
@@ -120,7 +119,6 @@ text = "No"
 script = ExtResource("9_ntckn")
 
 [node name="Confirm2Button" type="Button" parent="DialogueBackgroundTextureRect"]
-visible = false
 layout_mode = 0
 offset_left = 255.0
 offset_top = 1256.0
@@ -137,7 +135,6 @@ text = "Yes"
 script = ExtResource("9_ntckn")
 
 [node name="Confirm1Button" type="Button" parent="DialogueBackgroundTextureRect"]
-visible = false
 layout_mode = 0
 offset_left = 439.0
 offset_top = 1256.0

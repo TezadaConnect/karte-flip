@@ -62,7 +62,6 @@ public partial class MainVsPlayerSceneController: MainSceneController{
 		}
 
 		_turnRpcService.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
-		_tilemap.PlayTileDropAudio();;
 		DisplayRandomCard();
 	}
 

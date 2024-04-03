@@ -1,5 +1,7 @@
 using Godot;
 
+public enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE, DISABLE_DIALOGUE }
+
 public partial class MainSceneController : Node {
 	// Managers
 	protected RouteManager _routeManager;
@@ -9,7 +11,6 @@ public partial class MainSceneController : Node {
 	protected TextureRect _hudTextureRect;
 	
 	// Dialogues
-	protected enum Dialogs { RESTART_DIALOGUE, QUIT_DIALOGUE, DISABLE_DIALOGUE }
 	protected Dialogs _currentDialogue;
 	protected DisplayDialog _displayDialog;
 

@@ -19,20 +19,18 @@ public partial class DisplayDialog : Node2D{
 		_messageLabel = _dialogTextureRect.GetNode<Label>("MessageLabel");
 		_loseAudio = _dialogTextureRect.GetNode<AudioStreamPlayer>("LoseAudioStreamPlayer");
 		_winAudio = _dialogTextureRect.GetNode<AudioStreamPlayer>("WinAudioStreamPlayer");
-		SetDialogType(DialogType.ONE_BUTTON);
+		_dialogTextureRect.GetNode<Button>("Confirm1Button").Hide();
+		_dialogTextureRect.GetNode<Button>("Confirm2Button").Hide();
+		_dialogTextureRect.GetNode<Button>("CancelButton").Hide();
 	}
 
 	public void SetDialogType(DialogType dialogType){
 		if(dialogType == DialogType.ONE_BUTTON){
- 			_dialogTextureRect.GetNode<Button>("Confirm2Button").Hide();
-			_dialogTextureRect.GetNode<Button>("CancelButton").Hide();
 			_confirmButton = _dialogTextureRect.GetNode<Button>("Confirm1Button");
 			_confirmButton.Text = "Ok";
 			_confirmButton.Show();
 			return;
 		}
-		
-		_dialogTextureRect.GetNode<Button>("Confirm1Button").Hide();
 		_cancelButton = _dialogTextureRect.GetNode<Button>("CancelButton");
 		_confirmButton = _dialogTextureRect.GetNode<Button>("Confirm2Button");
 		_cancelButton.Text = "No";
