@@ -1,6 +1,5 @@
-namespace KarteFlipServer{
-    public enum PlayerTypeEnum {
-        PERSON,
-        COMPUTER
-    }
+public enum PlayerTypeEnum {
+    PERSON,
+    COMPUTER
 }
+

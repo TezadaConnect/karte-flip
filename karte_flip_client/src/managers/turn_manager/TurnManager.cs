@@ -13,7 +13,7 @@ public partial class TurnManager: Node {
     protected DisplayDialog _resultDialog;
 
     protected void ShiftPlayer(){
-        _turnDisplayTextureRect ??= GetNode<TextureRect>("/root/MainScene/HUDTextureRect/TurnTextureRect");
+        _turnDisplayTextureRect = GetNode<TextureRect>("/root/MainScene/HUDTextureRect/TurnTextureRect");
         _playerManager.CurrentPlayerTurn = _playerManager.CurrentPlayerTurn.Equals(
             _playerManager.PlayerOne
         ) ? _playerManager.PlayerTwo : _playerManager.PlayerOne;
@@ -66,7 +66,7 @@ public partial class TurnManager: Node {
     }
 
     protected void DrawTokens(Vector2I position, Array<DirectionEnum> directions){
-        _mainTilemap ??= GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
+        _mainTilemap = GetNode<GridGroundTilemap>("/root/MainScene/GridGroundTilemap");
         TileHelper.AddAtlasToken(
             position, 
             _mainTilemap, 

@@ -89,3 +89,5 @@ static class ComputerOpponentService{
         AddVectorFlipable(tilePosition, tilemap, tileFlipableRecordModel, directionEnum, currentColor);
     }
 }
+
+// sudo yum install wget && sudo yum install unzip && wget https://downloads.tuxfamily.org/godotengine/4.2.1/mono/Godot_v4.2.1-stable_mono_linux_x86_64.zip && unzip Godot_v4.2.1-stable_mono_linux_x86_64.zip

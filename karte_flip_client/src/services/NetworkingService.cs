@@ -1,8 +1,8 @@
 using Godot;
 
 public partial class NetworkingService : Node{
-    private const int PORT = 8080;
-	private const string SERVER_ADDRESS = "127.0.0.1";
+    private const int PORT = 0000;
+	private const string SERVER_ADDRESS = "input-ec2-server-address";
 	private RouteManager _routeManager;
     public override void _Ready(){
 		_routeManager = GetNode<RouteManager>(

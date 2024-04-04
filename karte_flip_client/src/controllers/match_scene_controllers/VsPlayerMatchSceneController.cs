@@ -61,6 +61,7 @@ public partial class VsPlayerMatchSceneController: MatchSceneController{
 			return;
 		}
 
+		_playerTurnManager.AddTokenToTilemap(tilePostion, _randomCard.Serialize());
 		_playerTurnManager.ExecuteAddTokenToTilemap(tilePostion, _randomCard);
 		DisplayRandomCard();
 	}

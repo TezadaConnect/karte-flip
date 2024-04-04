@@ -74,7 +74,7 @@ namespace KarteFlipClient{
 		*	LOGICS
 		* ********************************************************
 		*/
-		private void AddTokenToTilemap(Vector2I position, Dictionary card){		
+		public void AddTokenToTilemap(Vector2I position, Dictionary card){		
 			CardModel cardModel = CardModel.Deserialize(card);
 			DrawTokens(position, cardModel.CardListFlipDirections);
 			ShiftPlayer();
